@@ -1,0 +1,16 @@
+{
+  "name": "flights",
+  "version": "1.0.0",
+  "author": "Iulian Ilie-Nemedi",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "node-fetch": "^2.6.5"
+  },
+  "scripts": {
+    "server": "nodemon server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
