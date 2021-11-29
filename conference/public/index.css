@@ -1,0 +1,126 @@
+* { box-sizing: border-box; }
+body {
+	background: #666;
+	color: #111;
+	font-family: Helvetica,Arial;
+}
+a {
+	color: #222;
+	text-decoration: none;
+}
+p {	text-align: center; }
+.add {
+	opacity: 50%;
+}
+.add:hover {
+	opacity: 100%;
+}
+.container { padding: 1%; }
+.container .column {
+	margin-right: 1%;
+	padding: 10px;
+	border-radius: 15px;
+	float: left;
+	height: 95%;
+}
+.column:last-of-type { margin-right: 0; }
+.container .column:nth-child(1) {
+	background-color: #a66;
+	border: solid 5px #c88;
+}
+.container .column:nth-child(2) {
+	background-color: #6a6;
+	border: solid 5px #8c8;
+}
+.container .column:nth-child(3) {
+	background-color: #66a;
+	border: solid 5px #88c;
+}
+.container .column:nth-child(4) {
+	background-color: #aaa;
+	border: solid 5px #ccc;
+}
+.column-title {
+	color: #fff;
+	font-weight: bold;
+	font-size: 1.5em;
+	text-align: center;
+}
+.column-title a {
+	color: #fff;
+}
+.column-footer {
+	padding: 10px;
+	text-align: center;
+}
+.container .column:nth-child(1) .column-footer { color: #822; }
+.container .column:nth-child(2) .column-footer { color: #282; }
+.container .column:nth-child(3) .column-footer { color: #228; }
+.container .column:nth-child(4) .column-footer { color: #222; }
+.card {
+	margin-bottom: 10px;
+	padding: 10px 20px;
+	border-radius: 15px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+.card:last-of-type { margin-bottom: 0; }
+.card:hover {
+	transform: scale(1.05);
+	opacity: 1;
+}
+.container .column:nth-child(1) .card { background-color: #fdd; }
+.container .column:nth-child(2) .card { background-color: #dfd; }
+.container .column:nth-child(3) .card { background-color: #ddf; }
+.container .column:nth-child(4) .card { background-color: #fff; }
+.form {
+	border-radius: 10px;
+	background-color: #eee;
+	margin: 2em;
+	padding: 20px;
+}
+input, select, textarea {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+.select select {
+	width: 90%
+}
+input[type=button], input[type=submit], input[type=reset] {
+	width: 6em;
+	background-color: #888;
+	color: #fff;
+	padding: 10px 0px;
+	margin: 4px 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1.25em;
+}
+.buttons { text-align: center; }
+input[type=submit] { background-color: #4a4; }
+input[type=submit]:hover {
+	background-color: #282;
+	font-weight: bold;
+}
+input[type=reset] { background-color: #44a; }
+input[type=reset]:hover {
+	background-color: #228;
+	font-weight: bold;
+}
+input[type=button].delete { background-color: #a44; }
+input[type=button].delete:hover {
+	background-color: #822;
+	font-weight: bold;
+}
+input[type=button].edit { background-color: #aa4; }
+input[type=button].edit:hover {
+	background-color: #882;
+	font-weight: bold;
+}
+  

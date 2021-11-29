@@ -1,0 +1,62 @@
+<table>
+	<tr>
+		<th>Subject</th>
+		<th>Date</th>
+		<th>Room</th>
+		<th>Organizer</th>
+		<th>Edit</th>
+	</tr>
+	{{#meetings}}
+	<tr>
+		<td>
+			<input id="subject{{id}}" value="{{subject}}">
+		</td>		
+		<td>
+			<input id="date{{id}}" value="{{date}}" type="date">
+		</td>
+		<td>
+			<select id="room{{id}}" value="{{room}}">
+				{{#each ../rooms}}
+				<option value="{{id}}">{{name}}</option>
+				{{/each}}
+			</select>
+		</td>
+		<td>
+			<select id="organizer{{id}}">
+				{{#each ../contacts}}
+				<option value="{{id}}">{{lastName}} {{firstName}}</option>
+				{{/each}}
+			</select>
+		</td>		
+		<td>
+			<a href="javascript:application.saveItem('meetings', {{id}}, ['subject', 'date', 'room', 'organizer'])">&#x2713;</a>
+			<a href="javascript:application.removeItem('meetings', {{id}})">&#x2716;</a>
+		</td>
+	</tr>
+	{{/meetings}}
+	<tr>
+		<td>
+			<input id="subject0">
+		</td>		
+		<td>
+			<input id="date0" type="date">
+		</td>
+		<td>
+			<select id="room0">
+				{{#rooms}}
+				<option value="{{id}}">{{name}}</option>
+				{{/rooms}}
+			</select>
+		</td>
+		<td>
+			<select id="organizer0">
+				{{#contacts}}
+				<option value="{{id}}">{{lastName}} {{firstName}}</option>
+				{{/contacts}}
+			</select>
+		</td>		
+		<td>
+			<a href="javascript:application.saveItem('meetings', 0, ['subject', 'date', 'room', 'organizer'])">&#x2713;</a>
+		</td>
+	</tr>	
+</table>

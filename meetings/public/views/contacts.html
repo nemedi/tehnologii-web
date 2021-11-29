@@ -1,0 +1,39 @@
+<table>
+	<tr>
+		<th>First Name</th>
+		<th>Last Name</th>
+		<th>E-mail</th>
+		<th>Edit</th>
+	</tr>
+	{{#contacts}}
+	<tr>
+		<td>
+			<input id="firstName{{id}}" value="{{firstName}}">
+		</td>
+		<td>
+			<input id="lastName{{id}}" value="{{lastName}}">
+		</td>
+		<td>
+			<input id="email{{id}}" value="{{email}}" type="email">
+		</td>
+		<td>
+			<a href="javascript:application.saveItem('contacts', {{id}}, ['firstName', 'lastName', 'email']);">&#x2713;</a>
+			<a href="javascript:application.removeItem('contacts', {{id}})">&#x2716;</a>
+		</td>
+	</tr>
+	{{/contacts}}
+	<tr>
+		<td>
+			<input id="firstName0">
+		</td>
+		<td>
+			<input id="lastName0">
+		</td>
+		<td>
+			<input id="email0" type="email">
+		</td>
+		<td>
+			<a href="javascript:application.saveItem('contacts', 0, ['firstName', 'lastName', 'email'])">&#x2713;</a>
+		</td>
+	</tr>	
+</table>

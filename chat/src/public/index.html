@@ -1,0 +1,55 @@
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <title>Chat</title>
+  </head>
+  <body>
+    <div class="join-container">
+      <header class="join-header">
+        <h1><i class="fas fa-kiwi-bird"></i> Chat</h1>
+      </header>
+
+      <main class="join-main">
+        <form action="chat.html">
+          <div class="form-control">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Enter email address..."
+              required
+            />
+          </div>
+          <div class="form-control">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Enter username..."
+              required
+            />
+          </div>
+          <div class="form-control">
+            <label for="room">Chat Channel</label>
+            <select name="room" id="room">
+              <option value="Business">Business </option>
+              <option value="Technology">Technology</option>
+              <option value="Sport">Sports</option>
+              <option value="news">International News</option>
+              <option value="cats">Just Cats</option>
+            </select>
+          </div>
+          <div class="flex">
+            <button type="submit" class="btn">Login to Chat</button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>

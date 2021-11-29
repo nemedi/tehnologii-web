@@ -1,0 +1,40 @@
+<div class="form">
+	<h1>Session</h1>
+	<form data-id="{{session.id}}">
+		<label for="subject">Title</label>
+		<input type="text" value="{{session.title}}" data="title">
+		<label for="description">Description</label>
+		<textarea rows="10" data="description">{{session.description}}</textarea>
+		<label for="speaker">Speaker</label>
+		<div class="select">
+			<select id="speaker" data="speakerId">
+				<option value="">-- New --</option>
+				{{#speakers}}
+				<option value="{{id}}">{{firstName}} {{lastName}}</option>
+				{{/speakers}}
+			</select>
+			<input type="button" class="edit" value="Edit">
+		</div>
+		<label for="room">Room</label>
+		<div class="select">
+			<select id="room" data="roomId">
+				<option value="">-- New --</option>
+				{{#rooms}}
+				<option value="{{id}}">{{name}}</option>
+				{{/rooms}}
+			</select>		
+			<input type="button" class="edit" value="Edit">
+		</div>
+		<label for="begin">Begin</label>
+		<input type="time" value="{{session.begin}}" data="begin">
+		<label for="end">End</label>
+		<input type="time" value="{{session.end}}" data="end">
+		<div class="buttons">
+			<input type="submit" value="Save">
+			{{#if session.exists}}
+			<input type="button" class="delete" value="Delete">
+			{{/if}}
+			<input type="reset" value="Cancel">
+		</div>
+	</form>
+</div>

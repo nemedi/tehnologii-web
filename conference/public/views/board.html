@@ -1,0 +1,19 @@
+<div class="container">
+	{{#rooms}}
+	<div class="column" style="width:{{../width}}%">
+		<p class="column-title">
+			<a href="#editRoom('{{id}}')">{{name}}</a>
+			<a href="#editSession('','{{id}}')" class="add">+</a>
+		</p>
+		<div class="cards">
+			{{#sessions}}
+			<div class="card">
+				<p>
+					<a href="#editSession('{{id}}')">{{title}}</a>
+				</p>
+			</div>
+			{{/sessions}}
+		</div>
+	</div>
+	{{/rooms}}
+</div>	

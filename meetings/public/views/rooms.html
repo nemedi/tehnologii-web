@@ -1,0 +1,32 @@
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Capacity</th>
+		<th>Edit</th>
+	</tr>
+	{{#rooms}}
+	<tr>
+		<td>
+			<input id="name{{id}}" value="{{name}}">
+		</td>
+		<td>
+			<input id="capacity{{id}}" value="{{capacity}}" type="number">
+		</td>
+		<td>
+			<a href="javascript:application.saveItem('rooms', {{id}}, ['name', 'capacity'])">&#x2713;</a>
+			<a href="javascript:application.removeItem('rooms', {{id}})">&#x2716;</a>
+		</td>
+	</tr>
+	{{/rooms}}
+	<tr>
+		<td>
+			<input id="name0">
+		</td>
+		<td>
+			<input id="capacity0" type="number">
+		</td>
+		<td>
+			<a href="javascript:application.saveItem('rooms', 0, ['name', 'capacity'])">&#x2713;</a>
+		</td>
+	</tr>
+</table>
