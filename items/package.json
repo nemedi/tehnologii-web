@@ -1,0 +1,14 @@
+{
+	"name": "items",
+	"dependencies": {
+		"express": "^4.17.1",
+		"path": "^0.12.7",
+		"fs": "^0.0.1-security"
+	},
+	"scripts": {
+		"server": "nodemon server.js"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
