@@ -302,7 +302,7 @@ application.get('/universities/:universityId/students/:studentId/enrollements', 
   try {
     const university = await University.findByPk(request.params.universityId);
     if (university) {
-      const students = await university.getStudnts({id: request.params.studentId});
+      const students = await university.getStudents({id: request.params.studentId});
       const student = students.shift();
       if (student) {
         const courses = await student.getCourses({attributes: ['id']});
