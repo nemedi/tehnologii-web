@@ -61,10 +61,10 @@ p {	text-align: center; }
 	transform: scale(1.05);
 	opacity: 1;
 }
-.container .column .card.background1 { background-color: #fdd; }
-.container .column .card.background2 { background-color: #dfd; }
-.container .column .card.background3 { background-color: #ddf; }
-.container .column .card.background4 { background-color: #fff; }
+.container .card.background1 { background-color: #fdd; }
+.container .card.background2 { background-color: #dfd; }
+.container .card.background3 { background-color: #ddf; }
+.container .card.background4 { background-color: #fff; }
 .form {
 	border-radius: 10px;
 	background-color: #eee;
@@ -88,7 +88,7 @@ input[type=button], input[type=submit], input[type=reset] {
 	background-color: #888;
 	color: #fff;
 	padding: 10px 0px;
-	margin: 4px 0;
+	margin: 4px 4px;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;

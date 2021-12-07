@@ -97,7 +97,8 @@ function main() {
 		form.onreset = event => window.location.href = '#loadBoard()';
 		if (id.length > 0) {
 			document.querySelector('.delete').onclick = async (event) => {
-				if (id && confirm(`Are you sure you want to remove this from ${collection}?`)) {
+				if (id && await document.getElementById('dialog')
+					.confirmDialog(`Are you sure you want to remove this from ${collection}?`)) {
 					const response = await fetch(`/models/${collection}/${id}`, {
 						method: 'DELETE'
 					}).catch(error => alert(error.message));
