@@ -141,9 +141,9 @@ async function saveSpeaker(request, response) {
 async function removeSpeaker(request, response) {
 	try {
 		if (request.params.id) {
-			const room = await Room.findByPk(request.params.id);
-			if (room) {
-				await room.destroy();
+			const speaker = await Speaker.findByPk(request.params.id);
+			if (speaker) {
+				await speaker.destroy();
 				response.status(204).send();
 			} else {
 				response.status(404).send();

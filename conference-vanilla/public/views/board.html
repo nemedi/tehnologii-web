@@ -1,13 +1,13 @@
 <div class="container">
 	{{#rooms}}
-	<div class="column" style="width:{{../width}}%">
+	<div class="column background{{index}}" style="width:{{../width}}%">
 		<p class="column-title">
 			<a href="#editRoom('{{id}}')">{{name}}</a>
 			<a href="#editSession('','{{id}}')" class="add">+</a>
 		</p>
 		<div class="cards">
 			{{#sessions}}
-			<div class="card">
+			<div class="card background{{../index}}">
 				<p>
 					<a href="#editSession('{{id}}')">{{title}}</a>
 				</p>

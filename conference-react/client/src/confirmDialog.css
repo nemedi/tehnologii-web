@@ -1,0 +1,55 @@
+.modal-cancelButton, .modal-okButton {
+  float: left;
+  width: 50%;
+}
+
+.modal-cancelButton {
+  background-color: #ccc;
+  color: black;
+}
+
+.modal-okButton {
+  background-color: #f44336;
+}
+
+.modal-container {
+  padding: 16px;
+  text-align: center;
+}
+
+.modal-dialog {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding-top: 50px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  border-radius: 15px;
+  margin: 5% auto 15% auto;
+  border: 1px solid #888;
+  width: 30%;
+}
+
+.modal-heading {
+  padding: 10px 5px;
+  margin-bottom: 25px;
+}
+ 
+.modal-clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+@media screen and (max-width: 300px) {
+  .modal-cancelButton, .modal-okButton {
+     width: 50%;
+  }
+}
