@@ -7,7 +7,7 @@ express()
 	.use(json())
 	.use(express.static(join(resolve(), 'public')))
 	.use('/models', router)
-	.listen(8080, async () => {
+	.listen(9090, async () => {
 		try {
 			await initialize();
 		} catch (error) {
