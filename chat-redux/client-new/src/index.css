@@ -1,0 +1,55 @@
+body {
+  background-color: #666;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  background-color: #eee;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 1em;
+}
+input {
+  padding: 0.5em;
+  margin: 0.5em;
+}
+input[type=button] {
+  width: 20em;
+  color: #fff;
+  border-radius: 0.5em;
+  
+}
+input[type=button][value=Login] {
+  background-color: #696;
+  border: 1px solid #363;
+}
+input[type=button][value=Logout] {
+  background-color: #966;
+  border: 1px solid #633;
+}
+div {
+  padding: 1em;
+  margin: 0.5em;
+  border-radius: 0.5em;
+}
+div.messages {
+  overflow: vertical;
+}
+div.me {
+  text-align: right;
+  background-color: #9c9;
+  border-color: #6a6;
+}
+div.other {
+  text-align: left;
+  background-color: #99c;
+  border-color: #66a;
+}
+div.admin {
+  text-align: center;
+  background-color: #c99;
+  border-color: #a66;
+}
+label.messages {
+  font-size: 1.5em;
+}
