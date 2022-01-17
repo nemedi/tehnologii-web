@@ -1,0 +1,14 @@
+div {
+	display: flex;
+	flex-direction: column;
+}
+ul {
+	list-style: none;
+}
+li {
+	padding: 10px 0px;
+}
+input {
+	margin: 10px 0px;
+	padding: 10px 5px;
+}
