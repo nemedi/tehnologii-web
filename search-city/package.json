@@ -1,0 +1,16 @@
+{
+  "name": "search-city",
+  "version": "1.0.0",
+  "author": "Iulian ILIE-NÉMEDI",
+  "scripts": {
+    "server": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "~4.18.1",
+    "path": "~0.12.7",
+    "buffered-reader": "~1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "~2.0.20"
+  }
+}
