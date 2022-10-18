@@ -6,9 +6,9 @@ async function searchAirline(name) {
 		if (body.length > 0) {
 			html = '<ul>';
 			for (airline of body) {
-				html += `<li data="${airline.id}">
-						<a href="javascript:void(0)" onclick="searchFlights({name: '${airline.name}', id: '${airline.id}'})">${airline.name}</a>
-					</li>`;
+				html += `<li>
+							<a href="javascript:void(0)" onclick="searchFlights({name: '${airline.name}', id: '${airline.id}'})">${airline.name}</a>
+						</li>`;
 			}
 			html += '</ul>';
 		} else {
@@ -17,6 +17,7 @@ async function searchAirline(name) {
 	}
 	document.getElementById('results').innerHTML = html;
 }
+
 async function searchFlights(airline) {
 	document.getElementById('results').innerHTML = `Loading flights for <b>${airline.name}</b>, this may take a while...`;
 	const response = await fetch(`flights/${airline.id}`);
