@@ -8,7 +8,7 @@ module.exports = async function(url) {
 			}
 		const response = await fetch(url);
 		const body = await response.text();
-		return [...body.matchAll(/href=\"([^\"]*?)\"/g)]
+		return [...body.matchAll(/<a\s+href=\"([^\"]*?)\"/g)]
 			.map(result => {
 				let link = result[1];
 				if (link.startsWith('?')) {
