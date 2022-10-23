@@ -1,0 +1,15 @@
+a {
+	text-decoration: none;
+}
+td {
+	padding: 5px;
+}
+input {
+	text-transform: uppercase;
+	border-left: none;
+	border-top: none;
+	border-right: none;
+}
+input:focus {
+	outline: none;
+}

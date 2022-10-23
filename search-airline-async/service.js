@@ -44,8 +44,10 @@ async function searchFlight(code) {
 		return {
 			number: body.identification.number.default,
 			aircraft: body.aircraft.model.text,
-			origin: body.airport.origin.name,
-			destination: body.airport.destination.name,
+			origin: body.airport.origin
+				? body.airport.origin.name : 'Unknown',
+			destination: body.airport.destination
+				? body.airport.destination.name : 'Unknown',
 			status: body.status.text
 		};
 	} catch (error) {
