@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title>Shopping List</title>
+		<script>
+		function addItem(event) {
+			if (event.keyCode === 13
+				&& event.target.value.trim().length > 0) {
+				const item = document.createElement('li');
+				const anchor = document.createElement('a');
+				anchor.href = 'javascript:void(0)';
+				anchor.onclick = function() {
+					removeItem(item);
+				};
+				anchor.innerText = event.target.value.trim();
+				item.appendChild(anchor);
+				document.getElementById('items').appendChild(item);
+				event.target.value = '';
+			}
+		}
+		function removeItem(item) {
+			item.parentNode.removeChild(item);
+		}
+		</script>
+	</head>
+	<body>
+		<p>
+			New Item <input onkeyup="addItem(event)">
+		</p>
+		<p>
+			<ul id="items">
+			</ul>
+		</p>
+	</body>
+</html>
