@@ -6,8 +6,10 @@ const SEARCH_FLIGHT_URL = 'https://data-live.flightradar24.com/clickhandler/?fli
 
 async function searchAirline(name) {
 	try {
-		const response = await fetch(SEARCH_AIRLINE_URL + name);
-		const body = await response.json();
+		const response = await fetch(SEARCH_AIRLINE_URL + name)
+			.catch(error => { throw error;});
+		const body = await response.json()
+			.catch(error => { throw error;});
 		return body.results.map(result => ({
 			id: result.id,
 			name: result.name
@@ -19,8 +21,10 @@ async function searchAirline(name) {
 
 async function searchFlights(airline) {
 	try {
-		const response = await fetch(SEARCH_FLIGHTS_URL + airline.toUpperCase());
-		const body = await response.json();
+		const response = await fetch(SEARCH_FLIGHTS_URL + airline.toUpperCase())
+			.catch(error => { throw error;});
+		const body = await response.json()
+			.catch(error => { throw error;});
 		const flights = [];
 		for (let code in body) {
 			if (body[code] instanceof Array) {
@@ -39,8 +43,10 @@ async function searchFlights(airline) {
 
 async function searchFlight(code) {
 	try {
-		const response = await fetch(SEARCH_FLIGHT_URL + code);
-		const body = await response.json();
+		const response = await fetch(SEARCH_FLIGHT_URL + code)
+			.catch(error => { throw error;});
+		const body = await response.json()
+			.catch(error => { throw error;});
 		return {
 			number: body.identification.number.default,
 			aircraft: body.aircraft.model.text,
