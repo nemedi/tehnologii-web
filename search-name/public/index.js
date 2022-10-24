@@ -1,13 +1,21 @@
+const cache = {};
 async function searchName(event) {
-	if (event.keyCode === 13 && event.target.value.length > 0) {
+	if (event.key === 'Enter' && event.target.value.trim().length > 0) {
 		const name = event.target.value
 		document.getElementById('results').innerHTML = `Searching for <i>${name}</i>, please wait...`;
-		const items = await (await fetch(`names/${name}`)).json();
-		document.getElementById('results').innerHTML = items.length > 0 ? 
+		const results = cache[name] !== undefined
+			? cache[name]
+			: await (await fetch(`names/${name}`)).json();
+		if (results.length > 0) {
+			cache[name] = results;
+		}
+		document.getElementById('results').innerHTML = results.length > 0 ? 
 			'<ol>'
-				+ items.map(item => `<li>${item.district}: ${item.count}</li>`)
-					.reduce((output, row) => output += row, '')
+				+ results.map(result => `<li>${result.district}: ${result.count}</li>`)
+					.reduce((html, item) => html += item, '')
 				+ '</ol>'
-			: `No result found for ${name}.`;
+			: `No results found for ${name}.`;
+	} else {
+		document.getElementById('results').innerHTML = '';
 	}
 }
