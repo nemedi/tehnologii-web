@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<title>Chat</title>
+		<link rel="stylesheet" href="index.css">
+		<script src="index.js"></script>
+	</head>
+	<body>
+		<div id="loginForm">
+			<p>
+				Name: <input id="name" type="text">
+					<input type="button" value="Login" onclick="login()">
+			</p>
+		</div>
+		<div id="chatForm" style="display:none">
+			<p>
+				You are logged-in as: <b id="user"></b>
+			</p>
+			<p>
+				Message: <input id="message" type="text" onkeyup="chat(event)">
+					<input type="button" value="Logout" onclick="logout()">
+			</p>
+			<p>
+				<ul id="messages">
+				</ul>
+			</p>
+		</p>
+	</body>
+</html>

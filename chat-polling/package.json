@@ -1,12 +1,12 @@
 {
-	"name": "search-name",
+	"name": "chat-polling",
 	"dependencies": {
 		"express": "^4.17.1",
-		"path": "^0.12.7",
-		"node-fetch": "^2.6.1"
+		"express-session": "~1.17.3",
+		"path": "^0.12.7"
 	},
 	"scripts": {
-		"server": "nodemon server.js"
+		"server": "nodemon server.mjs"
 	},
 	"devDependencies": {
 		"nodemon": "^2.0.15"

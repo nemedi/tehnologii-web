@@ -1,0 +1,11 @@
+input[type=text] {
+	border-left: none;
+	border-top: none;
+	border-right: none;
+}
+#name {
+	text-transform: uppercase;
+}
+input:focus {
+	outline: none;
+}
