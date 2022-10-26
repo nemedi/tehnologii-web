@@ -21,9 +21,9 @@ express()
 		}
 	})
 	.get('/messages', (request, response) => {
-		const payload = chat.getMessages(request.query.index);
-		if (payload.messages.length > 0) {
-			response.json(payload);
+		const messages = chat.getMessages(request.query.index);
+		if (messages.length > 0) {
+			response.json(messages);
 		} else {
 			response.sendStatus(204);
 		}

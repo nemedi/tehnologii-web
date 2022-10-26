@@ -11,12 +11,7 @@ class Chat {
 		}
 	}
 	getMessages(index) {
-		index = parseInt(index);
-		const messages = this.#messages
-			.slice(parseInt(index));
-		return {
-			messages, index: index + messages.length
-		}
+		return this.#messages.slice(parseInt(index));
 	}
 	addMessage(message, session) {
 		if (this.#sessions[session] !== undefined) {

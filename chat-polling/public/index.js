@@ -51,10 +51,10 @@ async function chat(event) {
 async function getMessages(index) {
 	const response = await fetch(`/messages/?index=${index}`);
 	if (response.status === 200) {
-		const body = await response.json();
-		index = body.index;
+		const messages = await response.json();
+		index += messages.length;
 		document.getElementById('messages').innerHTML +=
-			body.messages.map(message => `<li>${message}</li>`)
+			messages.map(message => `<li>${message}</li>`)
 				.reduce((html, item) => html += item, '');
 	}
 	job = setTimeout(async () => await getMessages(index), 1000);
