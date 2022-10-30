@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<title>Form</title>
+		<link rel="stylesheet" href="index.css">
+		<script src="index.js"></script>
+	</head>
+	<body>
+		<form action="javascript:void(0)" onsubmit="return processForm(this)">
+			<table>
+				<tr>
+					<td nowrap>
+						<label for="firstName" accesskey="Alt+F">First Name</label>
+					</td>
+					<td width="100%">
+						<input type="text" name="firstName" placeholder="Enter your first name.">
+					</td>
+				</tr>
+				<tr>
+					<td nowrap>
+						<label for="lastName" accesskey="Alt+L">Last Name</label>
+					</td>
+					<td width="100%">
+						<input type="text" name="lastName" placeholder="Enter your last name.">
+					</td>
+				</tr>
+				<tr>
+					<td nowrap>
+						<label for="email" accesskey="Alt+E">E-mail</label>
+					</td>
+					<td width="100%">
+						<input type="email" name="email" placeholder="Enter your email.">
+					</td>
+				</tr>
+				<tr>
+					<td nowrap>
+						<label for="gender" accesskey="Alt+F">Gender</label>
+					</td>
+					<td width="100%">
+						<select name="gender">
+							<option value="M">Masculine</option>
+							<option value="F">Feminine</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td nowrap valign="top">Languages</td>
+					<td width="100%">
+						<div>
+							<input type="checkbox" name="language" value="English">English<br>
+							<input type="checkbox" name="language" value="French">French
+						</div>
+						Other <input type="text" placeholder="Type and press enter." onkeyup="addLanguage(event)">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<input type="submit" value="Submit">
+						<input type="reset" value="Reset">
+					</td>
+				</tr>
+			</table>
+		</form>
+</html>
