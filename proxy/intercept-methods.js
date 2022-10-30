@@ -54,5 +54,3 @@ person = interceptMethods(new Person('Ion', 'Iliescu'), advisor);
 console.log(person.toString()); // Jon Iliescu!
 person = interceptMethods(new Person('Ion', 'Ratiu'), advisor);
 console.log(person.toString()); // Traiasca Ratiu!
-person = interceptMethods(new Person('Ion', 'Caramitru'), advisor);
-console.log(person.toString()); // Ion Caramitru

@@ -72,4 +72,4 @@ for (let i = 1; i <= 10; i++) {
 	console.log(`nextEvenInteger[${i}] = ${nextEvenInteger.next}`);
 	console.log(`fibonacci[${i}] = ${fibonacci.next}`);
 }
-console.log(Stream.count);
+console.log(`number of streams = ${Stream.count}`);
