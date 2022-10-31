@@ -7,14 +7,9 @@ function addLanguage(event) {
 	}
 }
 
-function $(selector, container) {
-	return container
-		? container.querySelector(selector)
-		: document.querySelector(selector);
-}
-
 function processForm(form) {
-	const firstName = $('[name=firstName]', form).value;
-	const lastName = $('[name=lastName]', form).value;
+	const firstName = form['firstName'].value;
+	const lastName = form['lastName'].value;
+	const email = form['email'].value;
 	return true;
 }
