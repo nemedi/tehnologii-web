@@ -11,5 +11,6 @@ function processForm(form) {
 	const firstName = form['firstName'].value;
 	const lastName = form['lastName'].value;
 	const email = form['email'].value;
+	const gender = form['gender'].value;
 	return true;
 }
