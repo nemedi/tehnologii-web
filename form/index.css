@@ -1,9 +1,0 @@
-input[name=firstName], input[name=lastName], select {
-	border-left: none;
-	border-top: none;
-	border-right: none;
-	text-transform: uppercase;
-}
-input:focus, select:focus {
-	outline: none;
-}

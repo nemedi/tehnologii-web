@@ -1,0 +1,69 @@
+<form action="javascript:void(0)" onsubmit="return processForm(this)">
+	<input type="hidden" value="id"/>
+	<div class="row">
+		<div class="col-20">
+			<label for="lastName">Nume</label>
+		</div>
+		<div class="col-80">
+			<input type="text" name="lastName" required placeholder="Completati numele.."/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-20">
+			<label for="firstName">Prenume</label>
+		</div>
+		<div class="col-80">
+			<input type="text" name="firstName" required placeholder="Completati prenumele.."/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-20">
+			<label for="bornDate">Data nasterii</label>
+		</div>
+		<div class="col-80">
+			<input type="date" name="bornDate"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-20">
+			<label for="email">E-mail</label>
+		</div>
+		<div class="col-80">
+			<input type="email" name="email" required/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-20">
+			<label for="email">Telefon</label>
+		</div>
+		<div class="col-80">
+			<input type="tel" name="phone"/>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-20">
+			<label for="section">Specializarea</label>
+		</div>
+		<div class="col-80">
+			<select name="section" required>
+				<option value="IE">Informatica</option>
+				<option value="CE">Cibernetica</option>
+				<option value="SE">Statistica</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-20">
+			<label for="group">Grupa</label>
+		</div>
+		<div class="col-80">
+			<input type="number" name="group" required/>
+		</div>
+	</div>
+	<br/>		
+	<div class="row">
+		<input type="button" value="Renunta">
+		<input type="reset" value="Reseteaza">
+		<input type="submit" value="Trimite">
+	</div>
+</form>
