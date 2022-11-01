@@ -49,6 +49,7 @@ async function renderForm() {
 	const response = await fetch('views/form.html');
 	const body = await response.text();
 	document.querySelector('.container').innerHTML = body;
+	document.querySelector('form').onsubmit = (event) => processForm(event.target);
 	document.querySelector('input[type=button]').onclick = () => renderTable();
 }
 
