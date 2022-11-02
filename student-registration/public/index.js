@@ -1,6 +1,4 @@
-window.onload = async function() {
-	renderTable();
-}
+window.onload = () => renderTable();
 
 async function renderTable() {
 	const response = await fetch('views/table.html');

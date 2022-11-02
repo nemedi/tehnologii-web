@@ -6,18 +6,18 @@ const PORT = process.env.PORT || 8080;
 express()
 	.use(express.static(join(resolve(), 'public')))
 	.use(express.json())
-	.get('/students', async (request, response) => {
-		response.json(await getStudents());
+	.get('/students', (request, response) => {
+		response.json(getStudents());
 	})
-	.get('/students/:id', async (request, response) => {
-		response.json(await getStudent(request.params.id));
+	.get('/students/:id', (request, response) => {
+		response.json(getStudent(request.params.id));
 	})	
-	.post('/students', async (request, response) => {
-		await addStudent(request.body);
+	.post('/students', (request, response) => {
+		addStudent(request.body);
 		response.sendStatus(204);
 	})
-	.delete('/students/:id', async (request, response) => {
-		await removeStudent(request.params.id);
+	.delete('/students/:id', (request, response) => {
+		removeStudent(request.params.id);
 		response.sendStatus(204);
 	})
 	.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));
