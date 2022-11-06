@@ -1,7 +1,7 @@
 window.onload = () => renderTable();
 
 async function renderTable() {
-	const response = await fetch('views/table.html');
+	const response = await fetch('/views/table.html');
 	const body = await response.text();
 	document.querySelector('.container').innerHTML = body;
 	document.querySelector('input[type=button]').onclick = () => renderForm();
@@ -21,21 +21,31 @@ async function renderTable() {
 			.reduce((html, item) => html += item, '');
 		document.querySelector('tfoot').innerHTML = '';
 		let index = 0;
-		document.querySelectorAll('input[type=button][value=Sterge]')
-			.forEach(button => button.onclick = () => removeStudent(ids[index++]));
+		const editButtons = document.querySelectorAll('input[type=button][value=Editeaza]');
+		const deleteButtons = document.querySelectorAll('input[type=button][value=Sterge]');
+		for (let i = 0; i < ids.length; i++) {
+			editButtons[i].onclick = () => renderForm(ids[i]);
+			deleteButtons[i].onclick = () => removeStudent(ids[i]);
+		}
 	} else {
 		document.querySelector('tbody').innerHTML = '';
 	}
 }
 
 async function getStudents() {
-	const response = await fetch('students');
+	const response = await fetch('/students');
+	const body = await response.json();
+	return body;
+}
+
+async function getStudent(id) {
+	const response = await fetch(`/students/${id}`);
 	const body = await response.json();
 	return body;
 }
 
 async function removeStudent(id) {
-	const response = await fetch(`students/${id}`, {
+	const response = await fetch(`/students/${id}`, {
 		method: 'DELETE'
 	});
 	if (response.status === 204) {
@@ -43,16 +53,37 @@ async function removeStudent(id) {
 	}
 }
 
-async function renderForm() {
-	const response = await fetch('views/form.html');
+async function renderForm(id) {
+	const response = await fetch('/views/form.html');
 	const body = await response.text();
 	document.querySelector('.container').innerHTML = body;
 	document.querySelector('form').onsubmit = (event) => processForm(event.target);
 	document.querySelector('input[type=button]').onclick = () => renderTable();
+	if (id) {
+		const student = await getStudent(id);
+		document.querySelector(`input[type=hidden][name=id]`).value = id;
+		Object.entries(student)
+			.forEach(([name, value]) => {
+				const input = document.querySelector(`input[name=${name}]`);
+				if (input) {
+					input.value = value;
+				} else {
+					const select = document.querySelector(`select[name=${name}]`);
+					if (select) {
+						select.options.forEach(option => {
+							if (option.value === value) {
+								option.selected = true;
+							}
+						});
+					}
+				}
+			});
+	}
 }
 
 
 async function processForm(form) {
+	const id = form['id'].value;
 	const student = {
 		lastName: form['lastName'].value,
 		firstName: form['firstName'].value,
@@ -62,13 +93,21 @@ async function processForm(form) {
 		section: form['section'].value,
 		group: form['group'].value
 	};
-	const response = await fetch('students', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(student)
-	});
+	const response = id.length > 0 ?
+		await fetch(`/students/${id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(student)
+		})
+		: await fetch('/students', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(student)
+		});
 	if (response.status === 204) {
 		renderTable();
 		return true;

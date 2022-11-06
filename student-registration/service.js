@@ -19,6 +19,14 @@ function addStudent(student) {
 	writeRepositoryContent(students);
 }
 
+function saveStudent(id, student) {
+	const students = readRepositoryContent();
+	if (students.hasOwnProperty(id)) {
+		students[id] = student;
+		writeRepositoryContent(students);
+	}
+}
+
 function removeStudent(id) {
 	const students = readRepositoryContent();
 	if (students.hasOwnProperty(id)) {
@@ -27,4 +35,4 @@ function removeStudent(id) {
 	}
 }
 
-module.exports = {getStudents, getStudent, addStudent, removeStudent};
+module.exports = {getStudents, getStudent, addStudent, saveStudent, removeStudent};

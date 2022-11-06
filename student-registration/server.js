@@ -1,6 +1,6 @@
 const express = require('express');
 const {join, resolve} = require('path');
-const {getStudents, getStudent, addStudent, removeStudent} = require('./service');
+const {getStudents, getStudent, addStudent, saveStudent, removeStudent} = require('./service');
 
 const PORT = process.env.PORT || 8080;
 express()
@@ -14,6 +14,10 @@ express()
 	})	
 	.post('/students', (request, response) => {
 		addStudent(request.body);
+		response.sendStatus(204);
+	})
+	.put('/students/:id', (request, response) => {
+		saveStudent(request.params.id, request.body);
 		response.sendStatus(204);
 	})
 	.delete('/students/:id', (request, response) => {
