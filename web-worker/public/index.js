@@ -1,22 +1,19 @@
-state = 'unknown';
 function startWorker() {
-	if (state === 'running') {
+	if (typeof worker !== 'undefined') {
 		worker.terminate();
-		state = 'terminated';
-		log(`<li>Worker has been terminated.</li>`);
+		log(`Worker has been terminated.`);
 	}
 	worker = new Worker('loop.js');
 	worker.onmessage = function (event) {
-		state = 'done';
-		log(`<li>Completed ${event.data} iterations.</li>`);
+		delete worker;
+		log(`Completed ${event.data} iterations.`);
 	};
 	worker.onerror = function (event) {
-		state = 'failed';
-		log(`<li>Error: ${event.message}.</li>`);
+		delete worker;
+		log(`Error: ${event.message}.`);
 	};
-	state = 'running';
-	log('<li>Worker started.</li>');
+	log('Worker started.');
 }
 function log(text) {
-	document.getElementById('results').innerHTML += text;
+	document.getElementById('results').innerHTML += `<li>${text}</li>`;
 }
