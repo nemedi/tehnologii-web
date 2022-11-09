@@ -10,7 +10,7 @@ HTMLElement.prototype.paintingCanvas = async function(options) {
 	};
   
 	function generateid() {
-		return 'xxx-xxx-xxx'.replace(/x/g, (c) => {
+		return 'xxx-xxx-xxx'.replace(/x/g, c => {
 			return Math.floor(Math.random() * 10);
 		});
 	}
@@ -50,12 +50,10 @@ HTMLElement.prototype.paintingCanvas = async function(options) {
 	clearButton.type = 'button';
 	clearButton.value = 'Clear';
 	clearButton.addEventListener('click', event => {
-		isDrawing = false;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		Object.getOwnPropertyNames(state.figures)
 			.forEach(figureId => options.removeFigure && options.removeFigure(figureId));
 		state.figures = {};
-		state.point = {x: 0, y: 0};
 		state.current = null;
 	});
 	this.appendChild(clearButton);
@@ -81,18 +79,17 @@ HTMLElement.prototype.paintingCanvas = async function(options) {
 		state.figures[state.current] = {
 			color: context.strokeStyle,
 			line: context.lineWidth,
-			points: []
+			points: [point]
 		};
 		context.beginPath();
 		context.moveTo(point.x, point.y);
-		state.figures[state.current].points.push(point);
 		if (options.addFigure) {
 			options.addFigure({id: state.current, ...state.figures[state.current]});
 		}
 	});
 	canvas.addEventListener('mousemove', event => {
-		const point = getPoint(event);
 		if(state.current != null) {
+			const point = getPoint(event);
 			context.lineTo(point.x, point.y);
 			context.stroke();
 			state.figures[state.current].points.push(point);
@@ -110,9 +107,9 @@ HTMLElement.prototype.paintingCanvas = async function(options) {
 		figures.forEach(figure => {
 			state.figures[figure.id] = figure;
 			delete figure.id;
-			context.beginPath();
 			context.strokeStyle = figure.color;
 			context.lineWidth = figure.line;
+			context.beginPath();
 			figure.points.forEach((point, index) => {
 				if (index === 0) {
 					context.moveTo(point.x, point.y);	
