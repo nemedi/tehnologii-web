@@ -1,0 +1,42 @@
+body {
+	padding: 10px;
+	margin: 10px;
+}
+#container {
+	display: flex;
+	justify-content: center;
+}
+table.secreen {
+	background-color: #ccc;
+}
+table.secreen td {
+	text-align: right;
+}
+div.seat {
+	box-sizing: border-box;
+	border: solid 2px #ccc;
+	width: 40px;
+	height: 40px;
+	color: #fff;
+	text-align: center;
+	vertical-align: middle;
+	cursor: hand;
+	padding: 5px;
+}
+div.seat.unavailable {
+	background-color: #ccc;
+	border: solid 1px #ccc;
+	cursor: default;
+}
+div.seat.available {
+	background-color: #3c3;
+	cursor: hand;
+}
+div.seat.reserved {
+	background-color: #666;
+	cursor: default;
+}
+div.seat.selected {
+	background-color: #c33;
+	cursor: hand;
+}
