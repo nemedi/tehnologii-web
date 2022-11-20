@@ -1,0 +1,38 @@
+<html>
+	<head>
+		<style>
+	
+	:root {
+	  --first-color: blue;
+	  --second-color: yellow;
+	}
+
+	#firstParagraph {
+	  background-color: var(--first-color);
+	  color: var(--second-color);
+	}
+
+	#secondParagraph {
+	  background-color: var(--second-color);
+	  color: var(--first-color);
+	}
+
+	#container {
+	  --first-color: red;
+	}
+
+	#thirdParagraph {
+	  background-color: var(--first-color);
+	  color: var(--second-color);
+	}
+		</style>		
+	</head>
+	<body>
+	
+		<p id="firstParagraph">yellow text on blue background</p>
+		<p id="secondParagraph">blue text on yellow</p>
+		<div id="container">
+			<p id="thirdParagraph">yellow text on red background</p>	
+		</div>
+	</body>
+</html>

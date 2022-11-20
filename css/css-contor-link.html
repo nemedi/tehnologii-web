@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<style>
+		:root {
+		  counter-reset: link;
+		}
+
+		a[href] {
+		  counter-increment: link;
+		}
+
+		a[href]:empty::after {
+		  content: "[" counter(link) "]";
+		}		
+		</style>
+	</head>
+	<body>
+		<p>See <a href="https://www.mozilla.org/"></a></p>
+		<p>Do not forget to <a href="contact-me.html">leave a message</a>!</p>
+		<p>See also <a href="https://developer.mozilla.org/"></a></p>	
+	</body>
+</html>

@@ -1,4 +1,4 @@
-HTMLElement.prototype.seatReservation = function(options) {
+HTMLElement.prototype.seatReservation = function (options) {
 	const AVAILABLE = 1;
 	const RESERVED = 2;
 	const className = ['unavailable', 'available', 'reserved'];

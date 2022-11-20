@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<style>
+		body {
+		  counter-reset: section;
+		}
+
+		h3::before {
+		  counter-increment: section;
+		  content: "Section " counter(section) ": ";
+		}		
+		</style>
+	</head>
+	<body>
+		<h3>Introduction</h3>
+		<h3>Body</h3>
+		<h3>Conclusion</h3>
+	</body>
+</html>
