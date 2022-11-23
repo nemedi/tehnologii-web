@@ -1,18 +1,20 @@
 <din class="matches">
-	<ol>
-		<li>
-			<table cellspacing="0" cellpadding="0">
+	<p class="match">
+		<table cellspacing="0" cellpadding="0">
+			<thead>
 				<tr>
-					<td colspan="2">${localDate}</td>
+					<th colspan="2" class="title">${localDate}</th>
 				</tr>
+			</thead>
+			<tbody>
 				<tr>
-					<td nowrap style="width:50%;text-align:right;">
-						${homeTeam}
+					<td nowrap style="width:15em;text-align:right;">
+						<a href="javascript:void(0)" onclick="loadMatches($homeId)">${homeTeam}</a>
 						<img src="${homeFlag}" class="flag">
 					</td>
-					<td nowrap style="width:50%;text-align:left;">
-						${awayTeam}
+					<td nowrap style="width:15em;text-align:left;">
 						<img src="${awayFlag}" class="flag">
+						<a href="javascript:void(0)" onclick="loadMatches($awayId)">${awayTeam}</a>
 					</td>
 				</tr>
 				<tr>
@@ -23,10 +25,10 @@
 						${awayScore}
 					</td>
 				</tr>
-			</table>
-		</li>
-	</ol>
-	<div>
+			</tbody>
+		</table>
+	</p>
+	<p>
 		<a href="javascript:void" onclick="loadBoard()">Back</a>
-	</div>
+	</p>
 </din>

@@ -21,16 +21,19 @@ a, a:visited {
 	margin: 2em;
 }
 .group, .standings {
-	background-color: #eee;
-	border: 1px solid #a00;
+	background-color: #800;
+	border: 1px solid #222;
 	border-radius: 1.5em;
 	margin: 1em;
 }
 .title {
 	padding: .5em;
-	color: #800;
+	color: #fff;
 	font-weight: bold;
 	text-align: center;
+}
+.title a {
+	color: #fff;
 }
 .teams {
 	list-style-type: none;
@@ -127,11 +130,12 @@ a, a:visited {
 table {
 	border: 1px solid #aaa;
 	background-color: #fff;
+	margin: 2em;
 }
 
 th {
 	font-weight: bold;
-	background-color: #800;
+	background-color: #222;
 	color: #fff;
 }
 
@@ -145,4 +149,14 @@ td.number {
 }
 tr:nth-child(odd) {
 	background-color: #ddd;
+}
+.match {
+	background-color: #eee;
+	border: 1px solid #ccc;
+	border-radius: 1em;
+}
+
+.standings table {
+	margin-top: 0;
+	margin-bottom: 0;
 }

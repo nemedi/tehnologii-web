@@ -1,11 +1,27 @@
 const fetch = require('node-fetch');
 
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzdkMjQ3NjZjNGE1ZWY2MTc1ZTU0MWMiLCJpYXQiOjE2NjkxNDU3MTksImV4cCI6MTY2OTIzMjExOX0.AielY273_gH7Ieh_UziQYQhfyT3-N67DdbQuC2hUhFY';
+const EMAIL = 'inemedi@ie.ase.ro';
+const PASSWORD = 'szervusz';
+
+// https://github.com/raminmr/free-api-worldcup2022
+
+async function getToken(email, password) {
+	const response = await fetch('http://api.cup2022.ir/api/v1/user/login', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({email, password})
+	});
+	const body = await response.json();
+	return body.data.token;
+}
 
 async function getData(path) {
+	const token = await getToken(EMAIL, PASSWORD);
 	const response = await fetch(`http://api.cup2022.ir/api/v1/${path}`, {
 		headers: {
-			'Authorization': `Bearer ${TOKEN}`
+			'Authorization': `Bearer ${token}`
 		}
 	});
 	const body = await response.json();
@@ -15,7 +31,7 @@ async function getData(path) {
 async function getBoard() {
 	const data = await getData('team');
 	const board = data.map(team => ({
-			id: team.team_id,
+			id: team.id,
 			name: team.name_en,
 			flag: team.flag,
 			group: team.groups
@@ -74,6 +90,8 @@ async function getMatches(team) {
 	const data = await getData(`match/${team}`);
 	const matches = data.map(match => ({
 		localDate: match.local_date,
+		homeId: match.home_team_id,
+		awayId: match.away_team_id,
 		homeTeam: match.home_team_en,
 		awayTeam: match.away_team_en,
 		homeScore: match.home_score,

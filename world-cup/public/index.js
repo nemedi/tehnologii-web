@@ -1,5 +1,7 @@
 window.onload = async () => loadBoard();
 
+const views = {};
+
 async function loadBoard() {
 	const view = await getView('board');
 	const model = await getModel('board');
@@ -15,9 +17,9 @@ async function loadBoard() {
 		const element = document.querySelector(`.group.${group} .teams`);
 		const template = element.innerHTML;
 		element.innerHTML = teams.map(team => template
-				.replace('${id}', team.id)
-				.replace('${name}', team.name)
-				.replace('${flag}', team.flag)
+				.replaceAll('${id}', team.id)
+				.replaceAll('${name}', team.name)
+				.replaceAll('${flag}', team.flag)
 			)
 			.reduce((html, item) => html += item, '');
 	});
@@ -29,23 +31,23 @@ async function loadBoard() {
 async function loadStandings(group) {
 	const view = await getView('standings');
 	const model = await getModel(`standings/${group}`);
-	document.querySelector('.content').innerHTML = view.replace('${group}', model.group);
+	document.querySelector('.content').innerHTML = view.replaceAll('${group}', model.group);
 	const template = document.querySelector('tbody').innerHTML;
 	document.querySelector('tbody').innerHTML =
 		model.teams.map((team, index) =>
 				template
-					.replace('${rank}', index + 1)
-					.replace('${id}', team.id)
-					.replace('${team}', team.name)
-					.replace('${flag}', team.flag)
-					.replace('${mp}', team.mp)
-					.replace('${w}', team.w)
-					.replace('${d}', team.d)
-					.replace('${l}', team.l)
-					.replace('${gf}', team.gf)
-					.replace('${ga}', team.ga)
-					.replace('${gd}', team.gd)
-					.replace('${pts}', team.pts))
+					.replaceAll('${rank}', index + 1)
+					.replaceAll('${id}', team.id)
+					.replaceAll('${team}', team.name)
+					.replaceAll('${flag}', team.flag)
+					.replaceAll('${mp}', team.mp)
+					.replaceAll('${w}', team.w)
+					.replaceAll('${d}', team.d)
+					.replaceAll('${l}', team.l)
+					.replaceAll('${gf}', team.gf)
+					.replaceAll('${ga}', team.ga)
+					.replaceAll('${gd}', team.gd)
+					.replaceAll('${pts}', team.pts))
 			.reduce((html, item) => html += item, '');
 }
 
@@ -53,22 +55,29 @@ async function loadMatches(team) {
 	const view = await getView('matches');
 	const model = await getModel(`matches/${team}`);
 	document.querySelector('.content').innerHTML = view;
-	const template = document.querySelector('ol').innerHTML;
-	document.querySelector('ol').innerHTML = model.map(match =>
+	const template = document.querySelector('.match').innerHTML;
+	document.querySelector('.match').innerHTML = model.map(match =>
 			template
-				.replace('${localDate}', match.localDate)
-				.replace('${homeTeam}', match.homeTeam)
-				.replace('${awayTeam}', match.awayTeam)
-				.replace('${homeScore}', match.homeScore)
-				.replace('${awayScore}', match.axwayScore)
+				.replaceAll('${localDate}', match.localDate)
+				.replaceAll('${homeId}', match.homeId)
+				.replaceAll('${awayId}', match.axwayId)
+				.replaceAll('${homeTeam}', match.homeTeam)
+				.replaceAll('${awayTeam}', match.awayTeam)
+				.replaceAll('${homeFlag}', match.homeFlag)
+				.replaceAll('${awayFlag}', match.awayFlag)
+				.replaceAll('${homeScore}', match.homeScore)
+				.replaceAll('${awayScore}', match.awayScore)
 		)
 		.reduce((html, item) => html += item, '');
 }
 
 async function getView(view) {
-	const response = await fetch(`/views/${view}.html`);
-	const body = await response.text();
-	return body;
+	if (!views[view]) {
+		const response = await fetch(`/views/${view}.html`);
+		const body = await response.text();
+		views[view] = body;
+	}
+	return views[view];
 }
 
 async function getModel(path) {
