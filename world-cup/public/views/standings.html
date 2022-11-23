@@ -1,0 +1,39 @@
+<div class="standings">
+	<div class="title">Group ${group}</div>
+	<table cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<th colspan="3">Team</th>
+				<th>MP</th>
+				<th>W</th>
+				<th>D</th>
+				<th>L</th>
+				<th>GF</th>
+				<th>GA</th>
+				<th>GD</th>
+				<th>Pts</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="number">${rank}</td>
+				<td>
+					<img src="${flag}" class="flag">
+				</td>
+				<td>
+					<a href="javascript:void" onclick="loadMatches(${id})">${team}</a></td>
+				<td class="number">${mp}</td>
+				<td class="number">${w}</td>
+				<td class="number">${d}</td>
+				<td class="number">${l}</td>
+				<td class="number">${gf}</td>
+				<td class="number">${ga}</td>
+				<td class="number">${gd}</td>
+				<td class="number">${pts}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="title">
+		<a href="javascript:void(0)" onclick="loadBoard()">Back</a>
+	</div>
+</div>

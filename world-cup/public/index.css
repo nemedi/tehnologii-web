@@ -1,0 +1,148 @@
+html, body {
+	margin: 0px;
+	width: 100%;
+	display: table;
+	box-sizing: border-box;
+}
+body {
+	background-color: #c33;
+}
+a, a:visited {
+	color: #800;
+	text-decoration: none;
+}
+.content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.board {
+	display: grid;
+	margin: 2em;
+}
+.group, .standings {
+	background-color: #eee;
+	border: 1px solid #a00;
+	border-radius: 1.5em;
+	margin: 1em;
+}
+.title {
+	padding: .5em;
+	color: #800;
+	font-weight: bold;
+	text-align: center;
+}
+.teams {
+	list-style-type: none;
+	margin: .5em;
+	padding: 0;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	border-radius: 1em;
+	width: 20em;
+}
+.teams li {
+	border-top: 1px solid #ccc;
+	padding: .5em;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.teams li:first-child {
+	border-top: none;
+}
+.flag {
+	border: 1px solid #222;
+	width: 40px;
+	height: 20px;
+}
+.group .A {
+	grid-column-start: 1;
+	grid-column-end: 1;
+	grid-row-start: 1;
+	grid-row-end: 1;
+}
+.group .B {
+	grid-column-start: 2;
+	grid-column-end: 2;
+	grid-row-start: 1;
+	grid-row-end: 1;
+}
+.group .C {
+	grid-column-start: 3;
+	grid-column-end: 3;
+	grid-row-start: 1;
+	grid-row-end: 1;
+}
+.group .D {
+	grid-column-start: 4;
+	grid-column-end: 4;
+	grid-row-start: 1;
+	grid-row-end: 1;
+}
+.group .E {
+	grid-column-start: 1;
+	grid-column-end: 1;
+	grid-row-start: 2;
+	grid-row-end: 2;
+}
+.group .F {
+	grid-column-start: 2;
+	grid-column-end: 2;
+	grid-row-start: 2;
+	grid-row-end: 2;
+}
+.group .G {
+	grid-column-start: 3;
+	grid-column-end: 3;
+	grid-row-start: 2;
+	grid-row-end: 2;
+}
+.group .H {
+	grid-column-start: 4;
+	grid-column-end: 4;
+	grid-row-start: 2;
+	grid-row-end: 2;
+}
+@media screen and (min-width: 300px) {
+	.board {
+		grid-template-columns: 100%;
+		grid-template-rows: repeat(8, 12.5%);
+	}
+}
+
+@media screen and (min-width: 600px) {
+	.board {
+		grid-template-columns: repeat(2, 50%);
+		grid-template-rows: repeat(4, 25%);
+	}
+}
+@media screen and (min-width: 900px) {
+	.board {
+		grid-template-columns: repeat(4, 25%);
+		grid-template-rows: repeat(2, 50%);
+	}
+}
+
+table {
+	border: 1px solid #aaa;
+	background-color: #fff;
+}
+
+th {
+	font-weight: bold;
+	background-color: #800;
+	color: #fff;
+}
+
+th, td {
+	padding: .5em;
+	text-align: left;
+}
+
+td.number {
+	text-align: right;
+}
+tr:nth-child(odd) {
+	background-color: #ddd;
+}
