@@ -64,14 +64,14 @@ async function getStandings(group) {
 			id: team.team_id,
 			name: team.name_en,
 			flag: team.flag,
-			mp: team.mp,
-			w: team.w,
-			d: team.d,
-			l: team.l,
-			gf: team.gf,
-			ga: team.ga,
-			gd: team.gd,
-			pts: team.pts
+			mp: parseInt(team.mp),
+			w: parseInt(team.w),
+			d: parseInt(team.d),
+			l: parseInt(team.l),
+			gf: parseInt(team.gf),
+			ga: parseInt(team.ga),
+			gd: parseInt(team.gd),
+			pts: parseInt(team.pts)
 		}))
 		.sort((first, second) => {
 			let result = second.pts - first.pts;
@@ -94,8 +94,8 @@ async function getMatches(team) {
 		awayId: match.away_team_id,
 		homeTeam: match.home_team_en,
 		awayTeam: match.away_team_en,
-		homeScore: match.home_score,
-		awayScore: match.away_score,
+		homeScore: parseInt(match.home_score),
+		awayScore: parseInt(match.away_score),
 		homeFlag: match.home_flag,
 		awayFlag: match.away_flag
 	}))
