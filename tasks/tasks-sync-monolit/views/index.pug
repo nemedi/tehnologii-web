@@ -1,0 +1,17 @@
+html
+	head
+		title=title
+	body
+		h1=title
+		form(action="/add-task" method="post")
+			p
+				ul
+					each task in tasks
+						li
+							a(href=`/remove-task/${task.id}`)
+								span=task.description
+			p
+				span="New Task: "
+				input(name="task")
+			p
+				input(type="submit" value="Add Task")

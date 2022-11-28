@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<title>Tasks</title>
+		<script src="tasks.js"></script>
+		<script>
+			function loadTasks(data) {
+				fetch('/tasks')
+					.then(response => response.json())
+					.then(data => {
+						document.getElementById('container').tasks(data);
+					});
+			}
+		</script>
+	</head>
+	<body onload="loadTasks()">
+		<div id="container"></div>
+	</body>
+</html>
