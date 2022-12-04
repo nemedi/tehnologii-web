@@ -1,10 +1,10 @@
 const express = require('express');
-const {join} = require('path');
+const {join, resolve} = require('path');
 const repository = (require('./repository'))('repository.json');
 
 const application = express();
 application.use(express.json());
-application.use(express.static(join(__dirname, 'public')));
+application.use(express.static(join(resolve(), 'public')));
 
 application.get('/models/:model', (request, response) =>
 	response.json(repository.getModel(request.params.model)));

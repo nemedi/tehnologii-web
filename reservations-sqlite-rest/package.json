@@ -1,0 +1,21 @@
+{
+  "name": "reservations-sqlite-rest",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.mjs"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "fs": "^0.0.1-security",
+    "sequelize": "^6.12.0-alpha.1",
+    "sqlite3": "^5.0.2",
+    "express-basic-auth": "^1.2.1",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

@@ -1,34 +1,31 @@
 import Sequelize from 'sequelize';
-
 const sequelize = new Sequelize({
 	dialect: 'sqlite',
-	storage: './repository.db',
-	define: {
-		timestamps: false
-	}
+	storage: './reservations.db'
 });
-
-const Speaker = sequelize.define('speaker', {
+const Contact = sequelize.define('contact', {
 	id: {
 		type: Sequelize.UUID,
 		defaultValue: Sequelize.UUIDV4,
 		allowNull: false,
 		primaryKey: true
 	},
-	firstName: {
+	firstName : {
 		type: Sequelize.STRING,
 		allowNull: false
 	},
-	lastName: {
+	lastName : {
 		type: Sequelize.STRING,
 		allowNull: false
 	},
-	affiliation: {
+	email: {
 		type: Sequelize.STRING,
-		allowNull: false
-	}	
+		allowNull: false,
+		validate: {
+			isEmail: true
+		}
+	}
 });
-
 const Room = sequelize.define('room', {
 	id: {
 		type: Sequelize.UUID,
@@ -36,53 +33,50 @@ const Room = sequelize.define('room', {
 		allowNull: false,
 		primaryKey: true
 	},
-	name: {
+	name : {
 		type: Sequelize.STRING,
 		allowNull: false
 	},
-	capacity: {
-		type: Sequelize.INTEGER,
+	capacity : {
+		type: Sequelize.TINYINT,
 		allowNull: false,
 		validate: {
 			min: 1
 		}
-	}	
+	}
 });
-
-const Session = sequelize.define('session', {
+const Meeting = sequelize.define('meeting', {
 	id: {
 		type: Sequelize.UUID,
 		defaultValue: Sequelize.UUIDV4,
 		allowNull: false,
 		primaryKey: true
 	},
-	title: {
+	subject : {
 		type: Sequelize.STRING,
 		allowNull: false
 	},
-	description: Sequelize.STRING,
+	description : Sequelize.STRING,
 	begin: {
-		type: Sequelize.TIME,
+		type: Sequelize.DATE,
 		allowNull: false
 	},
 	end: {
-		type: Sequelize.TIME,
+		type: Sequelize.DATE,
 		allowNull: false
 	}
 });
-
-Room.hasMany(Session, {foreignKey: 'roomId'});
-Session.belongsTo(Room, {foreignKey: 'roomId'});
-
-Speaker.hasMany(Session, {foreignKey: 'speakerId'});
-Session.belongsTo(Speaker, {foreignKey: 'speakerId'});
-
+Room.hasMany(Meeting, {foreignKey: 'roomId'});
+Meeting.belongsTo(Room, {foreignKey: 'roomId'});
+Contact.hasMany(Meeting, {foreignKey: 'organizerId'});
+Meeting.belongsTo(Contact, {foreignKey: 'organizerId'});
 async function initialize() {
 	await sequelize.authenticate();
 	await sequelize.sync({alter: true});
 }
-
 export {
 	initialize,
-	Speaker, Room, Session
-}
+	Contact,
+	Room,
+	Meeting
+};

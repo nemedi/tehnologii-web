@@ -1,5 +1,5 @@
 {
-  "name": "conference",
+  "name": "conference-spa-react-server",
   "version": "1.0.0",
   "main": "server.mjs",
   "scripts": {

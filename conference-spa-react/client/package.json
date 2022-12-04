@@ -1,5 +1,5 @@
 {
-  "name": "conference-react",
+  "name": "conference-spa-react-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
