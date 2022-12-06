@@ -1,8 +1,10 @@
 import Sequelize from 'sequelize';
+
 const sequelize = new Sequelize({
 	dialect: 'sqlite',
-	storage: './reservations.db'
+	storage: './repository.db'
 });
+
 const Contact = sequelize.define('contact', {
 	id: {
 		type: Sequelize.UUID,
@@ -25,7 +27,8 @@ const Contact = sequelize.define('contact', {
 			isEmail: true
 		}
 	}
-});
+}, {timestamps: false});
+
 const Room = sequelize.define('room', {
 	id: {
 		type: Sequelize.UUID,
@@ -44,7 +47,8 @@ const Room = sequelize.define('room', {
 			min: 1
 		}
 	}
-});
+}, {timestamps: false});
+
 const Meeting = sequelize.define('meeting', {
 	id: {
 		type: Sequelize.UUID,
@@ -65,18 +69,23 @@ const Meeting = sequelize.define('meeting', {
 		type: Sequelize.DATE,
 		allowNull: false
 	}
-});
+}, {timestamps: false});
+
+const Attendee = sequelize.define('attendee', {}, {timestamps: false});
+
 Room.hasMany(Meeting, {foreignKey: 'roomId'});
-Meeting.belongsTo(Room, {foreignKey: 'roomId'});
 Contact.hasMany(Meeting, {foreignKey: 'organizerId'});
-Meeting.belongsTo(Contact, {foreignKey: 'organizerId'});
+Contact.belongsToMany(Meeting, {through : Attendee});
+
 async function initialize() {
 	await sequelize.authenticate();
 	await sequelize.sync({alter: true});
 }
+
 export {
 	initialize,
 	Contact,
 	Room,
-	Meeting
+	Meeting,
+	Attendee
 };
