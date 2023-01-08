@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { WebSocketContext } from './context';
 import { LOGIN, LOGOUT, CHAT } from './constants';

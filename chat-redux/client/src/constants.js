@@ -3,4 +3,4 @@ export const LOGOUT = 'logout';
 export const SEND = 'send';
 export const RECEIVE = 'receive';
 export const CHAT = 'chat';
-export const ENDPOINT = 'ws://localhost:8080';
+export const ENDPOINT = `ws://${window.location.hostname}:8080`;

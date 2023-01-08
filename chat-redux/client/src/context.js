@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { createContext } from 'react';
+import React, { createContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { ENDPOINT, LOGIN, LOGOUT, CHAT } from './constants';
 import { receive } from './actions';
@@ -18,10 +18,12 @@ export default ({ children }) => {
 			if (event.data instanceof Blob) {
 				const reader = new FileReader();
 				reader.onload = () =>
-					dispatch(receive(WebSocketContext, JSON.parse(reader.result)));
+					dispatch(receive(WebSocketContext,
+						JSON.parse(reader.result)));
 				reader.readAsText(event.data);
 			} else {
-				dispatch(receive(WebSocketContext,  JSON.parse(event.data)));
+				dispatch(receive(WebSocketContext,
+					JSON.parse(event.data)));
 			}
 		};
 	}
