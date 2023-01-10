@@ -1,13 +1,12 @@
-/* eslint-disable import/no-anonymous-default-export */
 import React, { createContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { ENDPOINT, LOGIN, LOGOUT, CHAT } from './constants';
-import { receive } from './actions';
+import { receive } from './actions'
 
 const WebSocketContext = createContext(null);
-export {WebSocketContext};
+export { WebSocketContext };
 
-export default ({ children }) => {
+export default function({ children }) {
 	let user;
 	let socket;
 	const dispatch = useDispatch();
@@ -17,9 +16,10 @@ export default ({ children }) => {
 		socket.onmessage = event => {
 			if (event.data instanceof Blob) {
 				const reader = new FileReader();
-				reader.onload = () =>
+				reader.onload = () => {
 					dispatch(receive(WebSocketContext,
 						JSON.parse(reader.result)));
+				};
 				reader.readAsText(event.data);
 			} else {
 				dispatch(receive(WebSocketContext,
@@ -27,20 +27,20 @@ export default ({ children }) => {
 			}
 		};
 	}
-	const setUser = name => {
+	function setUser(name) {
 		const message = name
 			? { type: LOGIN, payload: name }
 			: { type: LOGOUT, payload: user };
-		user = name;
 		socket.send(JSON.stringify(message));
-	};
-	const sendMessage = text => {
+		user = name;
+	}
+	function sendMessage(text) {
 		const message = {
 			type: CHAT,
 			payload: { from: user, text }
 		};
 		socket.send(JSON.stringify(message));
-	};
+	}
 	return (
 		<WebSocketContext.Provider value={{ setUser, sendMessage }}>
 			{children}

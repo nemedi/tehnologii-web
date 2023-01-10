@@ -21,4 +21,4 @@ export default function chatReducer(state, action) {
 		default:
 			return state;
 	}
-}
+};

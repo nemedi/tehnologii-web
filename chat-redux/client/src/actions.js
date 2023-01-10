@@ -1,6 +1,6 @@
 import { LOGIN, LOGOUT, SEND, RECEIVE } from './constants';
 
-export const login = (context, name) => {
+export function login(context, name) {
 	context.setUser(name);
 	return {
 		type: LOGIN,
@@ -8,14 +8,14 @@ export const login = (context, name) => {
 	};
 };
 
-export const logout = (context) => {
+export function logout(context) {
 	context.setUser(undefined);
 	return {
 		type: LOGOUT
 	};
 };
 
-export const send = (context, text) => {
+export function send(context, text) {
 	context.sendMessage(text);
 	return {
 		type: SEND,
@@ -23,9 +23,9 @@ export const send = (context, text) => {
 	};
 };
 
-export const receive = (context, message) => {
+export function receive(context, text) {
 	return {
 		type: RECEIVE,
-		payload: message
+		payload: text
 	};
-};
+}
