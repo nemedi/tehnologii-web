@@ -1,6 +1,5 @@
 function* sieveOfEratosthenes(limit = 100) {
-    var numbers = new Array(limit + 1);
-    numbers.fill(0);
+    var numbers = new Array(limit + 1).fill(0);
     var index = 2;
     while (index <= limit) {
         let number = index;
