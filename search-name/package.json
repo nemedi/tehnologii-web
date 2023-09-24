@@ -1,14 +1,14 @@
 {
 	"name": "search-name",
 	"dependencies": {
-		"express": "^4.17.1",
+		"express": "^4.18.2",
 		"path": "^0.12.7",
-		"node-fetch": "^2.6.1"
+		"node-fetch": "^2.7.0"
 	},
 	"scripts": {
 		"server": "nodemon server.js"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.15"
+		"nodemon": "^3.0.1"
 	}
 }
