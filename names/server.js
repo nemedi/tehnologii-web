@@ -1,9 +1,17 @@
 const express = require('express');
-const names = require('./names');
-
-const application = express();
-application.get('/names/:name', async (request, response) => {
-	response.send(await names(request.params.name));
-});
+const resolveName = require('./service');
 const PORT = process.env.PORT || 8080;
-application.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));
+express()
+	.get('/names/:name', async (request, response) => {
+		try {
+			const results = await resolveName(request.params.name);
+			if (results && results.length > 0) {
+				response.json(results);
+			} else {
+				response.status(404).send('');
+			}
+		} catch (error) {
+			response.status(500).json(error);
+		}
+	})
+	.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));
