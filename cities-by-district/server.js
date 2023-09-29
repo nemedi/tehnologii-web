@@ -8,4 +8,4 @@ express()
         response.json(getDistricts()))
     .get('/cities', (request, response) =>
         response.json(getCitiesByDistrict(request.query.district)))
-    .listen(8080, () => console.log(`Sever is listening on ${PORT}.`));
+    .listen(PORT, () => console.log(`Sever is listening on ${PORT}.`));
