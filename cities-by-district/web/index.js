@@ -1,0 +1,34 @@
+async function load() {
+	const selectTag = document.getElementsByTagName('select')[0];
+	const tableTag = document.getElementsByTagName('table')[0];
+	let response = await fetch('/districts');
+	let districts = await response.json();
+	selectTag.innerHTML += districts
+		.map(district => `<option>${district}</option>`)
+		.join('');
+	selectTag.onchange = async function() {
+		tableTag.innerHTML = '';
+		let district = selectTag.value;
+		let response = await fetch(`/cities?district=${district}`);
+		let cities = await response.json();
+		if (cities.length > 0) {
+			tableTag.innerHTML = 
+				`
+					<tr>
+						<td><b>City</b></td>
+						<td align="right"><b>Inhabitants</b></td>
+					</tr>
+				`		
+				+ cities.map(city =>
+				`
+					<tr>
+						<td>${city.name}</td>
+						<td align="right">${city.inhabitants}</td>
+					</tr>
+				`
+			)
+			.join('');
+		}
+	}
+
+}
