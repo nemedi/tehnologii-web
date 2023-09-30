@@ -12,6 +12,8 @@ async function load() {
 		let response = await fetch(`/cities?district=${district}`);
 		let cities = await response.json();
 		if (cities.length > 0) {
+			let inhabitants = cities.reduce((inhabitants, city) =>
+				inhabitants += city.inhabitants, 0);
 			tableTag.innerHTML = 
 				`
 					<tr>
@@ -26,8 +28,18 @@ async function load() {
 						<td align="right">${city.inhabitants}</td>
 					</tr>
 				`
-			)
-			.join('');
+				)
+				.join('')
+				+
+				`
+					<tr>
+						<td colspan="2"><hr></td>
+					</tr>
+					<tr>
+						<td><i>Total</i></td>
+						<td align="right"><i>${inhabitants}</i></td>
+					</tr>
+				`;
 		}
 	}
 
