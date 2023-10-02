@@ -12,7 +12,8 @@ function loadCities(path) {
                 district: parts[2],
                 inhabitants: parseInt(parts[3])
             };
-        });
+        })
+        .sort((first, second) => first.name.localeCompare(second.name));
 }
 function getDistricts() {
     if (!locals.districts) {
@@ -28,9 +29,6 @@ function getCitiesByDistrict(district) {
     if (!locals.cities) {
         loadCities(PATH);
     }
-    return locals.cities
-        .filter(city => city.district === district)
-        .sort((first, second) => first.name.localeCompare(second.name));
-    
+    return locals.cities.filter(city => city.district === district);
 }
 module.exports = {getDistricts, getCitiesByDistrict};
