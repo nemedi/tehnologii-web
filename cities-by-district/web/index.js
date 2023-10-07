@@ -1,4 +1,5 @@
 async function load() {
+	const cache = {};
 	const selectTag = document.getElementsByTagName('select')[0];
 	const tableTag = document.getElementsByTagName('table')[0];
 	let response = await fetch('/districts');
@@ -9,8 +10,12 @@ async function load() {
 	selectTag.onchange = async function() {
 		tableTag.innerHTML = '';
 		let district = selectTag.value;
-		let response = await fetch(`/cities?district=${district}`);
-		let cities = await response.json();
+		if (!cache[district]) {
+			let response = await fetch(`/cities?district=${district}`);
+			let cities = await response.json();
+			cache[district] = cities;
+		}
+		let cities = cache[district];
 		if (cities.length > 0) {
 			let inhabitants = cities.reduce((inhabitants, city) =>
 				inhabitants += city.inhabitants, 0);
