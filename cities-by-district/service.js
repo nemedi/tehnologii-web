@@ -1,9 +1,9 @@
 const {readFileSync} = require('fs');
 const PATH = 'cities.csv';
-const locals = {};
+const cache = {};
 function loadCities(path) {
     let content = readFileSync(path);
-    locals.cities = new String(content)
+    cache.cities = new String(content)
         .split(/\n\r?/)
         .map(line => {
             let parts = line.split(',');
@@ -16,19 +16,19 @@ function loadCities(path) {
         .sort((first, second) => first.name.localeCompare(second.name));
 }
 function getDistricts() {
-    if (!locals.districts) {
-        if (!locals.cities) {
+    if (!cache.districts) {
+        if (!cache.cities) {
             loadCities(PATH);
         }
-        let districts = locals.cities.map(city => city.district);
-        locals.districts = [...new Set(districts)].sort();
+        let districts = cache.cities.map(city => city.district);
+        cache.districts = [...new Set(districts)].sort();
     }
-    return locals.districts;
+    return cache.districts;
 }
 function getCitiesByDistrict(district) {
-    if (!locals.cities) {
+    if (!cache.cities) {
         loadCities(PATH);
     }
-    return locals.cities.filter(city => city.district === district);
+    return cache.cities.filter(city => city.district === district);
 }
 module.exports = {getDistricts, getCitiesByDistrict};
