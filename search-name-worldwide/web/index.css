@@ -1,0 +1,9 @@
+input {
+	text-transform: uppercase;
+	border-left: none;
+	border-top: none;
+	border-right: none;
+}
+input:focus {
+	outline: none;
+}
