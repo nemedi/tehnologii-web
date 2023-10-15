@@ -1,5 +1,5 @@
 function* sieveOfEratosthenes(limit = 100) {
-    var numbers = new Array(limit + 1).fill(0);
+    var numbers = new Array(parseInt(limit) + 1).fill(0);
     var index = 2;
     while (index <= limit) {
         let number = index;
@@ -16,7 +16,12 @@ function* sieveOfEratosthenes(limit = 100) {
     }
 }
 
-const generator = sieveOfEratosthenes();
-for (let i = 0; i < 10; i++) {
-    console.log(generator.next().value);
+function showPrimeNumbers() {
+    const limit = document.getElementById('limit').value;
+    const numbersTag = document.getElementById('numbers');
+    numbersTag.innerHTML = '';
+    const generator = sieveOfEratosthenes(limit);
+    for (let result = generator.next(); !result.done; result = generator.next()) {
+        numbersTag.innerHTML += `<li>${result.value}</li>`;
+    }
 }
