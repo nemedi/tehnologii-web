@@ -1,4 +1,4 @@
-function memorizer(f) {
+function memoizer(f) {
     const cache = {};
     return function() {
         if (cache[arguments] === undefined) {
@@ -12,7 +12,7 @@ function memorizer(f) {
 }
 
 let fibonacci = n => n < 3 ? n : fibonacci(n - 2) + fibonacci(n - 1);
-fibonacci = memorizer(fibonacci);
+fibonacci = memoizer(fibonacci);
 console.log('calling fibonacci(8)');
 fibonacci(8);
 console.log('done calling fibonacci(8)');
