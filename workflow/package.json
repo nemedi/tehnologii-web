@@ -6,9 +6,6 @@
 		"fs": "^0.0.1-security"
 	},
 	"scripts": {
-		"program": "nodemon index.js"
-	},
-	"devDependencies": {
-		"nodemon": "^2.0.15"
+		"program": "node index.js"
 	}
 }
