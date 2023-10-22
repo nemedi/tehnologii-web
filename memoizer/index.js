@@ -1,21 +1,22 @@
 function memoizer(f) {
     const cache = {};
     return function() {
-        if (cache[arguments] === undefined) {
-            console.log(`calling f(${[...arguments]})`);
-            cache[arguments] = f.apply(this, arguments);
+        const key = [...arguments].toString();
+        if (cache[key] === undefined) {
+            console.log(`+ calling f(${key})`);
+            cache[key] = f.apply(this, arguments);
         } else {
-            console.log(`returning from cache f(${[...arguments]})`);
+            console.log(`+  returning from cache f(${key})`);
         }
-        return cache[arguments];
+        return cache[key];
     };
 }
 
 let fibonacci = n => n < 3 ? n : fibonacci(n - 2) + fibonacci(n - 1);
 fibonacci = memoizer(fibonacci);
 console.log('calling fibonacci(8)');
-fibonacci(8);
+console.log(`fibonacci(${fibonacci(8)})`);
 console.log('done calling fibonacci(8)');
 console.log('calling fibonacci(5)');
-fibonacci(5);
+console.log(fibonacci(5));
 console.log('done calling fibonacci(5)');
