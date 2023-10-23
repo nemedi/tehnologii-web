@@ -1,8 +1,8 @@
 const {City, District} = require('./models');
 const {from} = require('./workflow');
 
-from('cities.json')
-    .unmarshal('JSON')
+from('cities.csv')
+    .unmarshal('CSV', City)
     .split()
     .filter(exchange => exchange.body.district)
     .aggregate(exchange => exchange.body.district,
