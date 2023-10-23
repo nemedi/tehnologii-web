@@ -1,12 +1,13 @@
+const {readFileSync, writeFileSync} = require('fs');
 class Exchange {
     static #count = 0;
     #id;
     #body;
     #headers;
-    constructor(body) {
+    constructor(body, headers) {
         this.#id = ++Exchange.#count;
         this.#body = body;
-        this.#headers = new Map();
+        this.#headers = headers ? headers : new Map();
     }
     get id() {
         return this.#id;
@@ -20,8 +21,14 @@ class Exchange {
     get headers() {
         return this.#headers;
     }
+    split() {
+        if (this.#body instanceof Array) {
+            return this.#body.map(item => new Exchange(item, this.#headers));
+        } else {
+            return [this];
+        }
+    }
 }
-
 class Step {
     #handler;
     constructor(handler) {
@@ -37,13 +44,40 @@ class Step {
         return exchanges;
     }
 }
-
 class FromStep extends Step {
-    constructor(supplier) {
-        super(() => supplier().map(item => new Exchange(item)));
+    constructor(path) {
+        super(() => [new Exchange(new String(readFileSync(path)))]);
     }
 }
-
+class UnmarshalStep extends Step {
+    constructor(dataType, RecordType) {
+        super(exchanges => {
+            exchanges.forEach(exchange =>
+                exchange.body = UnmarshalStep.#deserialize(exchange.body, dataType, RecordType));
+            return exchanges;
+        });
+    }
+    static #deserialize(data, dataType, RecordType) {
+        switch (dataType.toUpperCase()) {
+            case 'CSV':
+                return data.split(/\n\r?/).map(line => new RecordType(line));
+            case 'JSON':
+                return JSON.parse(data);
+            default:
+                return {};
+        }
+    }
+}
+class SplitStep extends Step {
+    constructor() {
+        super(exchanges => exchanges.flatMap(exchange => exchange.split()));
+    }
+}
+class FilterStep extends Step {
+    constructor(predicate) {
+        super(exchanges => exchanges.filter(predicate));
+    }
+}
 class AggregateStep extends Step {
     constructor(criterion, aggregator) {
         super(exchanges => {
@@ -56,19 +90,11 @@ class AggregateStep extends Step {
         });
     }
 }
-
-class FilterStep extends Step {
-    constructor(predicate) {
-        super(exchanges => exchanges.filter(predicate));
-    }
-}
-
 class SortStep extends Step {
     constructor(comparator) {
         super(exchanges => exchanges.sort(comparator));
     }
 }
-
 class ProcessStep extends Step {
     constructor(consumer) {
         super(exchanges => {
@@ -77,13 +103,30 @@ class ProcessStep extends Step {
         });
     }
 }
-
-class ToStep extends Step {
-    constructor(consumer) {
-        super(exchanges => consumer(exchanges));
+class MarshalStep extends Step {
+    constructor(dataType, lineSeprator) {
+        super(exchanges => {
+            exchanges.forEach(exchange =>
+                exchange.body = MarshalStep.#serialize(exchange.body, dataType, lineSeprator));
+            return exchanges;
+        });
+    }
+    static #serialize(data, dataType, lineSeparator) {
+        switch (dataType.toUpperCase()) {
+            case 'CSV':
+                return data.map(item => item.toCSV()).join(lineSeparator);
+            case 'JSON':
+                return JSON.stringify(data);
+            default:
+                return '';
+        }
     }
 }
-
+class ToStep extends Step {
+    constructor(path) {
+        super(exchanges => writeFileSync(path, exchanges[0].body));
+    }
+}
 class Flow {
     #steps;
     constructor() {
@@ -93,6 +136,14 @@ class Flow {
         const flow = new Flow();
         flow.#steps.push(new FromStep(supplier));
         return flow;
+    }
+    unmarshal(dataType, RecordType) {
+        this.#steps.push(new UnmarshalStep(dataType, RecordType));
+        return this;
+    }
+    split() {
+        this.#steps.push(new SplitStep());
+        return this;
     }
     filter(predicate) {
         this.#steps.push(new FilterStep(predicate));
@@ -110,13 +161,16 @@ class Flow {
         this.#steps.push(new ProcessStep(consumer));
         return this;
     }
-    to(consumer) {
-        this.#steps.push(new ToStep(consumer));
+    marshal(dataType, lineSeparator = '\n') {
+        this.#steps.push(new MarshalStep(dataType, lineSeparator));
+        return this;
+    }
+    to(path) {
+        this.#steps.push(new ToStep(path));
         let exchanges = [];
         for (let step of this.#steps) {
             exchanges = step.run(exchanges);
         }
     }
 }
-
 module.exports = Flow;

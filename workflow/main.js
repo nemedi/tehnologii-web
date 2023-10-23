@@ -1,8 +1,9 @@
 const {City, District} = require('./models');
-const CSV = require('./csv');
 const {from} = require('./workflow');
 
-from(() => CSV.load('cities.csv', City))
+from('cities.json')
+    .unmarshal('JSON')
+    .split()
     .filter(exchange => exchange.body.district)
     .aggregate(exchange => exchange.body.district,
         (oldExchange, newExchange) => {
@@ -16,4 +17,14 @@ from(() => CSV.load('cities.csv', City))
     )
     .sort((first, second) => first.body.name.localeCompare(second.body.name))
     .process(exchange => console.log(exchange.body.toString()))
-    .to(exchanges => CSV.store('districts.csv', exchanges.map(exchange => exchange.body)));
+    .aggregate(() => true,
+        (oldExchange, newExchange) => {
+            let districts = oldExchange
+                ? oldExchange.body : [];
+            districts.push(newExchange.body);
+            newExchange.body = districts;
+            return oldExchange ? oldExchange : newExchange;
+        }
+    )
+    .marshal('CSV')
+    .to('districts.csv');
