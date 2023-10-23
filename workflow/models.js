@@ -2,7 +2,7 @@ class City {
 
     #name;
     #district;
-    #inhabitants = 0;
+    #inhabitants;
 
     constructor(line) {
         let values = line.split(',');
@@ -33,10 +33,11 @@ class City {
 class District {
 
     #name;
-    #inhabitants = 0;
+    #inhabitants;
 
     constructor(name) {
         this.#name = name;
+        this.#inhabitants = 0;
     }
 
     addCity(city) {

@@ -4,6 +4,6 @@
 		"fs": "^0.0.1-security"
 	},
 	"scripts": {
-		"main": "node index.js"
+		"main": "node main.js"
 	}
 }
