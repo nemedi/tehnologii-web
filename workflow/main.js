@@ -1,7 +1,7 @@
 const {City, District} = require('./models');
 const {from} = require('./workflow');
 
-from('cities.csv')
+from('file:cities.csv')
     .unmarshal('CSV', City)
     .split()
     .filter(exchange => exchange.body.district)
@@ -27,4 +27,4 @@ from('cities.csv')
         }
     )
     .marshal('CSV')
-    .to('districts.csv');
+    .to('file:districts.csv');

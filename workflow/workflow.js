@@ -45,8 +45,18 @@ class Step {
     }
 }
 class FromStep extends Step {
-    constructor(path) {
-        super(() => [new Exchange(new String(readFileSync(path)))]);
+    constructor(endpoint) {
+        super(() => {
+            const schema = endpoint.substring(0, endpoint.indexOf(':'));
+            
+            switch (schema.toLowerCase()) {
+                case 'file':
+                    let path = endpoint.substring(endpoint.indexOf(':') + 1);
+                    return [new Exchange(new String(readFileSync(path)))];
+                default:
+                    return [];
+            }
+        });
     }
 }
 class UnmarshalStep extends Step {
@@ -123,19 +133,25 @@ class MarshalStep extends Step {
     }
 }
 class ToStep extends Step {
-    constructor(path) {
-        super(exchanges => writeFileSync(path, exchanges[0].body));
+    constructor(endpoint) {
+        super(exchanges => {
+            const schema = endpoint.substring(0, endpoint.indexOf(':'));
+            switch (schema.toLowerCase()) {
+                case 'file':
+                    let path = endpoint.substring(endpoint.indexOf(':') + 1);
+                    writeFileSync(path, exchanges[0].body);
+                    break;
+            }
+        });
     }
 }
-class Flow {
+class Route {
     #steps;
-    constructor() {
-        this.#steps = [];
+    constructor(endpoint) {
+        this.#steps = [new FromStep(endpoint)];
     }
-    static from(supplier) {
-        const flow = new Flow();
-        flow.#steps.push(new FromStep(supplier));
-        return flow;
+    static from(endpoint) {
+        return new Route(endpoint);
     }
     unmarshal(dataType, RecordType) {
         this.#steps.push(new UnmarshalStep(dataType, RecordType));
@@ -165,12 +181,12 @@ class Flow {
         this.#steps.push(new MarshalStep(dataType, lineSeparator));
         return this;
     }
-    to(path) {
-        this.#steps.push(new ToStep(path));
+    to(endpoint) {
+        this.#steps.push(new ToStep(endpoint));
         let exchanges = [];
         for (let step of this.#steps) {
             exchanges = step.run(exchanges);
         }
     }
 }
-module.exports = Flow;
+module.exports = Route;
