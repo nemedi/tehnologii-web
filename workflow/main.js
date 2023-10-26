@@ -47,7 +47,7 @@ function aggregateExample() {
             }
         }
     )
-    .sort((first, second) => first.body.name.localeCompare(second.body.name),
+    .resequence((first, second) => first.body.name.localeCompare(second.body.name),
         exchanges => exchanges[0].headers.count)
     .log(exchange => exchange.body.toString())
     .aggregate(() => true,
@@ -60,8 +60,8 @@ function aggregateExample() {
         },
         (exchanges, count) => count === exchanges[0].headers.count
     )
-    .marshal('CSV')
-    .to('file:districts.csv');
+    .marshal('JSON')
+    .to('file:districts.json');
 }
 
 function choiceExample() {
@@ -87,10 +87,10 @@ function sortExample() {
     })
     .process(exchange => exchange.headers.count = exchange.body.length)
     .split()
-    .sort((first, second) => first.body - second.body,
+    .resequence((first, second) => first.body - second.body,
         exchanges => exchanges[0].headers.count
     )
     .to('stream:out');
 }
 
-run(choiceExample, sortExample, aggregateExample);
+run(/*choiceExample, sortExample, */aggregateExample);

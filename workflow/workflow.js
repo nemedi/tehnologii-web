@@ -147,7 +147,7 @@ class AggregateStep extends Step {
     }
 }
 
-class SortStep extends Step {
+class ResequenceStep extends Step {
     constructor(comparator, size) {
         super(exchange => {
             this.collect(exchange);
@@ -306,8 +306,8 @@ class Route {
         this.#steps.push(new AggregateStep(criterion, aggregator, complete));
         return this;
     }
-    sort(comparator, complete) {
-        this.#steps.push(new SortStep(comparator, complete));
+    resequence(comparator, complete) {
+        this.#steps.push(new ResequenceStep(comparator, complete));
         return this;
     }
     process(consumer) {
