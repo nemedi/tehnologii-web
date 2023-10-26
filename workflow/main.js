@@ -11,7 +11,14 @@ function run()  {
 
 function aggregateExample() {
     from('file:cities.csv')
-    .unmarshal('CSV', City)
+    .choice()
+        .when(exchange => exchange.headers.path.toLowerCase().endsWith('.csv'))
+            .unmarshal('CSV', City)
+        .when(exchange => exchange.headers.path.toLowerCase().endsWith('.json'))
+            .unmarshal('JSON')
+        .otherwise()
+            .process(exchange => exchange.body = [])
+    .done()
     .process(exchange => exchange.headers.count = exchange.body.length)
     .split()
     .filter(exchange => {

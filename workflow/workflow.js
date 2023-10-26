@@ -72,7 +72,9 @@ class FromStep extends Step {
                 let path = endpoint.substring(endpoint.indexOf(':') + 1);
                 switch (schema.toLowerCase()) {
                     case 'file':
-                        this.collect(new Exchange(new String(readFileSync(path))));
+                        let exchange = new Exchange(new String(readFileSync(path)));
+                        exchange.headers.path = path;
+                        this.collect(exchange);
                         return true;
                     default:
                         return false;
