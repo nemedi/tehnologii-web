@@ -1,7 +1,16 @@
 const {City, District} = require('./models');
 const {from} = require('./workflow');
 
-from('file:cities.csv')
+function run()  {
+    for (let example of arguments) {
+        console.log(`[${example.name}#begin]`);
+        example();
+        console.log(`[${example.name}#end]`);
+    }
+}
+
+function aggregateExample() {
+    from('file:cities.csv')
     .unmarshal('CSV', City)
     .process(exchange => exchange.headers.count = exchange.body.length)
     .split()
@@ -32,7 +41,7 @@ from('file:cities.csv')
         }
     )
     .sort((first, second) => first.body.name.localeCompare(second.body.name),
-        exchanges => exchanges.length === exchanges[0].headers.count)
+        exchanges => exchanges[0].headers.count)
     .log(exchange => exchange.body.toString())
     .aggregate(() => true,
         (oldExchange, newExchange) => {
@@ -46,3 +55,35 @@ from('file:cities.csv')
     )
     .marshal('CSV')
     .to('file:districts.csv');
+}
+
+function choiceExample() {
+    from(() => [1, 2, 3, 4])
+    .split()
+    .choice()
+        .when(exchange => exchange.body % 2 === 0)
+            .process(exchange => exchange.body = 'a')
+        .otherwise()
+            .process(exchange => exchange.body = 'b')
+    .done()
+    .to('stream:out');
+}
+
+function sortExample() {
+    from(() => {
+        let min = 1, max = 10;
+        let numbers = [];
+        for (let i = 0; i < 10; i++) {
+            numbers.push(Math.floor(Math.random() * (max - min) + min));
+        }
+        return numbers;
+    })
+    .process(exchange => exchange.headers.count = exchange.body.length)
+    .split()
+    .sort((first, second) => first.body - second.body,
+        exchanges => exchanges[0].headers.count
+    )
+    .to('stream:out');
+}
+
+run(choiceExample, sortExample, aggregateExample);

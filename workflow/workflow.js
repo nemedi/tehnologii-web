@@ -1,4 +1,5 @@
 const {readFileSync, writeFileSync} = require('fs');
+
 class Exchange {
     static #count = 0;
     #id;
@@ -29,6 +30,7 @@ class Exchange {
         }
     }
 }
+
 class Step {
     #handler;
     #exchanges;
@@ -49,6 +51,9 @@ class Step {
     get exchanges() {
         return this.#exchanges;
     }
+    set exchanges(exchanges) {
+        this.#exchanges = exchanges;
+    }
     takeExchanges() {
         const exchanges = [...this.#exchanges];
         this.#exchanges = [];
@@ -58,6 +63,7 @@ class Step {
         return this.#handler(exchange);
     }
 }
+
 class FromStep extends Step {
     constructor(endpoint) {
         super(() => {
@@ -78,6 +84,7 @@ class FromStep extends Step {
         });
     }
 }
+
 class UnmarshalStep extends Step {
     constructor(dataType, RecordType) {
         super(exchange => {
@@ -97,6 +104,7 @@ class UnmarshalStep extends Step {
         }
     }
 }
+
 class SplitStep extends Step {
     constructor() {
         super(exchange => {
@@ -105,6 +113,7 @@ class SplitStep extends Step {
         });
     }
 }
+
 class FilterStep extends Step {
     constructor(predicate) {
         super(exchange => {
@@ -115,6 +124,7 @@ class FilterStep extends Step {
         });
     }
 }
+
 class AggregateStep extends Step {
     #map = new Map();
     #count = 0;
@@ -134,14 +144,13 @@ class AggregateStep extends Step {
         });
     }
 }
+
 class SortStep extends Step {
-    #exchanges = [];
-    constructor(comparator, complete) {
+    constructor(comparator, size) {
         super(exchange => {
-            this.#exchanges.push(exchange);
-            if (complete(this.#exchanges)) {
-                this.collect(this.#exchanges.sort(comparator));
-                this.#exchanges = [];
+            this.collect(exchange);
+            if (this.exchanges.length === size(this.exchanges)) {
+                this.exchanges = this.exchanges.sort(comparator);
                 return true;
             } else {
                 return false;
@@ -149,6 +158,7 @@ class SortStep extends Step {
         });
     }
 }
+
 class ProcessStep extends Step {
     constructor(consumer) {
         super(exchange => {
@@ -158,6 +168,7 @@ class ProcessStep extends Step {
         });
     }
 }
+
 class LogStep extends Step {
     constructor(logger) {
         super(exchange => {
@@ -167,6 +178,7 @@ class LogStep extends Step {
         });
     }
 }
+
 class MarshalStep extends Step {
     constructor(dataType, lineSeprator) {
         super(exchange => {
@@ -180,12 +192,13 @@ class MarshalStep extends Step {
             case 'CSV':
                 return data.map(item => item.toCSV()).join(lineSeparator);
             case 'JSON':
-                return JSON.stringify(data);
+                return JSON.stringify(data, null, 2);
             default:
                 return '';
         }
     }
 }
+
 class ToStep extends Step {
     constructor(endpoint) {
         super(exchange => {
@@ -213,10 +226,59 @@ class ToStep extends Step {
         });
     }
 }
+
+class ChoiceStep extends Step {
+    #route;
+    #whens = [];
+    #otherwise;
+    constructor(route) {
+        super(exchange => {
+            for (let when of this.#whens) {
+                if (when.predicate(exchange)) {
+                    this.exchanges = when.route.run(exchange);
+                    return true;
+                }
+            }
+            if (this.#otherwise) {
+                this.exchanges = this.#otherwise.run(exchange);
+            }
+            return true;
+        });
+        this.#route = route;
+    }
+    when(predicate) {
+        let route = new Route(this);
+        this.#whens.push({predicate, route});
+        return route;
+    }
+    otherwise() {
+        this.#otherwise = new Route(this);
+        return this.#otherwise;
+    }
+    done() {
+        return this.#route;
+    }
+}
+
 class Route {
     #steps;
+    #choiceStep;
     constructor(endpoint) {
-        this.#steps = [new FromStep(endpoint)];
+        if (endpoint instanceof ChoiceStep) {
+            this.#choiceStep = endpoint;
+            this.#steps = [];
+        } else {
+            this.#steps = [new FromStep(endpoint)];
+        }
+    }
+    when(predicate) {
+        return this.#choiceStep.when(predicate);
+    }
+    otherwise() {
+        return this.#choiceStep.otherwise();
+    }
+    done() {
+        return this.#choiceStep ? this.#choiceStep.done() : this;
     }
     static from(endpoint) {
         return new Route(endpoint);
@@ -232,6 +294,11 @@ class Route {
     filter(predicate) {
         this.#steps.push(new FilterStep(predicate));
         return this;
+    }
+    choice() {
+        let choiceStep = new ChoiceStep(this);
+        this.#steps.push(choiceStep);
+        return choiceStep;
     }
     aggregate(criterion, aggregator, complete) {
         this.#steps.push(new AggregateStep(criterion, aggregator, complete));
@@ -255,11 +322,11 @@ class Route {
     }
     to(endpoint) {
         this.#steps.push(new ToStep(endpoint));
-        this.#run(this.#steps);
+        this.run();
     }
-    #run(steps) {
-        let exchanges = [undefined];
-        for (let step of steps) {
+    run(exchange) {
+        let exchanges = [exchange];
+        for (let step of this.#steps) {
             let newExchanges = [];
             while (exchanges.length > 0) {
                 while (!step.run(exchanges.shift())) {}
@@ -268,6 +335,8 @@ class Route {
             }
             exchanges = newExchanges;
         }
+        return exchanges;
     }
 }
+
 module.exports = Route;
