@@ -28,7 +28,7 @@ class City {
     toJSON() {
         return {
             name: this.name,
-            district: this.#district,
+            district: this.district,
             inhabitants: this.inhabitants
         }
     }    

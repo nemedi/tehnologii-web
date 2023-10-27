@@ -40,9 +40,9 @@ function aggregateExample() {
             }
         }
     )
-    // .resequence((first, second) => first.body.name.localeCompare(second.body.name),
-    //     exchanges => exchanges[0].headers.count
-    // )
+    .resequence((first, second) => first.body.name.localeCompare(second.body.name),
+        exchanges => exchanges[0].headers.count
+    )
     .log(exchange => exchange.body.toString())
     .aggregate(() => true,
         (oldExchange, newExchange) => {
@@ -54,9 +54,9 @@ function aggregateExample() {
         },
         (exchanges, count) => count === exchanges[0].headers.count
     )
-    .sort((first, second) => first.name.localeCompare(second.name))
-    .marshal('JSON')
-    .to('file:districts.json');
+    // .sort((first, second) => first.name.localeCompare(second.name))
+    .marshal('CSV')
+    .to('file:districts.csv');
 }
 
 function choiceExample() {

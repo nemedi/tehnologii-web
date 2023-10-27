@@ -58,11 +58,11 @@ class Step {
 }
 
 class FromStep extends Step {
-    constructor(endpoint) {
+    constructor(source) {
         super(() => {
-            if (typeof endpoint === 'string') {
-                const schema = endpoint.substring(0, endpoint.indexOf(':'));
-                let path = endpoint.substring(endpoint.indexOf(':') + 1);
+            if (typeof source === 'string') {
+                const schema = source.substring(0, source.indexOf(':'));
+                let path = source.substring(source.indexOf(':') + 1);
                 switch (schema.toLowerCase()) {
                     case 'file':
                         let exchange = new Exchange(new String(readFileSync(path)));
@@ -73,7 +73,7 @@ class FromStep extends Step {
                         return false;
                 }
             } else {
-                this.collect(new Exchange(endpoint()));
+                this.collect(new Exchange(source()));
                 return true;
             }
         });
@@ -223,11 +223,11 @@ class MarshalStep extends Step {
 }
 
 class ToStep extends Step {
-    constructor(endpoint) {
+    constructor(target) {
         super(exchange => {
-            if (typeof endpoint === 'string') {
-                const schema = endpoint.substring(0, endpoint.indexOf(':'));
-                let path = endpoint.substring(endpoint.indexOf(':') + 1);
+            if (typeof target === 'string') {
+                const schema = target.substring(0, target.indexOf(':'));
+                let path = target.substring(target.indexOf(':') + 1);
                 switch (schema.toLowerCase()) {
                     case 'file':
                         writeFileSync(path, exchange.body);
@@ -243,7 +243,7 @@ class ToStep extends Step {
                         return false;
                 }
             } else {
-                endpoint(exchange.body);
+                target(exchange.body);
                 return true;
             }
         });
@@ -331,8 +331,8 @@ class Route {
         this.#steps.push(new AggregateStep(criterion, aggregator, complete));
         return this;
     }
-    resequence(comparator, complete) {
-        this.#steps.push(new ResequenceStep(comparator, complete));
+    resequence(comparator, size) {
+        this.#steps.push(new ResequenceStep(comparator, size));
         return this;
     }
     sort(comparator) {
