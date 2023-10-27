@@ -22,13 +22,6 @@ class Exchange {
     get headers() {
         return this.#headers;
     }
-    split() {
-        if (this.#body instanceof Array) {
-            return this.#body.map(item => new Exchange(item, this.#headers));
-        } else {
-            return [this];
-        }
-    }
 }
 
 class Step {
@@ -110,7 +103,11 @@ class UnmarshalStep extends Step {
 class SplitStep extends Step {
     constructor() {
         super(exchange => {
-            this.collect(exchange.split());
+            if (exchange.body instanceof Array) {
+                this.collect(exchange.body.map(item => new Exchange(item, exchange.headers)));
+            } else {
+                this.collect([exchange]);
+            }
             return true;
         });
     }
