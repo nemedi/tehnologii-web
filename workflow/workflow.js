@@ -127,6 +127,18 @@ class FilterStep extends Step {
     }
 }
 
+class ContentFilterStep extends Step {
+    constructor(predicate) {
+        super(exchange => {
+            if (exchange.body instanceof Array) {
+                exchange.body = exchange.body.filter(predicate);
+            }
+            this.collect(exchange);
+            return true;
+        });
+    }
+}
+
 class AggregateStep extends Step {
     #map = new Map();
     #count = 0;
@@ -157,6 +169,18 @@ class ResequenceStep extends Step {
             } else {
                 return false;
             }
+        });
+    }
+}
+
+class SortStep extends Step {
+    constructor(comparator) {
+        super(exchange => {
+            if (exchange.body instanceof Array) {
+                exchange.body = exchange.body.sort(comparator);
+            }
+            this.collect(exchange);
+            return true;
         });
     }
 }
@@ -297,6 +321,10 @@ class Route {
         this.#steps.push(new FilterStep(predicate));
         return this;
     }
+    contentFilter(predicate) {
+        this.#steps.push(new ContentFilterStep(predicate));
+        return this;
+    }    
     choice() {
         let choiceStep = new ChoiceStep(this);
         this.#steps.push(choiceStep);
@@ -308,6 +336,10 @@ class Route {
     }
     resequence(comparator, complete) {
         this.#steps.push(new ResequenceStep(comparator, complete));
+        return this;
+    }
+    sort(comparator) {
+        this.#steps.push(new SortStep(comparator));
         return this;
     }
     process(consumer) {

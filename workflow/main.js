@@ -19,16 +19,9 @@ function aggregateExample() {
         .otherwise()
             .process(exchange => exchange.body = [])
     .done()
+    .contentFilter(city => city.district)
     .process(exchange => exchange.headers.count = exchange.body.length)
     .split()
-    .filter(exchange => {
-        if (exchange.body.district) {
-            return true;
-        } else {
-            exchange.headers.count--;
-            return false;
-        }
-    })
     .aggregate(exchange => exchange.body.district,
         (oldExchange, newExchange) => {
             let district = oldExchange
@@ -48,7 +41,8 @@ function aggregateExample() {
         }
     )
     .resequence((first, second) => first.body.name.localeCompare(second.body.name),
-        exchanges => exchanges[0].headers.count)
+        exchanges => exchanges[0].headers.count
+    )
     .log(exchange => exchange.body.toString())
     .aggregate(() => true,
         (oldExchange, newExchange) => {
@@ -60,6 +54,7 @@ function aggregateExample() {
         },
         (exchanges, count) => count === exchanges[0].headers.count
     )
+    //.sort((first, second) => first.name.localeCompare(second.name))
     .marshal('JSON')
     .to('file:districts.json');
 }
@@ -93,4 +88,4 @@ function sortExample() {
     .to('stream:out');
 }
 
-run(/*choiceExample, sortExample, */aggregateExample);
+run(choiceExample, sortExample, aggregateExample);
