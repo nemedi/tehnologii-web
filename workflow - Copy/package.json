@@ -1,9 +1,0 @@
-{
-	"name": "workflow",
-	"dependencies": {
-		"fs": "^0.0.1-security"
-	},
-	"scripts": {
-		"main": "node main.js"
-	}
-}
