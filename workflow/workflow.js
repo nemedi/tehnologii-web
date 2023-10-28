@@ -118,8 +118,10 @@ class FilterStep extends Step {
         super(exchange => {
             if (predicate(exchange)) {
                 this.collect(exchange);
+                return true;
+            } else {
+                return false;
             }
-            return true;
         });
     }
 }
@@ -286,12 +288,12 @@ class ChoiceStep extends Step {
 class Route {
     #steps;
     #choiceStep;
-    constructor(endpoint) {
-        if (endpoint instanceof ChoiceStep) {
-            this.#choiceStep = endpoint;
+    constructor(source) {
+        if (source instanceof ChoiceStep) {
+            this.#choiceStep = source;
             this.#steps = [];
         } else {
-            this.#steps = [new FromStep(endpoint)];
+            this.#steps = [new FromStep(source)];
         }
     }
     when(predicate) {
@@ -303,8 +305,8 @@ class Route {
     done() {
         return this.#choiceStep ? this.#choiceStep.done() : this;
     }
-    static from(endpoint) {
-        return new Route(endpoint);
+    static from(source) {
+        return new Route(source);
     }
     unmarshal(dataType, RecordType) {
         this.#steps.push(new UnmarshalStep(dataType, RecordType));
