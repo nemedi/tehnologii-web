@@ -286,15 +286,27 @@ class ChoiceStep extends Step {
 }
 
 class Route {
+    static #onException;
     #steps;
     #choiceStep;
     constructor(source) {
         if (source instanceof ChoiceStep) {
             this.#choiceStep = source;
             this.#steps = [];
-        } else {
+        } else if (typeof source === 'string') {
             this.#steps = [new FromStep(source)];
+        } else if (typeof source === 'function') {
+            this.#steps = [new FromStep(source)];
+        } else {
+            this.#steps = [];
         }
+    }
+    static from(source) {
+        return new Route(source);
+    }
+    static onException() {
+        Route.#onException = new Route();
+        return Route.#onException;
     }
     when(predicate) {
         return this.#choiceStep.when(predicate);
@@ -304,9 +316,6 @@ class Route {
     }
     done() {
         return this.#choiceStep ? this.#choiceStep.done() : this;
-    }
-    static from(source) {
-        return new Route(source);
     }
     unmarshal(dataType, RecordType) {
         this.#steps.push(new UnmarshalStep(dataType, RecordType));
@@ -360,13 +369,21 @@ class Route {
     run(exchange) {
         let exchanges = [exchange];
         for (let step of this.#steps) {
-            let newExchanges = [];
-            while (exchanges.length > 0) {
-                while (!step.run(exchanges.shift())) {}
-                let currentExchanges = step.takeExchanges();
-                newExchanges.push(...currentExchanges);
+            try {
+                let newExchanges = [];
+                while (exchanges.length > 0) {
+                    while (!step.run(exchanges.shift())) {}
+                    let currentExchanges = step.takeExchanges();
+                    newExchanges.push(...currentExchanges);
+                }
+                exchanges = newExchanges;
+            } catch (error) {
+                if (Route.#onException) {
+                    Route.#onException.run(new Exchange(error));
+                } else {
+                    console.error(error);
+                }
             }
-            exchanges = newExchanges;
         }
         return exchanges;
     }

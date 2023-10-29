@@ -1,5 +1,5 @@
 const {City, District} = require('./models');
-const {from} = require('./workflow');
+const {from, onException} = require('./workflow');
 
 function run()  {
     for (let example of arguments) {
@@ -10,6 +10,8 @@ function run()  {
 }
 
 function aggregateExample() {
+    onException()
+    .log(exchange => exchange.body);
     from('file:cities.csv')
     .choice()
         .when(exchange => exchange.headers.path.toLowerCase().endsWith('.csv'))
@@ -88,4 +90,13 @@ function resequenceExample() {
     .to('stream:out');
 }
 
-run(choiceExample, resequenceExample, aggregateExample);
+function exceptionExample() {
+    onException()
+    .log(exchange => exchange.body);
+    from(() => ['1', '2', '3', 'a', 'b', 'c'])
+    .split()
+    .process(exchange => exchange.body = parseInt(exchange.body))
+    .to('stream:out');
+}
+
+run(choiceExample, resequenceExample, exceptionExample, aggregateExample);
