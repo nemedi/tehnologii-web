@@ -1,0 +1,12 @@
+{
+  "name": "items",
+  "version": "1.0.0",
+  "scripts": {
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "path": "^0.12.7",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security"
+  }
+}
