@@ -1,4 +1,4 @@
-HTMLElement.prototype.taskBoard = function(data) {
+HTMLElement.prototype.taskBoard = function({tasksByStatus, changeTaskStatus}) {
 	this.innerHTML = '';
 	this.className = 'container';
 	function updateCards(cards) {
@@ -8,10 +8,10 @@ HTMLElement.prototype.taskBoard = function(data) {
 			description.innerText = `${i + 1}${text}`;
 		});
 	}
-	Object.entries(data).forEach(([status, tasks], i) => {
+	Object.entries(tasksByStatus).forEach(([status, tasks], i) => {
 		const column = document.createElement('div');
 		column.className = `column background${i % 4 + 1}`;
-		column.style.width = Math.floor(100 / Object.getOwnPropertyNames(data).length - 1) + '%';
+		column.style.width = Math.floor(100 / Object.getOwnPropertyNames(tasksByStatus).length - 1) + '%';
 		const title = document.createElement('p');
 		title.className = 'column-title';
 		title.innerText = status;
@@ -33,17 +33,23 @@ HTMLElement.prototype.taskBoard = function(data) {
 		footer.className = `column-footer color${i % 4 + 1}`;
 		footer.innerText = 'Drop task here.';
 		footer.ondragover = event => event.preventDefault();
-		footer.ondrop = event => {
+		footer.ondrop = async event => {
 			event.preventDefault();
 			const card = document.querySelector('#' + event.dataTransfer.getData('id'));
 			const oldParent = card.parentNode;
 			const newParent = event.target.parentNode.querySelector('.cards');
-			oldParent.removeChild(card);
-			newParent.appendChild(card);
-			card.className = card.className.substring(0, card.className.length - 1)
-				+ event.target.className.substring(event.target.className.length - 1);
-			updateCards(oldParent);
-			updateCards(newParent);
+			let task = card.querySelector('p').innerText;
+			task = task.substring(task.indexOf('.') + 1);
+			let oldStatus = oldParent.parentNode.querySelector('p').innerText;
+			let newStatus = newParent.parentNode.querySelector('p').innerText;
+			if (await changeTaskStatus(task, oldStatus, newStatus)) {
+				oldParent.removeChild(card);
+				newParent.appendChild(card);
+				card.className = card.className.substring(0, card.className.length - 1)
+					+ event.target.className.substring(event.target.className.length - 1);
+				updateCards(oldParent);
+				updateCards(newParent);
+			}
 		};			
 		column.appendChild(cards);
 		column.appendChild(footer);
