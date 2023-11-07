@@ -1,4 +1,4 @@
-const {existsSync, readFileSync,writeFileSync} = require('fs');
+const {existsSync, readFileSync, writeFileSync} = require('fs');
 module.exports = function(path) {
     const tasksByStatus = existsSync(path)
         ? JSON.parse(readFileSync(path)) : {};
