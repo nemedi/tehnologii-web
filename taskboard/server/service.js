@@ -1,17 +1,7 @@
-const {existsSync, readFileSync,writeFileSync, read} = require('fs');
-
+const {existsSync, readFileSync,writeFileSync} = require('fs');
 module.exports = function(path) {
-    function load(path) {
-        if (existsSync(path)) {
-            return JSON.parse(readFileSync(path));
-        } else {
-            return {};
-        }
-    }
-    function store(tasksByStatus, path) {
-        writeFileSync(path, JSON.stringify(tasksByStatus));
-    }
-    const tasksByStatus = load(path);
+    const tasksByStatus = existsSync(path)
+        ? JSON.parse(readFileSync(path)) : {};
     return {
         getTasksByStatus() {
             return tasksByStatus;
@@ -23,7 +13,7 @@ module.exports = function(path) {
                 if (index) {
                     tasksByStatus[oldStatus].splice(index, 1);
                     tasksByStatus[newStatus].push(task);
-                    store(tasksByStatus, path);
+                    writeFileSync(path, JSON.stringify(tasksByStatus));
                     return true;
                 }
             }

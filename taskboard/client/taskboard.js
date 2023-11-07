@@ -1,4 +1,4 @@
-HTMLElement.prototype.taskBoard = function({tasksByStatus, changeTaskStatus}) {
+HTMLElement.prototype.taskBoard = function(tasksByStatus, changeTaskStatus) {
 	this.innerHTML = '';
 	this.className = 'container';
 	function updateCards(cards) {
@@ -11,11 +11,10 @@ HTMLElement.prototype.taskBoard = function({tasksByStatus, changeTaskStatus}) {
 	Object.entries(tasksByStatus).forEach(([status, tasks], i) => {
 		const column = document.createElement('div');
 		column.className = `column background${i % 4 + 1}`;
-		column.style.width = Math.floor(100 / Object.getOwnPropertyNames(tasksByStatus).length - 1) + '%';
+		column.style.width = Math.floor(100 / Object.keys(tasksByStatus).length - 1) + '%';
 		const title = document.createElement('p');
 		title.className = 'column-title';
 		title.innerText = status;
-		column.appendChild(title);
 		const cards = document.createElement('div');
 		cards.className = 'cards';
 		tasks.forEach((task, j) => {
@@ -35,7 +34,7 @@ HTMLElement.prototype.taskBoard = function({tasksByStatus, changeTaskStatus}) {
 		footer.ondragover = event => event.preventDefault();
 		footer.ondrop = async event => {
 			event.preventDefault();
-			const card = document.querySelector('#' + event.dataTransfer.getData('id'));
+			const card = document.getElementById(event.dataTransfer.getData('id'));
 			const oldParent = card.parentNode;
 			const newParent = event.target.parentNode.querySelector('.cards');
 			let task = card.querySelector('p').innerText;
@@ -50,7 +49,8 @@ HTMLElement.prototype.taskBoard = function({tasksByStatus, changeTaskStatus}) {
 				updateCards(oldParent);
 				updateCards(newParent);
 			}
-		};			
+		};
+		column.appendChild(title);		
 		column.appendChild(cards);
 		column.appendChild(footer);
 		this.appendChild(column);
