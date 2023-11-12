@@ -17,9 +17,7 @@ async function loadBoard() {
 		const element = document.querySelector(`.group.${group} .teams`);
 		const template = element.innerHTML;
 		element.innerHTML = teams.map(team => template
-				.replaceAll('${id}', team.id)
-				.replaceAll('${name}', team.name)
-				.replaceAll('${flag}', team.flag)
+				.replaceAll('${team}', team)
 			)
 			.reduce((html, item) => html += item, '');
 	});
@@ -30,24 +28,22 @@ async function loadBoard() {
 
 async function loadStandings(group) {
 	const view = await getView('standings');
-	const model = await getModel(`standings/${group}`);
-	document.querySelector('.content').innerHTML = view.replaceAll('${group}', model.group);
+	const standings = await getModel(`standings/${group}`);
+	document.querySelector('.content').innerHTML = view.replaceAll('${group}', group);
 	const template = document.querySelector('tbody').innerHTML;
 	document.querySelector('tbody').innerHTML =
-		model.teams.map((team, index) =>
+		standings.map((standing, index) =>
 				template
 					.replaceAll('${rank}', index + 1)
-					.replaceAll('${id}', team.id)
-					.replaceAll('${team}', team.name)
-					.replaceAll('${flag}', team.flag)
-					.replaceAll('${mp}', team.mp)
-					.replaceAll('${w}', team.w)
-					.replaceAll('${d}', team.d)
-					.replaceAll('${l}', team.l)
-					.replaceAll('${gf}', team.gf)
-					.replaceAll('${ga}', team.ga)
-					.replaceAll('${gd}', team.gd)
-					.replaceAll('${pts}', team.pts))
+					.replaceAll('${team}', standing.team)
+					.replaceAll('${mp}', standing.mp)
+					.replaceAll('${w}', standing.w)
+					.replaceAll('${d}', standing.d)
+					.replaceAll('${l}', standing.l)
+					.replaceAll('${gf}', standing.gf)
+					.replaceAll('${ga}', standing.ga)
+					.replaceAll('${gd}', standing.gd)
+					.replaceAll('${pts}', standing.pts))
 			.reduce((html, item) => html += item, '');
 }
 
@@ -58,13 +54,10 @@ async function loadMatches(team) {
 	const template = document.querySelector('.match').innerHTML;
 	document.querySelector('.match').innerHTML = model.map(match =>
 			template
-				.replaceAll('${localDate}', match.localDate)
-				.replaceAll('${homeId}', match.homeId)
-				.replaceAll('${awayId}', match.axwayId)
+				.replaceAll('${stage}', match.stage)
+				.replaceAll('${date}', match.date)
 				.replaceAll('${homeTeam}', match.homeTeam)
 				.replaceAll('${awayTeam}', match.awayTeam)
-				.replaceAll('${homeFlag}', match.homeFlag)
-				.replaceAll('${awayFlag}', match.awayFlag)
 				.replaceAll('${homeScore}', match.homeScore)
 				.replaceAll('${awayScore}', match.awayScore)
 		)

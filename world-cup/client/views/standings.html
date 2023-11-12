@@ -3,7 +3,8 @@
 	<table cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
-				<th colspan="3">Team</th>
+				<th>Rank</th>
+				<th colspan="2">Team</th>
 				<th>MP</th>
 				<th>W</th>
 				<th>D</th>
@@ -18,10 +19,10 @@
 			<tr>
 				<td class="number">${rank}</td>
 				<td>
-					<img src="${flag}" class="flag">
+					<img src="images/${team}.png" class="flag">
 				</td>
 				<td style="width: 20em;">
-					<a href="javascript:void" onclick="loadMatches(${id})">${team}</a></td>
+					<a href="javascript:void" onclick="loadMatches('${team}')">${team}</a></td>
 				<td class="number">${mp}</td>
 				<td class="number">${w}</td>
 				<td class="number">${d}</td>
@@ -34,6 +35,6 @@
 		</tbody>
 	</table>
 	<div class="title">
-		<a href="javascript:void(0)" onclick="loadBoard()">Back</a>
+		<a href="javascript:void(0)" onclick="loadBoard()">Home</a>
 	</div>
 </div>

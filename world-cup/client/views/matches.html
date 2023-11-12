@@ -1,0 +1,38 @@
+<din class="matches">
+	<p class="match">
+		<table cellspacing="0" cellpadding="0">
+			<thead>
+				<tr>
+					<th colspan="4" class="title">${stage} - ${date}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td nowrap style="width:15em;text-align:right;">
+						<a href="javascript:void(0)" onclick="loadMatches('${homeTeam}')">${homeTeam}</a>
+					</td>
+					<td>
+						<img src="images/${homeTeam}.png" class="flag">
+					</td>
+					<td>
+						<img src="images/${awayTeam}.png" class="flag">
+					</td>
+					<td nowrap style="width:15em;text-align:left;">
+						<a href="javascript:void(0)" onclick="loadMatches('${awayTeam}')">${awayTeam}</a>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="width:50%;text-align:right;">
+						${homeScore}
+					</td>
+					<td colspan="2" style="width:50%;text-align:left;">
+						${awayScore}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</p>
+	<p>
+		<a href="javascript:void" onclick="loadBoard()">Home</a>
+	</p>
+</din>
