@@ -23,7 +23,7 @@ async function loadBoard() {
 	document.querySelector('.content').innerHTML = view;
 	const template = document.querySelector('.board').innerHTML;
 	document.querySelector('.board').innerHTML =
-		Object.getOwnPropertyNames(model)
+		Object.keys(model)
 			.map(item =>
 				template.replaceAll('${group}', item)
 			)
