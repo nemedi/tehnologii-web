@@ -59,5 +59,5 @@ async function loadMatches(team) {
 	$('.content').innerHTML = view.$({team});
 	const _ = $('.match').innerHTML;
 	$('.match').innerHTML =
-		model.map(match => _.$(match)).join('');
+		model.map((match, index) => _.$({number: index + 1, ...match})).join('');
 }

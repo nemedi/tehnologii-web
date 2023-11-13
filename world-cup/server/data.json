@@ -662,6 +662,14 @@
         },
         {
             "stage": "Group",
+            "date": "11/29/2022",
+            "homeTeam": "Iran",
+            "awayTeam": "United States",
+            "homeScore": 0,
+            "awayScore": 1
+        },        
+        {
+            "stage": "Group",
             "date": "11/30/2022",
             "homeTeam": "Australia",
             "awayTeam": "Denmark",
