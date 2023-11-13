@@ -1,16 +1,16 @@
 const express = require('express');
-const {getBoard, getStandings, getMatches} = require('./service')('data.json');
 const {join, resolve} = require('path');
-const PORT = process.env.PORT || 8080;
+const {getBoard, getStandings, getMatches} = require('./service')('data.json');
+const port = process.env.port || 8080;
 express()
 	.use(express.static(join(resolve('..'), 'client')))
-	.get('/board', async (request, response) => 
+	.get('/board', (request, response) => 
 		response.json(getBoard())
 	)
-	.get('/standings/:group', async (request, response) => 
+	.get('/standings/:group', (request, response) => 
 		response.json(getStandings(request.params.group))
 	)
-	.get('/matches/:team', async (request, response) => 
+	.get('/matches/:team', (request, response) => 
 		response.json(getMatches(request.params.team))
 	)
-	.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));
+	.listen(port, () => console.log(`Server is running on port ${port}.`));

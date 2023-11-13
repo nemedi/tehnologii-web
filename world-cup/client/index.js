@@ -1,79 +1,63 @@
-window.onload = async () => loadBoard();
-window.addEventListener('render', event => eval(event.call));
+window.addEventListener('load', () => loadBoard());
+window.addEventListener('render', event => eval(decodeURI(event.call)));
 window.addEventListener('hashchange', event => {
 	let index = event.newURL.indexOf('#');
 	if (index > -1) {
 		event.preventDefault();
-		let call = event.newURL.substring(index + 1);
-		let render = new Event('render');
-		render.call = call;
-		window.dispatchEvent(render);
+		let renderEvent = new Event('render');
+		renderEvent.call = event.newURL.substring(index + 1);
+		window.dispatchEvent(renderEvent);
 	}
 });
-
-String.prototype.replaceVariables = function(context) {
+String.prototype.$ = function(context) {
 	return Object.entries(context).reduce((result, [key, value]) =>
-		result.replaceAll('${' + key + '}', decodeURI(value)), this);
+		result.replaceAll('${' + key + '}', value), this);
 }
-
-const views = {};
-
-async function getView(view) {
-	if (!views[view]) {
-		const response = await fetch(`/views/${view}.html`);
-		const body = await response.text();
-		views[view] = body;
-	}
-	return views[view];
+function $(selector) {
+	return document.querySelector(selector);
 }
-
-async function getModel(path) {
-	const response = await fetch(`/${path}`);
-	const body = await response.json();
-	return body;
+function memoizer(method) {
+    const cache = {};
+    return function() {
+        const key = [...arguments].toString();
+        if (cache[key] === undefined) {
+            cache[key] = method.apply(this, arguments);
+        }
+        return cache[key];
+    };
 }
-
+const getView = memoizer(async view =>
+	await (await fetch(`/views/${view}.html`)).text()
+);
+const getModel = memoizer(async path =>
+	await (await fetch(`/${path}`)).json()
+);
 async function loadBoard() {
 	const view = await getView('board');
 	const model = await getModel('board');
-	document.querySelector('.content').innerHTML = view;
-	const template = document.querySelector('.board').innerHTML;
-	document.querySelector('.board').innerHTML =
-		Object.keys(model)
-			.map(group =>
-				template.replaceVariables({group})
-			)
-			.reduce((html, item) => html += item, '');
+	$('.content').innerHTML = view;
+	const _ = $('.board').innerHTML;
+	$('.board').innerHTML =
+		Object.keys(model).map(group =>	_.$({group})).join('');
 	Object.entries(model).forEach(([group, teams]) => {
-		const element = document.querySelector(`.group.${group} .teams`);
-		const template = element.innerHTML;
-		element.innerHTML = teams.map(team =>
-				template.replaceVariables({team})
-			)
-			.reduce((html, item) => html += item, '');
+		const _ = $(`.group.${group} .teams`).innerHTML;
+		$(`.group.${group} .teams`).innerHTML = 
+			teams.map(team => _.$({team})).join('');
 	});
 }
-
 async function loadStandings(group) {
 	const view = await getView('standings');
 	const model = await getModel(`standings/${group}`);
-	document.querySelector('.content').innerHTML = view.replaceAll('${group}', group);
-	const template = document.querySelector('tbody').innerHTML;
-	document.querySelector('tbody').innerHTML =
-		model.map((standing, index) => 
-				template.replaceVariables({rank: index + 1,...standing})
-			)
-			.reduce((html, item) => html += item, '');
+	$('.content').innerHTML = view.$({group});
+	const _ = $('tbody').innerHTML;
+	$('tbody').innerHTML =
+		model.map((standing, index) => _.$({rank: index + 1,...standing})).join('');
 }
-
 async function loadMatches(team) {
 	const view = await getView('matches');
 	const model = await getModel(`matches/${team}`);
-	document.querySelector('.content').innerHTML = view.replaceVariables({team});
-	const template = document.querySelector('.match').innerHTML;
-	document.querySelector('.match').innerHTML = model.map(match =>
-			template.replaceVariables(match)
-		)
-		.reduce((html, item) => html += item, '');
+	$('.content').innerHTML = view.$({team});
+	const _ = $('.match').innerHTML;
+	$('.match').innerHTML =
+		model.map(match => _.$(match)).join('');
 }
-
