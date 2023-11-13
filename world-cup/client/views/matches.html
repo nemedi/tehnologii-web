@@ -1,4 +1,7 @@
 <din class="matches">
+	<p class="match-title">
+		Matched played by: ${team} <img src="images/${team}.png" class="match-flag">
+	</p>
 	<p class="match">
 		<table cellspacing="0" cellpadding="0">
 			<thead>
@@ -9,7 +12,7 @@
 			<tbody>
 				<tr>
 					<td class="match-team">
-						<a href="javascript:void(0)" onclick="loadMatches('${homeTeam}')">${homeTeam}</a>
+						<a href="#loadMatches('${homeTeam}')">${homeTeam}</a>
 					</td>
 					<td>
 						<img src="images/${homeTeam}.png" class="flag">
@@ -18,7 +21,7 @@
 						<img src="images/${awayTeam}.png" class="flag">
 					</td>
 					<td class="match-team"">
-						<a href="javascript:void(0)" onclick="loadMatches('${awayTeam}')">${awayTeam}</a>
+						<a href="#loadMatches('${awayTeam}')">${awayTeam}</a>
 					</td>
 				</tr>
 				<tr>
@@ -33,6 +36,6 @@
 		</table>
 	</p>
 	<p class="title">
-		<a href="javascript:void" onclick="loadBoard()">Home</a>
+		<a href="#loadBoard()">Home</a>
 	</p>
 </din>

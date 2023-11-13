@@ -185,6 +185,19 @@ tr:nth-child(odd) {
 	border-radius: 1em;
 }
 
+.match-title {
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.match-flag {
+	width: 3em;
+	height: 3em;
+	vertical-align: middle;
+}
+
 p {
 	width: 100%;
 	text-align: center;
