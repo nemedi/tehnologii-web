@@ -44,7 +44,7 @@ async function changeItem(event) {
 }
 
 async function removeItem(listItem) {
-    if (confirm('Areyou sure you want to delete this item?')) {
+    if (confirm('Are you sure you want to delete this item?')) {
         const response = await fetch(`/items/${listItem.data}`, {
             method: 'DELETE'
         });

@@ -1,4 +1,5 @@
-const {readFileSync, writeFileSync} = require('fs');
+const {readFileSync, writeFileSync, unlinkSync, watch, existsSync} = require('fs');
+const {join} = require('path');
 
 class Exchange {
     static #count = 0;
@@ -26,13 +27,18 @@ class Exchange {
 
 class Step {
     #handler;
+    #route;
     #exchanges;
-    constructor(handler) {
+    constructor(handler, route) {
         if (this.constructor.name === 'Step') {
             throw new Error('Cannot instantate abstract class Step.');
         }
         this.#handler = handler;
+        this.#route = route;
         this.#exchanges = [];
+    }
+    get route() {
+        return this.#route;
     }
     collect(exchange) {
         if (exchange instanceof Array) {
@@ -55,38 +61,58 @@ class Step {
     run(exchange) {
         return this.#handler(exchange);
     }
+    log(message) {
+        console.log(`[${this.constructor.name}: ${message}.]`);
+    }
 }
 
 class FromStep extends Step {
-    constructor(source) {
-        super(() => {
-            if (typeof source === 'string') {
-                const schema = source.substring(0, source.indexOf(':'));
-                let path = source.substring(source.indexOf(':') + 1);
-                switch (schema.toLowerCase()) {
-                    case 'file':
-                        let exchange = new Exchange(new String(readFileSync(path)));
-                        exchange.headers.path = path;
+    #source;
+    #handler;
+    constructor(source, route) {
+        super(exchange => this.#handler(exchange), route);
+        this.#source = source;
+    }
+    start() {
+        if (typeof this.#source === 'string') {
+            const schema = this.#source.substring(0, this.#source.indexOf(':'));
+            const path = this.#source.substring(this.#source.indexOf(':') + 1);
+            switch (schema.toLowerCase()) {
+                case 'file':
+                    this.#handler = exchange => {
+                        exchange.body = new String(readFileSync(exchange.body));
+                        exchange.headers.path = exchange.body;
                         this.collect(exchange);
                         return true;
-                    default:
-                        return false;
-                }
-            } else {
-                this.collect(new Exchange(source()));
-                return true;
+                    };
+                    this.log(`Watching folder '${path}'`);
+                    watch(path, (eventType, fileName) => {
+                        fileName = join(path, fileName);
+                        if (eventType === 'change' && existsSync(fileName)) {
+                            this.route.run(new Exchange(fileName));
+                            unlinkSync(fileName);
+                        }
+                    });
+                    break;
+                default:
+                    this.#handler = () => false;
             }
-        });
+        } else {
+            this.#handler = () => {
+                this.collect(new Exchange(this.#source()));
+                return true;
+            };
+        }
     }
 }
 
 class UnmarshalStep extends Step {
-    constructor(dataType, RecordType) {
+    constructor(dataType, RecordType, route) {
         super(exchange => {
             exchange.body = UnmarshalStep.#deserialize(exchange.body, dataType, RecordType);
             this.collect(exchange);
             return true;
-        });
+        },  route);
     }
     static #deserialize(data, dataType, RecordType) {
         switch (dataType.toUpperCase()) {
@@ -101,7 +127,7 @@ class UnmarshalStep extends Step {
 }
 
 class SplitStep extends Step {
-    constructor() {
+    constructor(route) {
         super(exchange => {
             if (exchange.body instanceof Array) {
                 this.collect(exchange.body.map(item => new Exchange(item, exchange.headers)));
@@ -109,12 +135,12 @@ class SplitStep extends Step {
                 this.collect([exchange]);
             }
             return true;
-        });
+        }, route);
     }
 }
 
 class FilterStep extends Step {
-    constructor(predicate) {
+    constructor(predicate, route) {
         super(exchange => {
             if (predicate(exchange)) {
                 this.collect(exchange);
@@ -122,26 +148,26 @@ class FilterStep extends Step {
             } else {
                 return false;
             }
-        });
+        }, route);
     }
 }
 
 class ContentFilterStep extends Step {
-    constructor(predicate) {
+    constructor(predicate, route) {
         super(exchange => {
             if (exchange.body instanceof Array) {
                 exchange.body = exchange.body.filter(predicate);
             }
             this.collect(exchange);
             return true;
-        });
+        }, route);
     }
 }
 
 class AggregateStep extends Step {
     #map = new Map();
     #count = 0;
-    constructor(criterion, aggregator, complete) {
+    constructor(criterion, aggregator, complete, route) {
         super(exchange => {
             const key = criterion(exchange);
             this.#map.set(key, aggregator(this.#map.get(key), exchange));
@@ -154,12 +180,12 @@ class AggregateStep extends Step {
             } else {
                 return false;
             }
-        });
+        }, route);
     }
 }
 
 class ResequenceStep extends Step {
-    constructor(comparator, size) {
+    constructor(comparator, size, route) {
         super(exchange => {
             this.collect(exchange);
             if (this.exchanges.length === size(this.exchanges)) {
@@ -168,49 +194,49 @@ class ResequenceStep extends Step {
             } else {
                 return false;
             }
-        });
+        }, route);
     }
 }
 
 class SortStep extends Step {
-    constructor(comparator) {
+    constructor(comparator, route) {
         super(exchange => {
             if (exchange.body instanceof Array) {
                 exchange.body = exchange.body.sort(comparator);
             }
             this.collect(exchange);
             return true;
-        });
+        }, route);
     }
 }
 
 class ProcessStep extends Step {
-    constructor(consumer) {
+    constructor(consumer,  route) {
         super(exchange => {
             consumer(exchange);
             this.collect(exchange);
             return true;
-        });
+        }, route);
     }
 }
 
 class LogStep extends Step {
-    constructor(logger) {
+    constructor(logger, route) {
         super(exchange => {
             console.log(logger(exchange));
             this.collect(exchange);
             return true;
-        });
+        }, route);
     }
 }
 
 class MarshalStep extends Step {
-    constructor(dataType, lineSeprator) {
+    constructor(dataType, lineSeprator, route) {
         super(exchange => {
             exchange.body = MarshalStep.#serialize(exchange.body, dataType, lineSeprator);
             this.collect(exchange);
             return true;
-        });
+        }, route);
     }
     static #serialize(data, dataType, lineSeparator) {
         switch (dataType.toUpperCase()) {
@@ -225,7 +251,7 @@ class MarshalStep extends Step {
 }
 
 class ToStep extends Step {
-    constructor(target) {
+    constructor(target, route) {
         super(exchange => {
             if (typeof target === 'string') {
                 const schema = target.substring(0, target.indexOf(':'));
@@ -248,7 +274,7 @@ class ToStep extends Step {
                 target(exchange.body);
                 return true;
             }
-        });
+        }, route);
     }
 }
 
@@ -268,45 +294,41 @@ class ChoiceStep extends Step {
                 this.exchanges = this.#otherwise.run(exchange);
             }
             return true;
-        });
-        this.#route = route;
+        }, route);
     }
     when(predicate) {
-        let route = new Route(this);
+        let route = new Route(this.route.routeBuilder, this);
         this.#whens.push({predicate, route});
         return route;
     }
     otherwise() {
-        this.#otherwise = new Route(this);
+        this.#otherwise = new Route(this.route.routeBuilder, this);
         return this.#otherwise;
     }
     done() {
-        return this.#route;
+        return this.route;
     }
 }
 
 class Route {
-    static #onException;
+    #routeBuilder;
     #steps;
     #choiceStep;
-    constructor(source) {
+    constructor(routeBuilder, source) {
+        this.#routeBuilder = routeBuilder;
         if (source instanceof ChoiceStep) {
             this.#choiceStep = source;
             this.#steps = [];
         } else if (typeof source === 'string') {
-            this.#steps = [new FromStep(source)];
+            this.#steps = [new FromStep(source, this)];
         } else if (typeof source === 'function') {
-            this.#steps = [new FromStep(source)];
+            this.#steps = [new FromStep(source, this)];
         } else {
             this.#steps = [];
         }
     }
-    static from(source) {
-        return new Route(source);
-    }
-    static onException() {
-        Route.#onException = new Route();
-        return Route.#onException;
+    get routeBuilder() {
+        return this.#routeBuilder;
     }
     when(predicate) {
         return this.#choiceStep.when(predicate);
@@ -318,19 +340,19 @@ class Route {
         return this.#choiceStep ? this.#choiceStep.done() : this;
     }
     unmarshal(dataType, RecordType) {
-        this.#steps.push(new UnmarshalStep(dataType, RecordType));
+        this.#steps.push(new UnmarshalStep(dataType, RecordType, this));
         return this;
     }
     split() {
-        this.#steps.push(new SplitStep());
+        this.#steps.push(new SplitStep(this));
         return this;
     }
     filter(predicate) {
-        this.#steps.push(new FilterStep(predicate));
+        this.#steps.push(new FilterStep(predicate, this));
         return this;
     }
     contentFilter(predicate) {
-        this.#steps.push(new ContentFilterStep(predicate));
+        this.#steps.push(new ContentFilterStep(predicate, this));
         return this;
     }    
     choice() {
@@ -339,32 +361,34 @@ class Route {
         return choiceStep;
     }
     aggregate(criterion, aggregator, complete) {
-        this.#steps.push(new AggregateStep(criterion, aggregator, complete));
+        this.#steps.push(new AggregateStep(criterion, aggregator, complete, this));
         return this;
     }
     resequence(comparator, size) {
-        this.#steps.push(new ResequenceStep(comparator, size));
+        this.#steps.push(new ResequenceStep(comparator, size, this));
         return this;
     }
     sort(comparator) {
-        this.#steps.push(new SortStep(comparator));
+        this.#steps.push(new SortStep(comparator, this));
         return this;
     }
     process(consumer) {
-        this.#steps.push(new ProcessStep(consumer));
+        this.#steps.push(new ProcessStep(consumer, this));
         return this;
     }
     log(logger) {
-        this.#steps.push(new LogStep(logger));
+        this.#steps.push(new LogStep(logger, this));
         return this;
     }
     marshal(dataType, lineSeparator = '\n') {
-        this.#steps.push(new MarshalStep(dataType, lineSeparator));
+        this.#steps.push(new MarshalStep(dataType, lineSeparator, this));
         return this;
     }
     to(endpoint) {
-        this.#steps.push(new ToStep(endpoint));
-        this.run();
+        this.#steps.push(new ToStep(endpoint, this));
+    }
+    start() {
+        this.#steps[0].start();
     }
     run(exchange) {
         let exchanges = [exchange];
@@ -378,8 +402,8 @@ class Route {
                 }
                 exchanges = newExchanges;
             } catch (error) {
-                if (Route.#onException) {
-                    Route.#onException.run(new Exchange(error));
+                if (RouteBuilder.onException) {
+                    RouteBuilder.onException.run(new Exchange(error));
                 } else {
                     console.error(error);
                 }
@@ -389,4 +413,26 @@ class Route {
     }
 }
 
-module.exports = Route;
+class RouteBuilder {
+    static #routes = [];
+    static #onException;
+    configure() {
+    }
+    static from(source) {
+        const route = new Route(this, source);
+        RouteBuilder.#routes.push(route);
+        return route;
+    }
+    static onException() {
+        RouteBuilder.#onException = new Route(this);
+        return RouteBuilder.#onException;
+    }
+    get onException() {
+        return RouteBuilder.#onException;
+    }
+    static run() {
+        RouteBuilder.#routes.forEach(route => route.start());
+    }
+}
+
+module.exports = RouteBuilder;

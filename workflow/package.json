@@ -1,9 +1,13 @@
 {
 	"name": "workflow",
 	"dependencies": {
-		"fs": "^0.0.1-security"
+		"fs": "^0.0.1-security",
+		"path": "^0.12.7"
 	},
 	"scripts": {
-		"main": "node main.js"
+		"aggregate": "node example-aggregate.js",
+		"choice": "node example-choice.js",
+		"exception": "node example-exception.js",
+		"resequence": "node example-resequence.js"
 	}
 }
