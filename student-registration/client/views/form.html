@@ -1,11 +1,11 @@
 <form action="javascript:void(0)">
-	<input type="hidden" name="id"/>
+	<input type="hidden" name="id" value="${id}"/>
 	<div class="row">
 		<div class="col-20">
 			<label for="lastName">Nume</label>
 		</div>
 		<div class="col-80">
-			<input type="text" name="lastName" required placeholder="Completati numele.."/>
+			<input type="text" name="lastName" value="${lastName}" required/>
 		</div>
 	</div>
 	<div class="row">
@@ -13,7 +13,7 @@
 			<label for="firstName">Prenume</label>
 		</div>
 		<div class="col-80">
-			<input type="text" name="firstName" required placeholder="Completati prenumele.."/>
+			<input type="text" name="firstName" value="${firstName}" required/>
 		</div>
 	</div>
 	<div class="row">
@@ -21,7 +21,7 @@
 			<label for="bornDate">Data nasterii</label>
 		</div>
 		<div class="col-80">
-			<input type="date" name="bornDate"/>
+			<input type="date" name="bornDate" value="${bornDate}"/>
 		</div>
 	</div>
 	<div class="row">
@@ -29,7 +29,7 @@
 			<label for="email">E-mail</label>
 		</div>
 		<div class="col-80">
-			<input type="email" name="email" required/>
+			<input type="email" name="email" value="${email}" required/>
 		</div>
 	</div>
 	<div class="row">
@@ -37,7 +37,7 @@
 			<label for="email">Telefon</label>
 		</div>
 		<div class="col-80">
-			<input type="tel" name="phone"/>
+			<input type="tel" name="phone" value="${phone}"/>
 		</div>
 	</div>
 	<div class="row">
@@ -46,9 +46,9 @@
 		</div>
 		<div class="col-80">
 			<select name="section" required>
-				<option value="IE">Informatica</option>
-				<option value="CE">Cibernetica</option>
-				<option value="SE">Statistica</option>
+				<option value="IE" %{'${section}' === 'IE' ? 'selected' : ''}>Informatica</option>
+				<option value="CE" %{'${section}' === 'CE' ? 'selected' : ''}>Cibernetica</option>
+				<option value="SE" %{'${section}' === 'SE' ? 'selected' : ''}>Statistica</option>
 			</select>
 		</div>
 	</div>
@@ -57,7 +57,7 @@
 			<label for="group">Grupa</label>
 		</div>
 		<div class="col-80">
-			<input type="number" name="group" required/>
+			<input type="number" name="group" value="${group}" required/>
 		</div>
 	</div>
 	<br/>		
