@@ -6,9 +6,10 @@ function router(routes) {
 		let index = event.newURL.indexOf('#');
 		if (index > -1) {
 			event.preventDefault();
-			let location = event.newURL.substring(index + 1);
-			let segments = location.split('/');
-			let matches = Object.keys(routes)
+			let segments = event.newURL
+				.substring(index + 1)
+				.split('/');
+			let matchingRoutes = Object.keys(routes)
 				.filter(route => {
 					if (parts[route].length !== segments.length) {
 						return false;
@@ -21,14 +22,15 @@ function router(routes) {
 					}
 					return true;
 				});
-			if (matches.length === 1) {
+			if (matchingRoutes.length === 1) {
+				let matchingRoute = matchingRoutes[0];
 				let parameters = {};
 				for (let i = 0; i < segments.length; i++) {
-					if (parts[matches[0]][i].startsWith(':')) {
-						parameters[parts[matches[0]][i].substring(1)] = segments[i];
+					if (parts[matchingRoute][i].startsWith(':')) {
+						parameters[parts[matchingRoute][i].substring(1)] = segments[i];
 					}
 				}
-				routes[matches[0]](parameters);
+				routes[matchingRoute](parameters);
 			}
 		}
 	});	
