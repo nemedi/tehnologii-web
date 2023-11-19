@@ -4,11 +4,11 @@ HTMLElement.prototype.tasks = function(data) {
 		const link = document.createElement('a');
 		link.innerText = task.description;
 		link.setAttribute('href', 'javascript:void(0)');
-		link.addEventListener('click', event => {
-			fetch(`/tasks/${task.id}`, {method: 'DELETE'})
-				.then(response => {
-					event.target.parentNode.parentNode.removeChild(event.target.parentNode);
-				});
+		link.addEventListener('click', async event => {
+			const response = await fetch(`/tasks/${task.id}`, {method: 'DELETE'});
+			if (response.status === 204) {
+				event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+			}
 		});
 		item.appendChild(link);
 		return item;
@@ -33,18 +33,16 @@ HTMLElement.prototype.tasks = function(data) {
 	const button = document.createElement('input');
 	button.setAttribute('type', 'button');
 	button.setAttribute('value', 'Add Task');
-	button.addEventListener('click', event => {
-		fetch(`/tasks`,
+	button.addEventListener('click', async event => {
+		const response = await fetch(`/tasks`,
 			{
 				method: 'POST',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
 				body: `task=${document.getElementById('task').value}`
-			})
-			.then(response => response.json())
-			.then(task => {
-				list.appendChild(createItem(task));
-				document.getElementById('task').value = '';
 			});
+		const task = await response.json();
+		list.appendChild(createItem(task));
+		document.getElementById('task').value = '';
 	});
 	paragraph.appendChild(button);
 	this.appendChild(paragraph);
