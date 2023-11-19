@@ -1,4 +1,4 @@
-const {existsSync, readFileSync, writeFileSync, read} = require('fs');
+const {existsSync, readFileSync, writeFileSync} = require('fs');
 const uuid = require('uuid');
 
 module.exports = function(path) {
