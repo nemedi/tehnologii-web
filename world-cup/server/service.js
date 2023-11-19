@@ -1,15 +1,15 @@
 const {readFileSync} = require('fs');
 module.exports = function(path) {
-    const data = JSON.parse(readFileSync(path));
+    const repository = JSON.parse(readFileSync(path));
     return {
         getBoard() {
-            return data.groups;
+            return repository.groups;
         },
         getStandings(group) {
-            return data.standings[group];
+            return repository.standings[group];
         },
         getMatches(team) {
-            return data.matches.filter(match =>
+            return repository.matches.filter(match =>
                 match.homeTeam === team || match.awayTeam === team
             );
         }
