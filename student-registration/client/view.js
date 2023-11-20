@@ -8,7 +8,7 @@ String.prototype.render = function(context) {
     let result = this.replace(/#{([^}]+)}([^]*)#{\/\1}/g, (match, key, template) =>
             context[key] instanceof Array
                 ? context[key].map(element => template.render(element)).join('')
-                : template
+                : (context[key] ? template.render(context[key]) : template)
         );
     result = result.replace(/\?{([^}]+)}([^]*)\?{\/\1}/g, (match, key, template) =>
         context[key] === true ? template : ''
