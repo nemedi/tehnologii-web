@@ -1,4 +1,3 @@
-window.onload = () => goTo('home');
 async function getStudents() {
 	const response = await fetch('/api/students');
 	if (response.status === 200) {
@@ -6,18 +5,6 @@ async function getStudents() {
 	} else {
 		return [];
 	}
-}
-function emptyStudent() {
-	return {
-		id: '',
-		firstName: '',
-		lastName: '',
-		bornDate: '',
-		email: '',
-		phone: '',
-		section: '',
-		group: ''
-	};
 }
 async function getStudent(id) {
 	const response = await fetch(`/api/students/${id}`);
@@ -59,46 +46,31 @@ async function removeStudent(id) {
 }
 async function renderTable() {
 	const view = await getView('table');
-	$('.container').innerHTML = view;
-	$('input[type=button][value=Adauga]').onclick = () => goTo('add');
 	const students = await getStudents();
-	if (students.length > 0) {
-		const _ = $('tbody').innerHTML;
-		$('tbody').innerHTML = students.map(student => _.render(student)).join('');
-		$('tfoot').innerHTML = '';
-		const editButtons = $$('input[type=button][value=Editeaza]');
-		const deleteButtons = $$('input[type=button][value=Sterge]');
-		students.forEach((student, index) => {
-			editButtons[index].onclick = () => goTo(`edit/${student.id}`);
-			deleteButtons[index].onclick = () => goTo(`remove/${student.id}`);
-		});
-	} else {
-		$('tbody').innerHTML = '';
-	}
+	$('.container').innerHTML =
+		view.render({students, noStudents: students.length === 0});
 }
 async function renderForm(id) {
-	const student = id
-		? await getStudent(id)
-		: emptyStudent();
+	const student = id ? await getStudent(id) : {};
 	const view = await getView('form');
-	$('.container').innerHTML = view.render(student);
-	$('form').onsubmit = event => processForm(event.target);
-	$('input[type=button][value=Renunta]').onclick = () => goTo('home');
+	$('.container').innerHTML = view.render({...student,  existing: id !== undefined});
 }
 async function processForm(form) {
-	const student = emptyStudent();
-	Object.keys(student)
+	const student = {};
+	['id', 'firstName', 'lastName', 'bornDate', 'email', 'phone', 'section', 'group']
 		.forEach(key => student[key] = form[key].value);
-	if (student.id.length > 0) {
-		saveStudent(student.id, student);
+	const id = student.id;
+	delete student.id;
+	if (id.length > 0) {
+		saveStudent(id, student);
 	} else {
-		delete student.id;
 		addStudent(student);
 	}
 }
 router({
 	'home': () => renderTable(),
 	'add': () => renderForm(),
-	'edit/:id' : ({id}) => renderForm(id),
-	'remove/:id' : ({id}) => removeStudent(id)
+	'edit/:id': ({id}) => renderForm(id),
+	'remove/:id': ({id}) => removeStudent(id)
 });
+window.onload = () => goTo('home');

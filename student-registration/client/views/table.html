@@ -9,10 +9,11 @@
 				<th><b>Telefon</b></th>
 				<th><b>Specializare</b></th>
 				<th><b>Grupa</b></th>
-				<th><input type="button" value="Adauga"/></th>
+				<th><input type="button" value="Adauga" onclick="goTo('add')"/></th>
 			</tr>
 		</thead>
 		<tbody>
+			#{students}
 			<tr>
 				<td>${lastName}</td>
 				<td>${firstName}</td>
@@ -22,15 +23,18 @@
 				<td>${section}</td>
 				<td>${group}</td>
 				<td>
-					<input type="button" value="Sterge"/>
-					<input type="button" value="Editeaza"/>
+					<input type="button" value="Sterge" onclick="goTo('remove/${id}')"/>
+					<input type="button" value="Editeaza" onclick="goTo('edit/${id}')"/>
 				</td>
 			</tr>
+			#{/students}
 		</tbody>
 		<tfoot>
+			?{noStudents}
 			<tr>
 				<td colspan="8">Nu exista nicio inregistrare, apasati butonul 'Adauga'.</td>
 			</tr>
+			?{/noStudents}
 		</tfoot>
 	</table>
 </div>

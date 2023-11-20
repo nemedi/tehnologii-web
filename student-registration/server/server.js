@@ -1,6 +1,12 @@
 const express = require('express');
 const {join, resolve} = require('path');
-const {getStudents, getStudent, addStudent, saveStudent, removeStudent} = require('./service')('repository.json');
+const {
+	getRecords: getStudents,
+	getRecord: getStudent,
+	addRecord: addStudent,
+	saveRecord: saveStudent,
+	removeRecord: removeStudent}
+	= require('./repository')('repository.json');
 const port = process.env.PORT || 8080;
 express()
 	.use(express.static(join(resolve('..'), 'client')))
