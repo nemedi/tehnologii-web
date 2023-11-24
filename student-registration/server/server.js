@@ -1,3 +1,4 @@
+const {config} = require('dotenv');
 const express = require('express');
 const {join, resolve} = require('path');
 const {
@@ -7,6 +8,7 @@ const {
 	saveRecord: saveStudent,
 	removeRecord: removeStudent}
 	= require('./repository')('repository.json');
+config();
 const port = process.env.PORT || 8080;
 express()
 	.use(express.static(join(resolve('..'), 'client')))

@@ -53,7 +53,7 @@ async function renderTable() {
 async function renderForm(id) {
 	const student = id ? await getStudent(id) : {};
 	const view = await getView('form');
-	$('.container').innerHTML = view.render({...student,  existing: id !== undefined});
+	$('.container').innerHTML = view.render({...student, existing: id !== undefined});
 }
 async function processForm(form) {
 	const student = {};

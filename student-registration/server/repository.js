@@ -8,7 +8,7 @@ module.exports = function(path) {
 			return {};
 		}
 	}
-	function writeRecords(students, path) {
+	function writeRecords(records, path) {
 		writeFileSync(path, JSON.stringify(records));
 	}
 	const records = readRecords(path);
@@ -21,7 +21,7 @@ module.exports = function(path) {
 				});
 		},
 		getRecord(id) {
-			return records[id];		
+			return records[id];
 		},
 		addRecord(record) {
 			const id = uuid.v4();
