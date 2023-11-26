@@ -101,8 +101,8 @@ window.onload = function() {
 			record.roomId = roomId;
 		}
 		form.onsubmit = async (event) => {
-			if (id.length > 0 && addRecord(model, record)
-				|| id.length === 0 && await saveRecord(model, id, record)) {
+			if (id.length === 0 && addRecord(model, record)
+				|| id.length > 0 && await saveRecord(model, id, record)) {
 				goTo('home');
 			}
 		};		

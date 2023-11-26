@@ -69,20 +69,16 @@ window.onload = function() {
 			};
 		}
 		render(view, data);
-		addHandlers(model, id);
+		addHandlers(model);
 	};
-	function addHandlers(model, id) {
+	function addHandlers(model) {
 		const form = $('form');
+		const id = form.getAttribute('data-id');
+		const record = {};
 		form.action = 'javascript:void(0)';
 		form.onsubmit = async () => {
-			let data = new Array(...form.elements)
-				.filter(element => element.getAttribute('data'))
-				.reduce((result, element) => {
-					result[element.getAttribute('data')] = element.value;
-					return result;
-				}, {});
-			if (id.length === 0 && addRecord(`${model}s`, data)
-				|| id.length > 0 && await saveRecord(`${model}s`, id, data)) {
+			if (id.length === 0 && addRecord(`${model}s`, record)
+				|| id.length > 0 && await saveRecord(`${model}s`, id, record)) {
 				goTo('home');
 			}
 		};		
@@ -90,6 +86,9 @@ window.onload = function() {
 		if (id.length > 0) {
 			$('.delete').onclick = () => goTo(`remove/${model}/${id}`);
 		}
+		const handler = event => record[event.target.getAttribute('data')] = event.target.value;
+		$$('input[type=text],textarea,input[type=number],input[type=time],select')
+			.forEach(element => element.onchange = handler);
 		if (model === 'session') {
 			['speaker', 'room'].forEach(selector =>
 				$(`select[data=${selector}Id]+.edit`).onclick = event => {
