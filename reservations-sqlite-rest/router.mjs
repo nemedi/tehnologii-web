@@ -20,7 +20,7 @@ import {
 router.route('/rooms')
  	.get(async (request, response) => getRecords(Room, request, response))
 	.post(async (request, response) => createRecord(Room, request, response))
-	.delete(async (request, response) => removeRecords(Room, request, response))
+	.delete(async (request, response) => removeRecords(Room, request, response));
 
 router.route('/rooms/:id')
 	.get(async (request, response) => getRecord(Room, request, response))

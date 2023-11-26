@@ -70,7 +70,7 @@ async function createRecord(Model, request, response) {
 	if (valid(Model, request.body)) {
 		let record = await Model.create(request.body);
 		response.status(201)
-			.location(`http://${request.headers.host}${request.baseUrl}${request.url}${record.id}`)
+			.location(`${request.protocol}://${request.hostname}:${request.socket.localPort}${request.baseUrl}${request.url}/${record.id}`)
 			.send();
 	} else {
 		response.status(400).send();

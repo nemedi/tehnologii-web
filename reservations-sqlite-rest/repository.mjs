@@ -79,7 +79,7 @@ Contact.belongsToMany(Meeting, {through : Attendee});
 
 async function initialize() {
 	await sequelize.authenticate();
-	await sequelize.sync({alter: true});
+	await sequelize.sync({update: true});
 }
 
 export {
