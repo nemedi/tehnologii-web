@@ -1,0 +1,19 @@
+<div class="container">
+	#{rooms}
+	<div class="column background%{${index} + 1}" style="width:${../width}%">
+		<p class="column-title">
+			<a href="#edit/room/${id}">${name}</a>
+			<a href="#add-session/${id}" class="add">+</a>
+		</p>
+		<div class="cards">
+			#{sessions}
+			<div class="card background%{${../index} + 1}">
+				<p>
+					<a href="#edit/session/${id}">${title}</a>
+				</p>
+			</div>
+			#{/sessions}
+		</div>
+	</div>
+	#{/rooms}
+</div>	

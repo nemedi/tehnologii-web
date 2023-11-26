@@ -1,11 +1,13 @@
+import { config } from 'dotenv';
 import express, { json } from 'express';
 import { join, resolve } from 'path';
 import { initialize } from './repository.mjs';
 import router from './router.mjs';
+config();
 const PORT = process.env.port || 8080;
 express()
 	.use(json())
-	.use(express.static(join(resolve(), 'public')))
+	.use(express.static(join(resolve('..'), 'client')))
 	.use('/models', router)
 	.listen(PORT, async () => {
 		try {
