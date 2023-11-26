@@ -4,7 +4,7 @@ import { join, resolve } from 'path';
 import { initialize } from './repository.mjs';
 import router from './router.mjs';
 config();
-const PORT = process.env.port || 8080;
+const PORT = process.env.PORT || 8080;
 express()
 	.use(json())
 	.use(express.static(join(resolve('..'), 'client')))
