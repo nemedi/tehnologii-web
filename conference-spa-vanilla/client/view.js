@@ -35,24 +35,11 @@ String.prototype.render = function(context) {
                 ? getValue(context, key).map((element, index) => template.render(mergeScopes(context, element, index))).join('')
                 : (getValue(context, key) ? template.render(mergeScopes(context, getValue(context, key))) : template)
         );
-    result = result.replace(/\?{([^}]+)}([^]*)\?{\/\1}/g, (match, key, template) =>
-        context[key] === true ? template.render(context) : ''
-    );
     result = result.replace(/\${([^}]+)}/g, (match, path) => getValue(context, path));
     result = result.replace(/\${[^}]+}/g, '');
+    result = result.replace(/\?{([a-zA-Z0-9]+):([^}]+)}([^]*)\?{\/\1}/g, (match, label, expression, template) =>
+        eval(expression) === true ? template.render(context) : ''
+    );
     result = result.replace(/%{([^}]+)}/g, (match, expression) => eval(expression));
     return result;
 }
-function memoizer(method) {
-    const cache = {};
-    return function() {
-        const key = [...arguments].toString();
-        if (cache[key] === undefined) {
-            cache[key] = method.apply(this, arguments);
-        }
-        return cache[key];
-    };
-}
-const getView = memoizer(async view =>
-	await (await fetch(`/views/${view}.html`)).text()
-);

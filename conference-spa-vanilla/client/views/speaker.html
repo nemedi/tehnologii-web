@@ -9,9 +9,9 @@
 		<input type="text" value="${affiliation}" data="affiliation">
 		<div class="buttons">
 			<input type="submit" class="save" value="Save">
-			?{exists}
+			?{existing: '${id}'.length > 0}
 			<input type="button" class="delete" value="Delete">
-			?{/exists}
+			?{/existing}
 			<input type="reset" value="Cancel">
 		</div>
 	</form>

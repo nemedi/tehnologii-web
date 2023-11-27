@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Iulian ILIE-NEMEDI",
   "scripts": {
-    "debug": "nodemon server.mjs",
+    "development": "nodemon server.mjs",
     "release": "node server.mjs"
   },
   "dependencies": {

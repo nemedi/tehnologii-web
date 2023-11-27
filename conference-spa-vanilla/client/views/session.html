@@ -31,9 +31,9 @@
 		<input type="time" value="${end}" data="end" required>
 		<div class="buttons">
 			<input type="submit" value="Save">
-			?{exists}
+			?{existing: '${id}'.length > 0}
 			<input type="button" class="delete" value="Delete">
-			?{/exists}
+			?{/existing}
 			<input type="reset" value="Cancel">
 		</div>
 	</form>

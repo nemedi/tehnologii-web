@@ -1,4 +1,7 @@
 window.onload = function() {
+	const getView = memoizer(async view =>
+		await (await fetch(`/views/${view}.html`)).text()
+	);
 	function render(view, data) {
 		$('#main').innerHTML = view.render(data);
 	};
@@ -45,30 +48,29 @@ window.onload = function() {
 	};
 	async function loadBoard() {
 		let view = await getView('board');
-		let data = {
+		let context = {
 			rooms: await getRecords('rooms')
 		};
-		for (let room of data.rooms) {
+		for (let room of context.rooms) {
 			room.sessions = await getRecords('sessions', `?roomId=${room.id}`);
 		}
-		render(view, {...data,
-			width: data.rooms.length > 0 ? Math.trunc(100 / data.rooms.length) - 1 : 100
+		render(view, {...context,
+			width: context.rooms.length > 0 ? Math.trunc(100 / context.rooms.length) - 1 : 100
 		});
 	}
 	async function loadForm(model, id, roomId) {
 		let view = await getView(model);
-		let data = await getRecord(`${model}s`, id);
-		data = {...data, exists: data.id !== undefined};
+		let context = await getRecord(`${model}s`, id);
 		if (model === 'session') {
-			if (!data.roomId && roomId) {
-				data.roomId = roomId;
+			if (!context.roomId && roomId) {
+				context.roomId = roomId;
 			}
-			data = {...data,
+			context = {...context,
 				rooms: await getRecords('rooms'),
 				speakers: await getRecords('speakers')
 			};
 		}
-		render(view, data);
+		render(view, context);
 		addHandlers(model);
 	};
 	function addHandlers(model) {
@@ -83,7 +85,7 @@ window.onload = function() {
 			}
 		};		
 		form.onreset = () => goTo('home');
-		if (id.length > 0) {
+		if ($('.delete')) {
 			$('.delete').onclick = () => goTo(`remove/${model}/${id}`);
 		}
 		const handler = event => record[event.target.getAttribute('data')] = event.target.value;
@@ -91,7 +93,7 @@ window.onload = function() {
 			.forEach(element => element.onchange = handler);
 		if (model === 'session') {
 			['speaker', 'room'].forEach(selector =>
-				$(`select[data=${selector}Id]+.edit`).onclick = event => {
+				$(`select[data=${selector}Id]+.edit`).onclick = () => {
 					const id = $(`select[data=${selector}Id]`).value;
 					goTo(`edit/${selector}/${id}`);	
 				});
