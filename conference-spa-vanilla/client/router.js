@@ -43,5 +43,6 @@ function router(routes) {
 	});	
 }
 function goTo(path) {
+	location.hash = '#';
 	location.href = `#${path}`;
 }
