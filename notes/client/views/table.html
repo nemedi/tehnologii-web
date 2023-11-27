@@ -1,0 +1,29 @@
+<table class="notes">
+    <thead>
+        <th align="left" nowrap>
+            <b>Note</b>
+        </th>
+        <th align="center">
+            <input type="button" value="Add">
+        </th>
+    </thead>
+    <tbody>
+        #{notes}
+        <tr>
+            <td align="left">${title}</td>
+            <td align="center">
+                <a href="#edit/${id}">Edit</a>
+            </td>
+        </tr>
+        #{/notes}
+    </tbody>
+    <tfoot>
+        ?{empty}
+        <tr>
+            <td colspan="3" align="center">
+                No notes found, press 'Add' to create a note.
+            </td>
+        </tr>
+        ?{/empty}
+    </tfoot>
+</table>
