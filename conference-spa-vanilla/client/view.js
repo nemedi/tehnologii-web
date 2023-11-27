@@ -37,8 +37,9 @@ String.prototype.render = function(context) {
         );
     result = result.replace(/\${([^}]+)}/g, (match, path) => getValue(context, path));
     result = result.replace(/\${[^}]+}/g, '');
-    result = result.replace(/\?{([a-zA-Z0-9]+):([^}]+)}([^]*)\?{\/\1}/g, (match, label, expression, template) =>
-        eval(expression) === true ? template.render(context) : ''
+    result = result.replace(/\?{([a-zA-Z0-9]+)(?::([^}]+))?}([^]*)\?{\/\1}/g, (match, label, expression, template) =>
+        expression && eval(expression) === true || !expression && eval(getValue(context, label)) === true
+            ? template.render(context) : ''
     );
     result = result.replace(/%{([^}]+)}/g, (match, expression) => eval(expression));
     return result;
