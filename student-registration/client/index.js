@@ -1,3 +1,6 @@
+const getView = memoizer(async view =>
+	await (await fetch(`/views/${view}.html`)).text()
+);
 async function getStudents() {
 	const response = await fetch('/api/students');
 	if (response.status === 200) {

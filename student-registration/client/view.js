@@ -44,16 +44,3 @@ String.prototype.render = function(context) {
     result = result.replace(/%{([^}]+)}/g, (match, expression) => eval(expression));
     return result;
 }
-function memoizer(method) {
-    const cache = {};
-    return function() {
-        const key = [...arguments].toString();
-        if (cache[key] === undefined) {
-            cache[key] = method.apply(this, arguments);
-        }
-        return cache[key];
-    };
-}
-const getView = memoizer(async view =>
-	await (await fetch(`/views/${view}.html`)).text()
-);
