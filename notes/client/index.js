@@ -63,13 +63,11 @@ window.onload = function() {
                 goTo('home');
             }
         };
-        if (id) {
-            form.onreset = async () => {
-                if (await removeNote(id)) {
-                    goTo('home');
-                }
-            };
-        }
+        form.onreset = async () => {
+            if (await removeNote(id)) {
+                goTo('home');
+            }
+        };
         $('input[value=Cancel]').onclick = () => goTo('home');
     };
     router({
