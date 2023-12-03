@@ -1,0 +1,13 @@
+* {
+  font-size: 1.05em;
+}
+th, td {
+  padding: 0.25em;
+}
+input[type=text], textarea {
+  width: 100%;
+}
+input[type=submit], input[type=reset], input[type=button] {
+  width: 6em;
+  margin: 0.25em;
+}
