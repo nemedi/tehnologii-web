@@ -1,11 +1,8 @@
-import React from 'react';
-
 function Square(properties) {
-	return (
-		<button className="square" onClick={() => properties.onClick()}>
-		{properties.value}
-		</button>
-	);
+    return (
+        <button className="square" onClick={() => properties.onClick()}>
+            {properties.value}
+        </button>
+    );
 }
-
 export default Square;
