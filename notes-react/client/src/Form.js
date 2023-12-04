@@ -7,13 +7,12 @@ function Form() {
         content: ''
     });
     const {noteId} = useParams();
-    const loadNote = async () => {
+    const loadNote = async (noteId) => {
         if (noteId) {
 			const response = await fetch(`/api/notes/${noteId}`);
-			setNote(response.status === 200
-                ? await response.json()
-                : {title: '', content: ''}
-            );
+            if (response.status === 200) {
+                setNote(await response.json());
+            }
 		}
     }
     useEffect(() => {loadNote(noteId);}, [noteId]);
@@ -74,8 +73,8 @@ function Form() {
                         <b>Content</b>
                     </td>
                     <td>
-                        <textarea data="content" rows="20" cols="30"
-                            onChange={event => set(event.target.getAttribute('data'), event.target.value)} value={note.content}/>
+                        <textarea data="content" rows="20" cols="30" value={note.content}
+                            onChange={event => set(event.target.getAttribute('data'), event.target.value)}/>
                     </td>
                 </tr>
                 <tr>
@@ -85,7 +84,7 @@ function Form() {
                             noteId &&
                             <input type="button" value="Remove" onClick={removeNote}/>
                         }
-                        <input type="button" value="Cancel" onClick={() => navigate('/')}/>
+                        <input type="reset" value="Cancel"/>
                     </td>
                 </tr>
             </table>

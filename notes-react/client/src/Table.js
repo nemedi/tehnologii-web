@@ -6,16 +6,18 @@ function Table() {
     const navigate = useNavigate();
     const loadNotes = async () => {
         const response = await fetch ('/api/notes');
-        setNotes(response.status === 200 ? await response.json(): []);
+        if (response.status === 200) {
+            setNotes(await response.json());
+        }
     };
     useEffect(() => {loadNotes();}, []);
     return (
         <table>
             <thead>
-                <th align="left" nowrap>
+                <th>
                     <b>Note</b>
                 </th>
-                <th align="center">
+                <th>
                     <input type="button" value="Add" onClick={() => navigate('/add')}/>
                 </th>
             </thead>
@@ -23,8 +25,8 @@ function Table() {
             {
                 notes.map((note, index) =>
                     <tr key={index}>
-                        <td align="left">{note.title}</td>
-                        <td align="center">
+                        <td>{note.title}</td>
+                        <td>
                             <NavLink to={`/edit/${note.id}`}>Edit</NavLink>
                         </td>
                     </tr>
