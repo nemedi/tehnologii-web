@@ -1,6 +1,6 @@
-import { useState } from "react";
+import {useState} from "react";
 import Board from "./Board";
-function Game(properties) {
+function Game() {
     const initialState = {
         history: [{squares: Array(9).fill(null)}],
         next: 0,
@@ -26,16 +26,15 @@ function Game(properties) {
                 return squares[a];
             }
         }
-        return null;
     }
-    function handleClick(i) {
+    function handleClick(index) {
         const history = state.history.slice(0, state.step + 1);
         const current = history[history.length - 1];
-        const squares = current.squares.slice();
-        if (whoIsTheWinner(squares) || squares[i]) {
+        const squares = [...current.squares];
+        if (whoIsTheWinner(squares) || squares[index]) {
             return;
         }
-        squares[i] = players[state.next];
+        squares[index] = players[state.next];
         setState({
             history: history.concat([{squares}]),
             next: 1 - state.next,
@@ -53,27 +52,32 @@ function Game(properties) {
     const winner = whoIsTheWinner(current.squares);
     let status = winner
         ? `Winner: ${winner}`
-        : `Next Player: ${players[state.next]}`;
-    const moves = history.map((step, move) => {
-        const description = move ? `Move #${move}` : 'Game start';
+        : (state.step < 9
+            ? `Next Player: ${players[state.next]}`
+            : 'Game Over');
+    function renderMove(move) {
         return (
             <li key={move}>
-                <a href="#" onClick={() => jumpTo(move)}>{description}</a>
+                <a href="#" onClick={() => jumpTo(move)}>
+                {
+                    move ? `Move #${move}` : 'Game Start'
+                }
+                </a>
             </li>
         );
-    });
+    }
     return (
         <div className="game">
             <div className="game-board">
-                <Board squares={current.squares} onClick={i => handleClick(i)}/>
+                <Board squares={current.squares} onClick={index => handleClick(index)}/>
             </div>
             <div className="game-info">
                 <div>{status}</div>
+                <div><a href="#" onClick={() => reset()}>Reset</a></div>
                 <ol start="0">
-                    <li>
-                        <a href="#" onClick={() => reset()}>Reset</a>
-                    </li>
-                    {moves}
+                {
+                    history.map((step, move) => renderMove(move))
+                }
                 </ol>
             </div>
         </div>

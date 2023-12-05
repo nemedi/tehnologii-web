@@ -1,9 +1,9 @@
 import Square from "./Square";
 function Board(properties) {
-    function renderSquare(i) {
+    function renderSquare(index) {
         return (
-            <Square value={properties.squares[i]}
-                onClick={() => properties.onClick(i)}/>
+            <Square value={properties.squares[index]}
+                onClick={() => properties.onClick(index)}/>
         );
     }
     return (
