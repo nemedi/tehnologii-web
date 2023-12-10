@@ -38,9 +38,9 @@ function SessionForm(props) {
 			setRooms(await response.json());
 		}
 	};
-	useEffect(() => loadSpeakers(), [speakers]);
-	useEffect(() => loadRooms(), [rooms]);
-	useEffect(() => loadSession(sessionId), [sessionId]);
+	useEffect(() => {loadSpeakers();}, [speakers]);
+	useEffect(() => {loadRooms();}, [rooms]);
+	useEffect(() => {loadSession(sessionId);}, [sessionId]);
 	function set(property, value) {
 		const record = {...session};
 		record[property] = value;

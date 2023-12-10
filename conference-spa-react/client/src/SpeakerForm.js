@@ -18,7 +18,7 @@ function SpeakerForm(props) {
 			}
 		}
 	}
-	useEffect(() => loadSpeaker(speakerId) , [speakerId]);	
+	useEffect(() => {loadSpeaker(speakerId);} , [speakerId]);	
 	async function saveSpeaker() {
 		if (speakerId === 'new') {
 			const response = await fetch(`/models/speakers`, {

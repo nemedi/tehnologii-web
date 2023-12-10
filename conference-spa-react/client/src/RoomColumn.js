@@ -12,7 +12,7 @@ function RoomColumn(props) {
 			setSessions(await response.json());
 		}
 	};
-	useEffect(() => loadSessions(props.room.id), [props.room.id]);
+	useEffect(() => {loadSessions(props.room.id);}, [props.room.id]);
 	return (
 		<div className={`column background${props.index % 4 + 1}`} style={style}>
 			<p className="column-title">

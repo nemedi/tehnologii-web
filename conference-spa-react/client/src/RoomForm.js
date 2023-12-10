@@ -17,7 +17,7 @@ function RoomForm(props) {
 			}
 		}
 	}
-	useEffect(() => loadRoom(roomId), [roomId]);
+	useEffect(() => {loadRoom(roomId);}, [roomId]);
 	async function saveRoom() {
 		if (roomId === 'new') {
 			const response = await fetch('/models/rooms', {

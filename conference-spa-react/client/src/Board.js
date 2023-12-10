@@ -9,7 +9,7 @@ function Board() {
       setRooms(await response.json());
     }
   };
-  useEffect(() => loadRooms(), []);
+  useEffect(() => {loadRooms();}, []);
   return (
   <div className="container">
     {
