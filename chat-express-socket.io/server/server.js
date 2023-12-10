@@ -1,12 +1,13 @@
 const {createServer} = require('http');
 const express = require('express');
+const {join, resolve} = require('path');
 const socketio = require('socket.io');
 const application = express();
 const server = createServer(application);
 const io = socketio(server);
 const rooms = ['*', 'Hungary', 'Romania'];
 const messages = [];
-application.use(express.static(`${__dirname}/public`))
+application.use(express.static(join(resolve('..'), 'client')))
 	.get('/rooms', (request, response) => response.json(rooms));
 io.on('connection', socket => {
 	socket.join(rooms[0]);
@@ -29,5 +30,6 @@ io.on('connection', socket => {
 		io.to(socket.room).emit('chat', message);
 	});
 });
-server.listen(process.env.PORT || 8080,
-	() => console.log('Server is running.'));
+const port = process.env.PORT || 8080;
+server.listen(port,
+	() => console.log(`Server is running on ${port}.`));
