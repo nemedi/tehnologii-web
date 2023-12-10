@@ -4,9 +4,9 @@ import {join, resolve} from 'path';
 import chat from './service.mjs';
 
 
-const PORT = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 express()
-	.use(express.static(join(resolve(), 'public')))
+	.use(express.static(join(resolve('..'), 'client')))
 	.use(session({
 		secret: 'szervusz',
 		resave: false,
@@ -43,5 +43,5 @@ express()
 			response.sendStatus(403);
 		}
 	})
-	.listen(PORT, () =>
-		console.log(`Server is running on port ${PORT}.`));
+	.listen(port, () =>
+		console.log(`Server is running on port ${port}.`));
