@@ -1,11 +1,11 @@
 {
-  "name": "server",
+  "name": "chat-redux-server",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon index.mjs"
+    "start": "nodemon server.mjs"
   },
   "dependencies": {
-    "ws": "^8.12.0"
+    "ws": "^8.15.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
