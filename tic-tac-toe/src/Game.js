@@ -72,8 +72,10 @@ function Game() {
                 <Board squares={current.squares} onClick={index => handleClick(index)}/>
             </div>
             <div className="game-info">
-                <div>{status}</div>
-                <div><a href="#" onClick={() => reset()}>Reset</a></div>
+                <div className="status">{status}</div>
+                <div>
+                    <a href="#" onClick={() => reset()}>Reset</a>
+                </div>
                 <ol start="0">
                 {
                     history.map((step, move) => renderMove(move))
