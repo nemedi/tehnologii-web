@@ -5,12 +5,11 @@ import './index.css';
 import store from './store';
 import Application from './application';
 import WebSocketContext from './context';
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <WebSocketContext>
-      <Application />
+      <Application/>
     </WebSocketContext>
   </Provider>
 );

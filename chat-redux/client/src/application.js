@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react';
-import { WebSocketContext } from './context';
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout, send } from './actions';
-import { LOGIN, LOGOUT, CHAT } from './constants';
+import {WebSocketContext} from './context';
+import {useSelector, useDispatch} from 'react-redux';
+import {join, exit, send} from './actions';
+import {JOIN, EXIT, CHAT} from './constants';
 
 function Application() {
   const context = useContext(WebSocketContext);
@@ -12,9 +12,9 @@ function Application() {
   const dispatch = useDispatch();
   function setUser() {
     if (user) {
-      dispatch(logout(context));
+      dispatch(exit(context));
     } else {
-      dispatch(login(context, name));
+      dispatch(join(context, name));
     }
   }
   function sendMessage(event) {
@@ -23,55 +23,56 @@ function Application() {
       event.target.value = '';
     }
   }
+  function renderMessage(message, index) {
+    switch (message.type) {
+      case JOIN:
+        return (
+          <div key={index} className="admin text">
+            User <b>{message.user}</b> has entered the chat.
+          </div>
+        );
+        case EXIT:
+          return (
+            <div key={index} className="admin text">
+              User <b>{message.user}</b> has left the chat.
+            </div>
+          );
+          case CHAT:
+            return (
+              <div key={index}
+                className={message.from === user ? 'me text' : 'other text'}>
+                <b>{message.from}:</b> {message.text}
+              </div>
+            );
+          default:
+            return (
+              <div key={index}>
+                `Unknown message type: ${message.type}.`
+              </div>
+            );
+    }
+  }
   return (
     <div className="container">
       <form>
-        <label>User Name</label>
+        <label>Name</label>
         <input value={name}
           readOnly={user !== undefined}
           onChange={event => setName(event.target.value.trim())}/>
         <input type="button"
-          value={user === undefined ? 'Login' : 'Logout'}
+          value={user === undefined ? 'Join' : 'Exit'}
           onClick={setUser}/>
-        <label>Message</label>
-        <input onKeyUp={sendMessage}
-          readOnly={user === undefined}/>
-        <div className='messages'>
+        {user && (<label>Message</label>)}
+        {user && (<input onKeyUp={sendMessage} readOnly={user === undefined}/>)}
+        {user && (
+          <div className="messages">
           {
-            messages.map(({type, payload}, index) => {
-              switch (type) {
-                case LOGIN:
-                  return (
-                    <div key={index} className="admin">
-                      User <b>{payload}</b> has entered the chat.
-                    </div>
-                  );
-                  case LOGOUT:
-                    return (
-                      <div key={index} className="admin">
-                        User <b>{payload}</b> has left the chat.
-                      </div>
-                    );
-                    case CHAT:
-                      return (
-                        <div key={index}
-                          className={payload.from === user ? 'me' : 'other'}>
-                          <b>{payload.from}:</b> {payload.text}
-                        </div>
-                      );
-                    default:
-                      return (
-                        <div key={index}>
-                          `Unknown message type: ${type}.`
-                        </div>
-                      );
-              }
-            })
+            messages.map((message, index) => renderMessage(message, index))
           }
-        </div>
+          </div>
+        )}
       </form>
     </div>
   );
 }
-
 export default Application;

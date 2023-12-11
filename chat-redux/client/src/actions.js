@@ -1,31 +1,16 @@
-import { LOGIN, LOGOUT, SEND, RECEIVE } from './constants';
-
-export function login(context, name) {
-	context.setUser(name);
-	return {
-		type: LOGIN,
-		payload: name
-	};
+import {JOIN, EXIT, SEND, RECEIVE} from './constants';
+export function join(context, user) {
+	context.setUser(user);
+	return {type: JOIN, user};
 };
-
-export function logout(context) {
+export function exit(context) {
 	context.setUser(undefined);
-	return {
-		type: LOGOUT
-	};
+	return {type: EXIT};
 };
-
-export function send(context, text) {
-	context.sendMessage(text);
-	return {
-		type: SEND,
-		payload: text
-	};
+export function send(context, message) {
+	context.sendMessage(message);
+	return {type: SEND, message};
 };
-
-export function receive(context, text) {
-	return {
-		type: RECEIVE,
-		payload: text
-	};
+export function receive(message) {
+	return {type: RECEIVE, message};
 }

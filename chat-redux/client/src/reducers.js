@@ -1,23 +1,18 @@
-import { LOGIN, LOGOUT, SEND, RECEIVE } from './constants';
-
-const initialState = {
-	user: undefined,
-	messages: []
-};
-
+import {JOIN, EXIT, SEND, RECEIVE} from './constants';
+const initialState = {user: undefined, messages: []};
 export default function chatReducer(state, action) {
 	if (!state) {
 		return initialState;
 	}
 	switch (action.type) {
-		case LOGIN:
-			return {...state, user: action.payload};
-		case LOGOUT:
+		case JOIN:
+			return {...state, user: action.user};
+		case EXIT:
 			return {...state, user: undefined, messages: []};
 		case SEND:
 			return state;
 		case RECEIVE:
-			return {...state, messages: [...state.messages, action.payload]};
+			return {...state, messages: [action.message, ...state.messages]};
 		default:
 			return state;
 	}

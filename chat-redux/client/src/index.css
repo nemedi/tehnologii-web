@@ -14,39 +14,46 @@ input {
   margin: 0.5em;
 }
 input[type=button] {
-  width: 20em;
+  width: 10em;
   color: #fff;
   border-radius: 0.5em;
   
 }
-input[type=button][value=Login] {
+input[type=button][value=Join] {
   background-color: #696;
   border: 1px solid #363;
 }
-input[type=button][value=Logout] {
+input[type=button][value=Exit] {
   background-color: #966;
   border: 1px solid #633;
 }
-div {
+div.text {
   padding: 1em;
   margin: 0.5em;
   border-radius: 0.5em;
 }
 div.messages {
   overflow: vertical;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+div.me, div.other, div.admin {
+  margin: 0.5em;
+  padding: 1em;
 }
 div.me {
-  text-align: right;
+  align-self: flex-start;
   background-color: #9c9;
   border-color: #6a6;
 }
 div.other {
-  text-align: left;
+  align-self: flex-end;
   background-color: #99c;
   border-color: #66a;
 }
 div.admin {
-  text-align: center;
+  align-self: center;
   background-color: #c99;
   border-color: #a66;
 }

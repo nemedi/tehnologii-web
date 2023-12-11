@@ -1,5 +1,5 @@
-export const LOGIN = 'login';
-export const LOGOUT = 'logout';
+export const JOIN = 'join';
+export const EXIT = 'exit';
 export const SEND = 'send';
 export const RECEIVE = 'recieve';
 export const CHAT = 'chat';

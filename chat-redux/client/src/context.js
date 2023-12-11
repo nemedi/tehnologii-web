@@ -1,12 +1,10 @@
-import React, { createContext } from 'react';
-import { useDispatch } from 'react-redux';
-import { ENDPOINT, LOGIN, LOGOUT, CHAT } from './constants';
-import { receive } from './actions'
-
+import React, {createContext} from 'react';
+import {useDispatch} from 'react-redux';
+import {ENDPOINT, JOIN, EXIT, CHAT} from './constants';
+import {receive} from './actions'
 const WebSocketContext = createContext(null);
-export { WebSocketContext };
-
-export default function({ children }) {
+export {WebSocketContext};
+export default function({children}) {
 	let user;
 	let socket;
 	const dispatch = useDispatch();
@@ -17,32 +15,27 @@ export default function({ children }) {
 			if (event.data instanceof Blob) {
 				const reader = new FileReader();
 				reader.onload = () => {
-					dispatch(receive(WebSocketContext,
-						JSON.parse(reader.result)));
+					dispatch(receive(JSON.parse(reader.result)));
 				};
 				reader.readAsText(event.data);
 			} else {
-				dispatch(receive(WebSocketContext,
-					JSON.parse(event.data)));
+				dispatch(receive(JSON.parse(event.data)));
 			}
 		};
 	}
 	function setUser(name) {
-		const message = name
-			? { type: LOGIN, payload: name }
-			: { type: LOGOUT, payload: user };
-		socket.send(JSON.stringify(message));
+		const request = name
+			? {type: JOIN, user: name}
+			: {type: EXIT, user};
+		socket.send(JSON.stringify(request));
 		user = name;
 	}
 	function sendMessage(text) {
-		const message = {
-			type: CHAT,
-			payload: { from: user, text }
-		};
+		const message = {type: CHAT, from: user, text};
 		socket.send(JSON.stringify(message));
 	}
 	return (
-		<WebSocketContext.Provider value={{ setUser, sendMessage }}>
+		<WebSocketContext.Provider value={{setUser, sendMessage}}>
 			{children}
 		</WebSocketContext.Provider>
 	);
