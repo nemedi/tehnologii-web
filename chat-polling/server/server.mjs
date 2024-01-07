@@ -1,7 +1,7 @@
 import express from 'express';
 import session from 'express-session';
 import {join, resolve} from 'path';
-import chat from './service.mjs';
+import service from './service.mjs';
 
 
 const port = process.env.PORT || 8080;
@@ -14,14 +14,14 @@ express()
 	}))
 	.use(express.text())
 	.post('/users', (request, response) => {
-		if (chat.login(request.body, request.session.id)) {
+		if (service.login(request.body, request.session.id)) {
 			response.sendStatus(202);
 		} else {
 			response.sendStatus(403);
 		}
 	})
 	.get('/messages', (request, response) => {
-		const messages = chat.getMessages(request.query.index);
+		const messages = service.getMessages(request.query.index);
 		if (messages.length > 0) {
 			response.json(messages);
 		} else {
@@ -29,14 +29,14 @@ express()
 		}
 	})
 	.post('/messages', (request, response) => {
-		if (chat.addMessage(request.body, request.session.id)) {
+		if (service.addMessage(request.body, request.session.id)) {
 			response.sendStatus(202);
 		} else {
 			response.sendStatus(403);
 		}
 	})
 	.delete('/users', (request, response) => {
-		if (chat.logout(request.session.id)) {
+		if (service.logout(request.session.id)) {
 			request.session.destroy();
 			response.sendStatus(202);
 		} else {
