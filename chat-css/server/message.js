@@ -1,5 +1,4 @@
-const moment = require("moment");
-
+const moment = require('moment');
 module.exports = (user, text) => {
   return {
     user,

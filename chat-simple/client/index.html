@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<title>Chat</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="index.js"></script>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td align="right">User</td>
+				<td>
+					<input id="user">
+				</td>
+			</tr>
+			<tr>
+				<td align="right">Room</td>
+				<td>
+					<select id="room">
+						<option value="">[None]</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td align="right" valign="top">Users</td>
+				<td>
+					<ul id="users"></ul>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">Message</td>
+				<td>
+					<input id="message">
+				</td>
+			</tr>
+			<tr>
+				<td align="right" valign="top">Messages</td>
+				<td>
+					<ul id="messages"></ul>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

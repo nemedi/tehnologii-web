@@ -1,0 +1,14 @@
+{
+  "name": "chat-css-server",
+  "version": "1.0.0",
+  "scripts": {
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "moment": "^2.30.1",
+    "path": "^0.12.7",
+    "socket.io": "^4.7.3"
+  }
+}
