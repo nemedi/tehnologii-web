@@ -6,27 +6,23 @@ const application = express();
 const server = createServer(application);
 const io = socketio(server);
 const rooms = ['*', 'Hungary', 'Romania'];
-const messages = [];
+const messages = {};
+rooms.forEach(room => messages[room] = []);
+function enterRoom(socket, room) {
+	if (socket.room) {
+		socket.leave(socket.room);
+	}
+	socket.join(room);
+	socket.room = room;
+	socket.emit('room', messages[room]);
+}
 application.use(express.static(join(resolve('..'), 'client')))
 	.get('/rooms', (request, response) => response.json(rooms));
 io.on('connection', socket => {
-	socket.join(rooms[0]);
-	socket.room = rooms[0];
-	socket.emit('room',
-			messages
-			.filter(m => m.room === socket.room)
-			.map(m => m.text));
-	socket.on('room', room => {
-		socket.leave(socket.room);
-		socket.join(room);
-		socket.room = room;
-		socket.emit('room',
-			messages
-			.filter(m => m.room === socket.room)
-			.map(m => m.text));
-	});
+	enterRoom(socket, rooms[0]);
+	socket.on('room', room => enterRoom(socket, room));
 	socket.on('chat', message => {
-		messages.push({room: socket.room, text: message});
+		messages[socket.room].push(message);
 		io.to(socket.room).emit('chat', message);
 	});
 });
