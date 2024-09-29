@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Form GET</title>
+        <script>
+            async function send() {
+                const response = await fetch('/form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value
+                    })
+                });
+                const text = await response.text();
+                document.getElementById('output').innerHTML = text;
+            }
+        </script>
+    </head>
+    <body>
+        <form action="javascript:void" onsubmit="send()">
+            First Name <input id="firstName"><br/>
+            Last Name <input id="lastName"><br/>
+            <input type="submit" value="Send"/>
+            <div id="output"></div>
+        </form>
+    </body>
+</html>
