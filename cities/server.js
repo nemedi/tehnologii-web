@@ -1,6 +1,5 @@
 const {DataReader} = require('buffered-reader');
 const express = require('express');
-const {join, resolve} = require('path');
 const locals = {};
 const PORT = process.env.PORT || 8080;
 function initialize(file) {
@@ -37,7 +36,7 @@ function initialize(file) {
 		error => console.log(error));
 }
 express()
-	.use(express.static(join(resolve(), 'public')))
+	.use(express.static('./client'))
 	.get('/cities.json', async (request, response) => response.json(locals.cities))
 	.get('/districts.json', async (request, response) => response.json(locals.districts))
 	.listen(PORT, () => {
@@ -47,5 +46,4 @@ express()
 		} catch (error) {
 			console.error(error);
 		}
-		
 	});
