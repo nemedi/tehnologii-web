@@ -1,7 +1,10 @@
 const {City, District} = require('./models');
 const {from} = require('./route-engine');
 
-from('file:data/in/cities.csv')
+const inFormat = process.argv[2] ? process.argv[2] : "csv";
+const outFormat = process.argv[3] ? process.argv[3] : "json";
+
+from(`file:data/in/cities.${inFormat.toLocaleLowerCase()}`)
 .choice()
     .when(exchange => exchange.headers.path.toLowerCase().endsWith('.csv'))
         .unmarshal('CSV', City)
@@ -46,5 +49,5 @@ from('file:data/in/cities.csv')
     (exchanges, count) => count === exchanges[0].headers.count
 )
 .sort((first, second) => first.name.localeCompare(second.name))
-.marshal('CSV')
-.to('file:data/out/districts.csv');
+.marshal(outFormat.toUpperCase())
+.to(`file:data/out/districts.${outFormat.toLocaleLowerCase()}`);

@@ -4,7 +4,10 @@
 		"fs": "^0.0.1-security"
 	},
 	"scripts": {
-		"aggregate": "node example-aggregate.js",
+		"csv2csv": "node example-cities2districts.js csv csv",
+		"csv2json": "node example-cities2districts.js csv json",
+		"json2json": "node example-cities2districts.js json json",
+		"json2csv": "node example-cities2districts.js json csv",
 		"choice": "node example-choice.js",
 		"resequence": "node example-resequence.js",
 		"main": "node main.js"
