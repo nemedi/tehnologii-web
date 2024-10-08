@@ -1,0 +1,12 @@
+{
+	"name": "route-engine",
+	"dependencies": {
+		"fs": "^0.0.1-security"
+	},
+	"scripts": {
+		"aggregate": "node example-aggregate.js",
+		"choice": "node example-choice.js",
+		"resequence": "node example-resequence.js",
+		"main": "node main.js"
+	}
+}
