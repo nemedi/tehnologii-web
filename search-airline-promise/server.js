@@ -1,10 +1,9 @@
 const express = require('express');
-const {join, resolve} = require('path');
 const {searchAirline, searchFlights} = require('./service');
 
 const PORT = process.env.PORT || 8080;
 express()
-	.use(express.static(join(resolve(), 'public')))
+	.use(express.static('./client'))
 	.get('/airlines/:name', (request, response) =>
 		searchAirline(request.params.name)
 			.then(airlines => response.json(airlines),
