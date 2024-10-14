@@ -1,4 +1,6 @@
 const {DataReader} = require('buffered-reader');
+const fs = require('fs');
+const csv = require('csv-parser');
 const express = require('express');
 const locals = {};
 const PORT = process.env.PORT || 8080;
@@ -14,31 +16,21 @@ function initialize(file) {
 		);
 	};
 	readLines(file).then(
-		lines => {
+		lines => 
 			locals.cities = lines.map(line => {
-				var segments = line.split(',');
+				var data = line.split(',');
 				return {
-					name: segments[1],
-					district: segments[2],
-					inhabitants: parseInt(segments[3])
+					name: data[1],
+					district: data[2],
+					inhabitants: parseInt(data[3])
 				};
-			});
-			locals.districts = locals.cities.reduce((items, city) => {
-				const district = items.find(item => item.name === city.district);
-				if (district) {
-					district.inhabitants += city.inhabitants;
-				} else {
-					items.push({name: city.district, inhabitants: city.inhabitants});
-				}
-				return items;
-			}, []);
-		},
+			})
+		,
 		error => console.log(error));
 }
 express()
 	.use(express.static('./client'))
-	.get('/cities.json', async (request, response) => response.json(locals.cities))
-	.get('/districts.json', async (request, response) => response.json(locals.districts))
+	.get('/cities.json', (request, response) => response.json(locals.cities))
 	.listen(PORT, () => {
 		try {
 			initialize('cities.csv');

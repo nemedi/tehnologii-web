@@ -2,42 +2,36 @@ const locals = {
 	districts: [],
 	cities: []
 };
-function districts() {
-	return document.getElementsByTagName('select')[0];
-}
-function cities() {
-	return document.getElementsByTagName('table')[0];
-}
-async function load() {
-	districts().onchange = loadDistrict;
-	loadDistricts();
-	loadCities();
-}
-async function loadDistricts() {
-	const response = await fetch('/districts.json');
+window.onload = async function() {
+	const response = await fetch('/cities.json');
 	if (response.status === 200) {
-		locals.districts = await response.json();
-		districts().innerHTML +=
+		locals.cities = await response.json();
+		locals.districts = locals.cities.reduce((items, city) => {
+			const district = items.find(item => item.name === city.district);
+			if (district) {
+				district.inhabitants += city.inhabitants;
+			} else {
+				items.push({name: city.district, inhabitants: city.inhabitants});
+			}
+			return items;
+		}, []);
+		const districtsElements = document.getElementsByTagName('select')[0];
+		districtsElements.innerHTML +=
 			locals.districts
 				.sort((first, second) => first.name < second.name ? -1
 					: (first.name > second.name ? 1 : 0))
 				.map(district => `<option>${district.name}</option>`)
 				.join('');
+		districtsElements.onchange = loadDistrict;
 	}
 }
-async function loadCities() {
-	const response = await fetch('/cities.json');
-	if (response.status === 200) {
-		locals.cities = await response.json();
-	}
-}
-
 function loadDistrict() {
-	cities().innerHTML = '';
-	const name = districts().value;
+	const citiesElement = document.getElementsByTagName('table')[0];
+	citiesElement.innerHTML = '';
+	const name = this.value;
 	const district = locals.districts.find(item => item.name === name);
 	if (district) {
-		cities().innerHTML =
+		citiesElement.innerHTML =
 			`
 				<tr>
 					<td colspan="2">Inhabitants: ${district.inhabitants}</td>
