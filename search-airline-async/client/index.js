@@ -1,3 +1,7 @@
+window.onload = function() {
+	document.getElementsByTagName('input')[0].onkeyup =
+		event => searchAirline(event.target.value.trim());
+}
 async function searchAirline(name) {
 	let html = '';
 	if (name.length > 2) {
@@ -7,7 +11,10 @@ async function searchAirline(name) {
 			html = '<ul>';
 			for (airline of body) {
 				html += `<li>
-							<a href="javascript:void(0)" onclick="searchFlights({name: '${airline.name}', id: '${airline.id}'})">${airline.name}</a>
+							<a href="javascript:void(0)"
+								onclick="searchFlights({name: '${airline.name}', id: '${airline.id}'})">
+								${airline.name}
+							</a>
 						</li>`;
 			}
 			html += '</ul>';
@@ -15,11 +22,12 @@ async function searchAirline(name) {
 			html = 'No results found.';
 		}
 	}
-	document.getElementById('results').innerHTML = html;
+	document.getElementsByTagName('div')[0].innerHTML = html;
 }
-
 async function searchFlights(airline) {
-	document.getElementById('results').innerHTML = `Loading flights for <b>${airline.name}</b>, this may take a while...`;
+	const resultsElement = document.getElementsByTagName('div')[0];
+	resultsElement.innerHTML =
+		`Loading flights for <b>${airline.name}</b>, this may take a while...`;
 	const response = await fetch(`flights/${airline.id}`);
 	const body = await response.json();
 	let html = 'No results found.';
@@ -43,5 +51,5 @@ async function searchFlights(airline) {
 		}
 		html += '</table>';
 	}
-	document.getElementById('results').innerHTML = html;
+	resultsElement.innerHTML = html;
 }
