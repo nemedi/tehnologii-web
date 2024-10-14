@@ -1,4 +1,9 @@
+window.onload = function() {
+	document.getElementsByTagName('input')[0].onkeyup =
+		event => searchAirline(event.target.value.trim());
+}
 function searchAirline(name) {
+	const resultsElement = document.getElementsByTagName('div')[0];
 	if (name.length > 2) {
 		fetch(`airlines/${name}`)
 			.then(response => response.json())
@@ -7,22 +12,27 @@ function searchAirline(name) {
 					var html = '<ul>';
 					for (airline of body) {
 						html += `<li>
-									<a href="javascript:void(0)" onclick="searchFlights({name: '${airline.name}', id: '${airline.id}'})">${airline.name}</a>
+									<a href="javascript:void(0)"
+										onclick="searchFlights({name: '${airline.name}', id: '${airline.id}'})">
+										${airline.name}
+									</a>
 								</li>`;
 					}
 					html += '</ul>';
 				} else {
 					html = 'No results found.';
 				}
-				document.getElementById('results').innerHTML = html;
+				resultsElement.innerHTML = html;
 			});
 	} else {
-		document.getElementById('results').innerHTML = '';
+		resultsElement.innerHTML = '';
 	}
 }
 
 function searchFlights(airline) {
-	document.getElementById('results').innerHTML = `Loading flights for <b>${airline.name}</b>, this may take a while...`;
+	const resultsElement = document.getElementsByTagName('div')[0];
+	resultsElement.innerHTML =
+		`Loading flights for <b>${airline.name}</b>, this may take a while...`;
 	fetch(`flights/${airline.id}`)
 		.then(response => response.json())
 		.then(body => {
@@ -47,6 +57,6 @@ function searchFlights(airline) {
 				}
 				html += '</table>';
 			}
-			document.getElementById('results').innerHTML = html;
+			resultsElement.innerHTML = html;
 		});
 }

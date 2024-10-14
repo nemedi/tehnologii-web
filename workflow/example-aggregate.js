@@ -47,7 +47,7 @@ from('file:data/in')
     },
     (exchanges, count) => count === exchanges[0].headers.count
 )
-// .sort((first, second) => first.name.localeCompare(second.name))
+.sort((first, second) => first.name.localeCompare(second.name))
 .marshal('CSV')
 .to('file:data/out/districts.csv');
 run();

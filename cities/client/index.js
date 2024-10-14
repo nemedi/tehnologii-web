@@ -1,23 +1,20 @@
-const locals = {
-	districts: [],
-	cities: []
-};
+const cache = {};
 window.onload = async function() {
 	const response = await fetch('/cities.json');
 	if (response.status === 200) {
-		locals.cities = await response.json();
-		locals.districts = locals.cities.reduce((items, city) => {
-			const district = items.find(item => item.name === city.district);
+		cache.cities = await response.json();
+		cache.districts = cache.cities.reduce((districts, city) => {
+			const district = districts.find(item => item.name === city.district);
 			if (district) {
 				district.inhabitants += city.inhabitants;
 			} else {
-				items.push({name: city.district, inhabitants: city.inhabitants});
+				districts.push({name: city.district, inhabitants: city.inhabitants});
 			}
-			return items;
+			return districts;
 		}, []);
 		const districtsElements = document.getElementsByTagName('select')[0];
 		districtsElements.innerHTML +=
-			locals.districts
+			cache.districts
 				.sort((first, second) => first.name < second.name ? -1
 					: (first.name > second.name ? 1 : 0))
 				.map(district => `<option>${district.name}</option>`)
@@ -29,7 +26,7 @@ function loadDistrict() {
 	const citiesElement = document.getElementsByTagName('table')[0];
 	citiesElement.innerHTML = '';
 	const name = this.value;
-	const district = locals.districts.find(item => item.name === name);
+	const district = cache.districts.find(item => item.name === name);
 	if (district) {
 		citiesElement.innerHTML =
 			`
@@ -41,7 +38,7 @@ function loadDistrict() {
 					<td align="right"><b>Inhabitants</b></td>
 				</tr>
 			`
-			+ locals.cities.filter(city => city.district === district.name)
+			+ cache.cities.filter(city => city.district === district.name)
 				.sort((first, second) => first.name < second.name ? -1
 					: (first.name > second.name ? 1 : 0))
 				.map(city =>

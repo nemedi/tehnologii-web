@@ -11,7 +11,7 @@
     "response-redirect": "node response-redirect.js"
   },
   "dependencies": {
-    "express": "4.21.0"
+    "express": "^4.21.0"
   },
   "devDependencies": {
     "nodemon": "3.1.7"
