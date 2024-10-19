@@ -1,3 +1,7 @@
+window.onload = function() {
+	document.querySelector('input[name="name"]').onkeyup = event => searchName(event);
+};
+
 function searchName(event) {
 	const resultsTag = document.getElementById('results');
 	if (event.target.value.trim().length === 0) {

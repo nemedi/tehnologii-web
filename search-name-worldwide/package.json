@@ -5,7 +5,6 @@
     "server": "node server.js"
   },
   "dependencies": {
-    "express": "^4.21.0",
-    "node-fetch": "^2.7.0"
+    "express": "^4.21.0"
   }
 }

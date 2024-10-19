@@ -1,4 +1,3 @@
-const fetch = require('node-fetch');
 const endpoint = 'https://api.nationalize.io/?name=';
 const countries = require('./countries');
 
