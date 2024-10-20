@@ -1,9 +1,8 @@
-const {resolve, join} = require('path');
 const express = require('express');
 const service = require('./service')('items.json');
 const PORT = process.env.PORT || 8080;
 express()
-    .use(express.static(join(resolve(), 'web')))
+    .use(express.static('../client'))
     .use(express.text())
     .get('/items', (request, response) => {
         const items = service.getItems();

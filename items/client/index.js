@@ -1,4 +1,4 @@
-async function load() {
+window.onload = async function load() {
     document.getElementsByTagName('input')[0].onkeyup = addItem;
     const response = await fetch('/items');
     if (response.status === 200) {

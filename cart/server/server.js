@@ -1,11 +1,10 @@
 const express = require('express');
 const session = require('express-session');
-const {resolve, join} = require('path');
 const {getProducts, getCartItems, addCartItem, incrementCartItem, decrementCartItem} = require('./store');
 
 const PORT = process.env.PORT || 8080;
 express()
-    .use(express.static(join(resolve(), 'web')))
+    .use(express.static('../client'))
     .use(session({
         secret: 'szervusz',
         resave: false,
