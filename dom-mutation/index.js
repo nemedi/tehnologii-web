@@ -1,5 +1,5 @@
 window.onload = function() {
-    spy(document.body, 'div',
+    spyOn(document.body, 'div',
         node => node.innerText = 'Jos Iliescu!');    
     document.querySelector('input[type="button"]').addEventListener('click', function(event) {
         const text = document.querySelector('input[type="text"]').value.trim();
