@@ -1,6 +1,5 @@
 const {config} = require('dotenv');
 const express = require('express');
-const {join, resolve} = require('path');
 const {
 	getRecords: getStudents,
 	getRecord: getStudent,
@@ -11,7 +10,7 @@ const {
 config();
 const port = process.env.PORT || 8080;
 express()
-	.use(express.static(join(resolve('..'), 'client')))
+	.use(express.static('../client'))
 	.use(express.json())
 	.get('/api/students', (request, response) => {
 		const students = getStudents();
