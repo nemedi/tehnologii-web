@@ -1,9 +1,8 @@
 const express = require('express');
-const {join, resolve} = require('path');
 const {getTasksByStatus, changeTaskStatus} = require('./service')('tasks.json');
 const PORT = process.env.PORT || 8080;
 express()
-    .use(express.static(join(resolve('..'), 'client')))
+    .use(express.static('../client'))
     .get('/tasks', (request, response) => {
         const tasksByStatus = getTasksByStatus();
         if (Object.keys(tasksByStatus).length > 0) {
