@@ -1,4 +1,4 @@
-const {readFileSync, writeFileSync,  existsSync} = require('fs');
+const {readFileSync, writeFileSync, existsSync} = require('fs');
 module.exports = function(path) {
     function loadItems(path) {
         if (existsSync(path)) {
