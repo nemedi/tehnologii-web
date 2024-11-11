@@ -1,10 +1,9 @@
 const express = require('express');
-const {join, resolve} = require('path');
 const {getFigures, addFigure, addPointToFigure, removeFigure} = require('./service');
 
 const PORT = process.env.PORT || 8080;
 express()
-	.use(express.static(join(resolve('..'), 'client')))
+	.use(express.static('../client'))
 	.use(express.json())
 	.get('/figures', (request, response) => {
 		response.json(getFigures());
