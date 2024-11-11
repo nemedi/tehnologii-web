@@ -1,4 +1,4 @@
-async function load() {
+window.addEventListener('load', async () => {
     const response = await fetch('/tasks');
     if (response.status === 200) {
         const tasksByStatus = await response.json();
@@ -8,9 +8,9 @@ async function load() {
                 .taskBoard(tasksByStatus, async (task, oldStatus, newStatus) => {
                     const response = await fetch('/tasks'
                         + `?task=${task}&oldStatus=${oldStatus}&newStatus=${newStatus}`,
-                        {method: 'PUT'});
+                        {method: 'PATCH'});
                     return response.status === 204;
                 });
         }
     }
-}
+});

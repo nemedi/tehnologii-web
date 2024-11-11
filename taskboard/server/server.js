@@ -11,7 +11,7 @@ express()
             response.sendStatus(204);
         }
     })
-    .put('/tasks', (request, response) => {
+    .patch('/tasks', (request, response) => {
         if (request.query.task
             && request.query.oldStatus
             && request.query.newStatus) {
