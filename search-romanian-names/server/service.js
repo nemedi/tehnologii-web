@@ -1,19 +1,14 @@
-const fetch = require('node-fetch');
-
 async function resolveDistrict(latitude, longitude) {
 	const endpoint = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
-	console.log(endpoint);
 	const response = await fetch(endpoint);
 	const body = await response.json();
 	return body && body.address && body.address.country === 'România'
 		? body.address.county
 		: undefined;
 }
-
 async function searchName(name) {
 	try {
 		const endpoint = `https://nume.ottomotor.ro/get_nume.json?zoom=7&nw_lat=49.5822260446217&nw_lng=19.423828125000004&se_lat=42.18782901059085&se_lng=30.662841796875004&search=${name}`;
-		console.log(endpoint);
 		const response = await fetch(endpoint);
 		const body = await response.json();
 		if (body && body.ani) {
@@ -47,5 +42,4 @@ async function searchName(name) {
 		return [];
 	}
 }
-
 module.exports = searchName;
