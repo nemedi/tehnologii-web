@@ -1,9 +1,9 @@
-HTMLElement.prototype.tasks = function(data) {
+HTMLElement.prototype.tasks = function(data, {addTask, removeTask}) {
 	const title = document.createElement('h1');
 	title.innerText = data.title;
 	this.appendChild(title);
 	const form = document.createElement('form');
-	form.setAttribute('action', '/add-task');
+	form.setAttribute('action', addTask);
 	form.setAttribute('method', 'post');
 	var paragraph = document.createElement('p');
 	const list = document.createElement('ul');
@@ -11,7 +11,7 @@ HTMLElement.prototype.tasks = function(data) {
 		const item = document.createElement('li');
 		const link = document.createElement('a');
 		link.innerText = task.description;
-		link.setAttribute('href', `/remove-task/${task.id}`);
+		link.setAttribute('href', `${removeTask}/${task.id}`);
 		item.appendChild(link);
 		list.appendChild(item);
 	});

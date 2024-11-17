@@ -1,12 +1,11 @@
-HTMLElement.prototype.tasks = function(data) {
+HTMLElement.prototype.tasks = function(data, {addTask, removeTask}) {
 	function createItem(task) {
 		const item = document.createElement('li');
 		const link = document.createElement('a');
 		link.innerText = task.description;
 		link.setAttribute('href', 'javascript:void(0)');
 		link.addEventListener('click', async event => {
-			const response = await fetch(`/tasks/${task.id}`, {method: 'DELETE'});
-			if (response.status === 204) {
+			if (await removeTask(task.id)) {
 				event.target.parentNode.parentNode.removeChild(event.target.parentNode);
 			}
 		});
@@ -34,15 +33,11 @@ HTMLElement.prototype.tasks = function(data) {
 	button.setAttribute('type', 'button');
 	button.setAttribute('value', 'Add Task');
 	button.addEventListener('click', async event => {
-		const response = await fetch(`/tasks`,
-			{
-				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
-				body: `task=${document.getElementById('task').value}`
-			});
-		const task = await response.json();
-		list.appendChild(createItem(task));
-		document.getElementById('task').value = '';
+		let task = await addTask(`task=${document.getElementById('task').value}`);
+		if (task) {
+			list.appendChild(createItem(task));
+			document.getElementById('task').value = '';
+		}
 	});
 	paragraph.appendChild(button);
 	this.appendChild(paragraph);

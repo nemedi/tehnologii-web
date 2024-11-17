@@ -1,6 +1,6 @@
 const express = require('express');
 const {getTasks, addTask, removeTask} = require('./service')('repository.json');
-const port = process.env.port || 8080;
+const PORT = process.env.PORT || 8080;
 express()
 	.use(express.urlencoded({extended: true}))
 	.set('view engine', 'pug')
@@ -16,4 +16,4 @@ express()
 			response.redirect('/');
 		}
 	})
-	.listen(port, () => console.log(`Server is running on port ${port}.`));
+	.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));

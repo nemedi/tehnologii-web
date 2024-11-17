@@ -1,16 +1,16 @@
 {
 	"name": "tasks-sync-monolit",
 	"dependencies": {
-		"express": "^4.18.2",
+		"express": "^4.21.1",
 		"fs": "^0.0.1-security",
-		"uuid": "^9.0.1",
-		"pug": "3.0.2"
+		"uuid": "^11.0.3",
+		"pug": "^3.0.3"
 	},
 	"scripts": {
 		"server": "nodemon server.js"
 	},
 	"devDependencies": {
-		"nodemon": "^3.0.1"
+		"nodemon": "^3.1.7"
 	},
 	"nodemonConfig": {
 		"ignore": ["repository.json"]

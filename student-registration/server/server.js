@@ -31,7 +31,7 @@ express()
 	.post('/api/students', (request, response) => {
 		const id = addStudent(request.body);
 		response.setHeader('Location',
-			`${request.protocol}://${request.hostname}${request.path}/${id}`);
+			`${request.protocol}://${request.hostname}:${request.socket.localPort}${request.path}/${id}`);
 		response.sendStatus(201);
 	})
 	.put('/api/students/:id', (request, response) => {

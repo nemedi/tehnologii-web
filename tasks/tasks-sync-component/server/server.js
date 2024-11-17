@@ -1,10 +1,9 @@
 const express = require('express');
-const {join, resolve} = require('path');
 const {getTasks, addTask, removeTask} = require('./service')('repository.json');
-const port = process.env.port || 8080;
+const PORT = process.env.PORT || 8080;
 express()
 	.use(express.urlencoded({extended: true}))
-	.use(express.static(join(resolve('..'), 'client')))
+	.use(express.static('../client'))
 	.get('/get-tasks', (request, response) => {
 		response.send(`${request.query.callback}({
 			title: "Tasks",
@@ -20,4 +19,4 @@ express()
 			response.redirect('/index.html');
 		}
 	})
-	.listen(port, () => console.log(`Server is running on port ${port}.`));
+	.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));
