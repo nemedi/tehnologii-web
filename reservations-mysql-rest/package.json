@@ -1,13 +1,12 @@
 {
 	"dependencies": {
-		"express": "^4.17.1",
-		"express-basic-auth": "^1.2.0",
-		"path": "^0.12.7",
+		"express": "^4.21.1",
+		"express-basic-auth": "^1.2.1",
 		"fs": "^0.0.1-security",
-		"sequelize": "^6.11.0",
-		"mysql2": "^2.3.3",
-		"swagger-jsdoc": "^6.1.0",
-		"swagger-ui-express": "^4.1.6"
+		"sequelize": "^6.37.5",
+		"mysql2": "^3.11.4",
+		"swagger-jsdoc": "^6.2.8",
+		"swagger-ui-express": "^5.0.1"
 	},
 	"scripts": {
 		"server": "node server.js"
