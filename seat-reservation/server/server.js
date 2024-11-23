@@ -1,11 +1,10 @@
 const express = require('express');
 const session = require('express-session');
-const {join, resolve} = require('path');
 const {getSeats, reserveSeat, unreserveSeat} = require('./service');
 
 const PORT = process.env.PORT || 8080;
 express()
-	.use(express.static(join(resolve(), 'public')))
+	.use(express.static('../client'))
 	.use(session({
 		secret: 'szervusz',
 		resave: false,
@@ -20,23 +19,19 @@ express()
 		}
 	})
 	.post('/seats', (request, response) => {
-		response.sendStatus(
-			reserveSeat(
-				parseInt(request.query.row),
-				parseInt(request.query.column),
-				request.session
-			)
-			? 204 : 403
+		const done = reserveSeat(
+			parseInt(request.query.row),
+			parseInt(request.query.column),
+			request.session
 		);
+		response.sendStatus(done ? 204 : 403);
 	})
 	.delete('/seats', (request, response) => {
-		response.sendStatus(
-			unreserveSeat(
-				parseInt(request.query.row),
-				parseInt(request.query.column),
-				request.session
-			)
-			? 204 : 403
+		const done = unreserveSeat(
+			parseInt(request.query.row),
+			parseInt(request.query.column),
+			request.session
 		);
+		response.sendStatus(done ? 204 : 403);
 	})
 	.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));

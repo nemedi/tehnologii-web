@@ -1,19 +1,20 @@
-HTMLElement.prototype.seatReservation = function (options) {
+HTMLElement.prototype.seatReservation = async function (handlers) {
 	const AVAILABLE = 1;
 	const RESERVED = 2;
+	const seats = await handlers.getSeats();
 	const className = ['unavailable', 'available', 'reserved'];
 	updateSeat = async (row, column, status) => {
 		const cell = document.querySelector(`div[data-row="${row}"][data-column="${column}"]`);
 		if (status === RESERVED) {
-			if (await options.reserveSeat(row, column)) {
+			if (await handlers.reserveSeat(row, column)) {
 				cell.className = 'seat selected';
-				options.seats[row][column] = status;
+				seats[row][column] = status;
 				return true;
 			}
 		} else if (status === AVAILABLE) {
-			if (await options.unreserveSeat(row, column)) {
+			if (await handlers.unreserveSeat(row, column)) {
 				cell.className = 'seat available';
-				options.seats[row][column] = status;
+				seats[row][column] = status;
 				return true;
 			}
 		}
@@ -22,13 +23,13 @@ HTMLElement.prototype.seatReservation = function (options) {
 	handleClick = async (cell) => {
 		const row = parseInt(cell.dataset.row);
 		const column = parseInt(cell.dataset.column);
-		const seat = options.seats[row][column];
+		const seat = seats[row][column];
 		if (seat === AVAILABLE) {
-			let ok = true;
+			let done = true;
 			if (sessionStorage.row && sessionStorage.column) {
-				ok = await updateSeat(parseInt(sessionStorage.row), parseInt(sessionStorage.column), AVAILABLE);
+				done = await updateSeat(parseInt(sessionStorage.row), parseInt(sessionStorage.column), AVAILABLE);
 			}
-			if (ok && await updateSeat(row, column, RESERVED)) {
+			if (done && await updateSeat(row, column, RESERVED)) {
 				sessionStorage.row = row;
 				sessionStorage.column = column;
 			}
@@ -39,19 +40,20 @@ HTMLElement.prototype.seatReservation = function (options) {
 			}
 		}
 	};
+	
 	this.innerHTML = '<table cellspacing="0" cellpadding="0" class="screen">'
-		+ options.seats.map((seats, row) =>
+		+ seats.map((items, row) =>
 				'<tr>'
 					+ `<td class="seat">${row + 1}</td>`
-						+ seats.map((seat, column) =>
+						+ items.map((item, column) =>
 								`<td>
 									<div data-row="${row}"
 										data-column="${column}"
 										class="seat ${row === parseInt(sessionStorage.row)
 											&& column === parseInt(sessionStorage.column)
-											? 'selected' : className[seat]}"
+											? 'selected' : className[item]}"
 										onclick="handleClick(this)">
-										${seat !== 0 ? column + 1 : ''}
+										${item !== 0 ? column + 1 : ''}
 									</div>
 								</td>`)
 							.reduce((html, item) => html += item, '')
