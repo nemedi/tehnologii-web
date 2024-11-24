@@ -15,7 +15,7 @@ import {
 	removeSubrecord
 } from './service.mjs';
 
- const router = express.Router();
+const router = express.Router();
 
 router.route('/rooms')
  	.get(async (request, response) => getRecords(Room, request, response))

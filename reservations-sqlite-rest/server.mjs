@@ -5,7 +5,8 @@ import security from './security.mjs';
 import router from './router.mjs';
 config();
 const PORT = process.env.PORT || 8080;
-express()
+const application = express();
+application
 	.use(json())
 	.use('/api', security)
 	.use((error, request, response, next) => {
