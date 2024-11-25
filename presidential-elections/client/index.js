@@ -2,7 +2,7 @@ window.onload = async function() {
     document.getElementById('chart')
         .pieChart(async () => await (await fetch('/results')).json(), {
             title: 'Rezultate alegeri prezidentiale 2024',
-            colors: ['#FF5733', '#33FF57', '#3357FF', '#FF33A8', '#FFC133', '#33FFF2', '#8D33FF',
-                '#FF8C33', '#33D4FF', '#FF333F', '#4DFF33', '#FF33D4', '#FFD633', '#338CFF']
+            colors: ['#E7869D', '#EF4D54', '#6D9ECE', '#F5B661', '#FFE866', '#A6D6FE', '#6BC48D',
+                '#F9A69B', '#7D8AB5', '#A998E3', '#6BA87A', '#6BA1C7', '#8A7EBF', '#E2EB9F']
         });
 };
