@@ -19,7 +19,11 @@ async function getResults() {
                 .map(element => parseFloat(element.textContent.replace(',', '.').replace('%', '').trim()));
         });
         let i = 0;
-        while (i < candidates.length && i < votes.length) {
+        let length = Math.min(candidates.length, votes.length);
+        if (length > 14) {
+            length = 14;
+        }
+        while (i < length) {
             results[candidates[i]] = votes[i];
             i++;
         }
