@@ -12,7 +12,8 @@ HTMLElement.prototype.pieChart = async function(getData, options) {
     if (!options.radius) {
         options.radius = 100;
     }
-    const data = await getData();
+    const data = getData.constructor.name === 'AsyncFunction'
+        ? await getData() : getData();
     this.innerHTML = '';
     const canvas = document.createElement('canvas');
     canvas.width = canvas.height = 2 * options.radius;
