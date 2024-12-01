@@ -1,0 +1,20 @@
+<table border="0" cellspacing="0" cellpadding="5">
+    <tr>
+        <th align="right"><b>No.</b></th>
+        <th align="left"><b>Flight</b></th>
+        <th align="left"><b>From</b></th>
+        <th align="left"><b>To</b></th>
+        <th align="left"><b>Airline</b></th>
+        <th align="left"><b>Aircraft</b></th>
+    </tr>
+    #{flights}
+    <tr>
+        <td align="right">%{${index} + 1}</td>
+        <td align="left">${number}</td>
+        <td align="left">${from}</td>
+        <td align="left">${to}</td>
+        <td align="left">${airline}</td>
+        <td align="left">${aircraft}</td>
+    </tr>
+    #{/flights}
+</table>
