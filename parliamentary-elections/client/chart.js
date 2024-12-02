@@ -12,6 +12,9 @@ HTMLElement.prototype.pieChart = async function(getData, options) {
     if (!options.radius) {
         options.radius = 100;
     }
+    if (!options.total) {
+        options.total = 100;
+    }
     const data = getData.constructor.name === 'AsyncFunction'
         ? await getData() : getData();
     this.innerHTML = '';
@@ -20,12 +23,16 @@ HTMLElement.prototype.pieChart = async function(getData, options) {
     this.appendChild(canvas);
     const context = canvas.getContext('2d');
     const total = Object.values(data).reduce((sum, value) => sum += value, 0);
+    if (options.percentage) {
+        options.total = total;
+    }
     let currentAngle = 0;
     let colorIndex = 0;
     const table = document.createElement('table');
     html = options.title ? `<tr><td colspan="3"><b>${options.title}</b></td></tr>` : '';
     Object.entries(data).forEach(([label, value]) => {
         let portionAngle = (value / total) * 2 * Math.PI;
+        portionAngle = portionAngle * options.total / 100;
         context.beginPath();
         context.arc(options.radius, options.radius, options.radius, currentAngle, currentAngle + portionAngle);
         currentAngle += portionAngle;
