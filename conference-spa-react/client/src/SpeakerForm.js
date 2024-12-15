@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from "react-router-dom";
 import './confirmDialog';
 
-function SpeakerForm(props) {
+function SpeakerForm() {
 	const navigate = useNavigate();
 	const {speakerId} = useParams();
 	const [speaker, setSpeaker] = useState({

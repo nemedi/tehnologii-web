@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate} from "react-router-dom";
 import './confirmDialog';
 
-function RoomForm(props) {
+function RoomForm() {
 	const navigate = useNavigate();
 	const {roomId} = useParams();
 	const [room, setRoom] = useState({

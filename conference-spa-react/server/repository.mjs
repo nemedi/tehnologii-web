@@ -79,7 +79,7 @@ Session.belongsTo(Speaker, {foreignKey: 'speakerId'});
 
 async function initialize() {
 	await sequelize.authenticate();
-	await sequelize.sync({alter: true});
+	await sequelize.sync({alter: false});
 }
 
 export {

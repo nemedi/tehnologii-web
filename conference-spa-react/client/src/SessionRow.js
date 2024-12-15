@@ -1,10 +1,10 @@
 import React from 'react';
 
-function SessionRow(props) {
+function SessionRow(properties) {
 	return (
-		<div className={`card background${props.index % 4 + 1}`}>
+		<div className={`card background${properties.index % 4 + 1}`}>
 			<p>
-				<a href={`#/sessions/${props.session.id}`}>{props.session.title}</a>
+				<a href={`#/sessions/${properties.session.id}`}>{properties.session.title}</a>
 			</p>
 		</div>		
 	);

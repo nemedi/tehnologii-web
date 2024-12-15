@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams, useNavigate, useLocation} from "react-router-dom";
 import './confirmDialog';
 
-function SessionForm(props) {
+function SessionForm() {
 	const navigate = useNavigate();
 	const {sessionId} = useParams();
 	const {search} = useLocation();
