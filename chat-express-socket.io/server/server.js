@@ -1,6 +1,5 @@
 const {createServer} = require('http');
 const express = require('express');
-const {join, resolve} = require('path');
 const socketio = require('socket.io');
 const application = express();
 const server = createServer(application);
@@ -16,7 +15,7 @@ function enterRoom(socket, room) {
 	socket.room = room;
 	socket.emit('room', messages[room]);
 }
-application.use(express.static(join(resolve('..'), 'client')))
+application.use(express.static('../client'))
 	.get('/rooms', (request, response) => response.json(rooms));
 io.on('connection', socket => {
 	enterRoom(socket, rooms[0]);
@@ -26,6 +25,5 @@ io.on('connection', socket => {
 		io.to(socket.room).emit('chat', message);
 	});
 });
-const port = process.env.PORT || 8080;
-server.listen(port,
-	() => console.log(`Server is running on ${port}.`));
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => console.log(`Server is running on ${PORT}.`));
