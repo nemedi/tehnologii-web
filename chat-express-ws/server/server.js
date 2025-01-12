@@ -1,12 +1,11 @@
 const express = require('express');
-const {join, resolve} = require('path');
 const application = express();
 require('express-ws')(application);
 const rooms = ['*', 'Hungary', 'Romania'];
 const messages = [];
 const clients = [];
-const port = process.env.PORT || 8080;
-application.use(express.static(join(resolve('..'), 'client')))
+const PORT = process.env.PORT || 8080;
+application.use(express.static('../client'))
 	.get('/rooms', (request, response) => response.json(rooms))
 	.ws('/', (socket, request) => {
 		const client = {socket, room: rooms[0]};
@@ -42,6 +41,5 @@ application.use(express.static(join(resolve('..'), 'client')))
 			}
 		});
 	})
-	.listen(port,
-		() => console.log(`Server is running on ${port}.`));
+	.listen(PORT, () => console.log(`Server is running on ${PORT}.`));
 
