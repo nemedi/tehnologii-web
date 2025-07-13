@@ -6,7 +6,7 @@ function TodoList({values}) {
     const [todos, setTodos] = useState(values);
     const [todo, setTodo] = useState('');
     
-    function handleChange(e){
+    function handleChange(e) {
         setTodo(e.target.value);
     };
 
