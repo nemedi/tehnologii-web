@@ -12,7 +12,7 @@ window.addEventListener('load', async function() {
         if (question) {
             document.querySelector('.category-area').innerHTML = question.category ? question.category : '';
             document.querySelector('.topic-area').innerHTML = question.topic ? question.topic : '';
-            document.querySelector('.question-area').innerHTML = question.question ? 'Întrebare:' + '<br/>' + question.question : '';
+            document.querySelector('.question-area').innerHTML = question.question ? 'Întrebare:' + '<br/>' + question.question.replaceAll("\\n", "<br/>") : '';
             document.querySelector('#another-question').disabled = !question.question || question.question.length === 0;
             document.querySelector('#show-answer').disabled = !question.answer || question.answer.length === 0;
         }
@@ -20,7 +20,7 @@ window.addEventListener('load', async function() {
     function handleShowAnswer(question) {
         if (question) {
             document.querySelector('.question-area').innerHTML = question.answer && question.answer.length > 0
-                ? 'Răspuns:' + '<br/>' + question.answer : '';
+                ? 'Răspuns:' + '<br/>' + question.answer.replaceAll("\\n", "<br/>") : '';
         }
         document.querySelector('#show-answer').disabled = true;
         document.querySelector('#another-question').disabled = true;

@@ -10,10 +10,11 @@ body {
 .question-area {
     flex: 1;
     display: flex;
+    padding: 2em;
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 4em;
+    font-size: 3em;
 }
 .category-area {
     display: flex;
