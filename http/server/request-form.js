@@ -1,5 +1,5 @@
 const express = require('express');
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 
 function printCollection(collection) {
     let output = '<p><h1>Form</h1>';
@@ -14,7 +14,7 @@ function printCollection(collection) {
 }
 
 express()
-    .use(express.static('./client'))
+    .use(express.static('../client'))
     .use(express.urlencoded({extended : true}))
     .use(express.json())
     .get('/form', (request, response) => 
@@ -24,5 +24,5 @@ express()
         response.send(printCollection(request.body))
     )
     .listen(PORT, () => 
-        console.log(`Server is running on port ${PORT}`)
+        console.log(`Server is running on port ${PORT}.`)
     );

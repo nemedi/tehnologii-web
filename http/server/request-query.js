@@ -1,5 +1,5 @@
 const express = require('express');
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 
 function printRequestQuery(request) {
     let output = '<p><h1>Request Query</h1>';
@@ -18,5 +18,5 @@ express()
         response.send(printRequestQuery(request))
     )
     .listen(PORT, () => 
-        console.log(`Server is running on port ${PORT}`)
+        console.log(`Server is running on port ${PORT}.`)
     );

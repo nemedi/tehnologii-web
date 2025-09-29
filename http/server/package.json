@@ -8,12 +8,11 @@
     "request-query": "node request-query.js",
     "request-body": "node request-body.js",
     "request-form": "node request-form.js",
-    "response-redirect": "node response-redirect.js"
+    "response-redirect": "node response-redirect.js",
+    "websocket-broadcast": "node websocket-broadcast.js"
   },
   "dependencies": {
-    "express": "^4.21.0"
-  },
-  "devDependencies": {
-    "nodemon": "3.1.7"
+    "express": "^5.1.0",
+    "express-ws": "^5.0.2"
   }
 }
