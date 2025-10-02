@@ -2,14 +2,12 @@
   "name": "web-server",
   "version": "1.0.0",
   "scripts": {
-    "hello-world-static": "node hello-world-static.js",
-    "hello-world-dynamic": "node hello-world-dynamic.js",
-    "request-headers": "node request-headers.js",
-    "request-query": "node request-query.js",
-    "request-body": "node request-body.js",
-    "request-form": "node request-form.js",
-    "response-redirect": "node response-redirect.js",
-    "websocket-broadcast": "node websocket-broadcast.js"
+    "hello-static": "node hello-world-static.js",
+    "hello-dynamic": "node hello-world-dynamic.js",
+    "headers": "node headers.js",
+    "form": "node form.js",
+    "redirect": "node redirect.js",
+    "broadcast": "node broadcast.js"
   },
   "dependencies": {
     "express": "^5.1.0",
