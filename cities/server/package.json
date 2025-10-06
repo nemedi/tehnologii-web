@@ -2,7 +2,7 @@
 	"name": "cities",
 	"dependencies": {
 		"buffered-reader": "^1.0.1",
-		"express": "^4.21.0"
+		"express": "^5.1.0"
 	},
 	"scripts": {
 		"server": "node server.js"

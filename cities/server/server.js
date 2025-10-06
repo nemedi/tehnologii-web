@@ -1,9 +1,9 @@
 const {DataReader} = require('buffered-reader');
 const express = require('express');
 const cities = [];
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 express()
-	.use(express.static('./client'))
+	.use(express.static('../client'))
 	.get('/cities.json', (request, response) => response.json(cities))
 	.listen(PORT, () => {
 		try {
