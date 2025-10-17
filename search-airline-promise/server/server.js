@@ -1,7 +1,7 @@
 const express = require('express');
 const {searchAirline, searchFlights} = require('./service');
 
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 express()
 	.use(express.static('../client'))
 	.get('/airlines/:name', (request, response) =>
