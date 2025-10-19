@@ -23,12 +23,12 @@ window.onload = async function() {
 	}
 }
 function loadDistrict() {
-	const citiesElement = document.getElementsByTagName('table')[0];
-	citiesElement.innerHTML = '';
+	const tableElement = document.getElementsByTagName('table')[0];
+	tableElement.innerHTML = '';
 	const name = this.value;
 	const district = cache.districts.find(item => item.name === name);
 	if (district) {
-		citiesElement.innerHTML =
+		tableElement.innerHTML =
 			`
 				<tr>
 					<td colspan="2">Inhabitants: ${district.inhabitants}</td>
