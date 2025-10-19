@@ -12,14 +12,14 @@ window.onload = async function() {
 			}
 			return districts;
 		}, []);
-		const districtsElements = document.getElementsByTagName('select')[0];
-		districtsElements.innerHTML +=
+		const selectElement = document.getElementsByTagName('select')[0];
+		selectElement.innerHTML +=
 			cache.districts
 				.sort((first, second) => first.name < second.name ? -1
 					: (first.name > second.name ? 1 : 0))
 				.map(district => `<option>${district.name}</option>`)
 				.join('');
-		districtsElements.onchange = loadDistrict;
+		selectElement.onchange = loadDistrict;
 	}
 }
 function loadDistrict() {
