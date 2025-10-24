@@ -1,11 +1,11 @@
 const express = require('express');
-const service = require('./service')('items.json');
-const PORT = process.env.PORT || 8080;
+const {getItems, addItem, changeItem, removeItem} = require('./service')('items.json');
+const PORT = 8080;
 express()
     .use(express.static('../client'))
     .use(express.text())
     .get('/items', (request, response) => {
-        const items = service.getItems();
+        const items = getItems();
         if (items.length > 0) {
             response.json(items);
         } else {
@@ -13,18 +13,18 @@ express()
         }
     })
     .post('/items', (request, response) => {
-        const item = service.addItem(request.body);
+        const item = addItem(request.body);
         response.status(201).send(item.id + '');
     })
     .put('/items/:id', (request, response) => {
-        if (service.changeItem(parseInt(request.params.id), request.body)) {
+        if (changeItem(parseInt(request.params.id), request.body)) {
             response.sendStatus(204);
         } else {
             response.sendStatus(404);
         }
     })
     .delete('/items/:id', (request, response) => {
-        if (service.removeItem(parseInt(request.params.id))) {
+        if (removeItem(parseInt(request.params.id))) {
             response.sendStatus(204);
         } else {
             response.sendStatus(404);

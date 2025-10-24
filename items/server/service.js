@@ -11,7 +11,7 @@ module.exports = function(path) {
         writeFileSync(path, JSON.stringify(items));
     }
     const items = loadItems(path);
-    var id = items.reduce((max, i) => i.id > max ? i.id : max, 0);
+    var id = items.reduce((max, item) => item.id > max ? item.id : max, 0);
     return {
         getItems() {
             return items;
@@ -23,7 +23,7 @@ module.exports = function(path) {
             return item;
         },
         changeItem(id, text) {
-            const index = items.findIndex(i => i.id === id);
+            const index = items.findIndex(item => item.id === id);
             if (index > -1) {
                 items[index].text = text;
                 storeItems(items, path);
@@ -33,7 +33,7 @@ module.exports = function(path) {
             }
         },
         removeItem(id) {
-            const index = items.findIndex(i => i.id === id);
+            const index = items.findIndex(item => item.id === id);
             if (index > -1) {
                 items.splice(index, 1);
                 storeItems(items, path);
