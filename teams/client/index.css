@@ -1,0 +1,22 @@
+a {
+    text-decoration: none;
+}
+input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+li.selected {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+ul li:first-child::marker,
+ol li:first-child::marker {
+    content: "";
+}
