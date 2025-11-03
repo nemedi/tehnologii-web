@@ -37,6 +37,10 @@ function FibonacciStream() {
 		firstValue = secondValue;
 		return secondValue += value;
 	});
+	this.reset = function() {
+		firstValue = 0;
+		secondValue = 1;
+	};
 }
 FibonacciStream.prototype = Object.create(Stream.prototype);
 
