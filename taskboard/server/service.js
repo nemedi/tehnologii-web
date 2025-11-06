@@ -10,14 +10,15 @@ module.exports = function(path) {
             if (tasksByStatus[oldStatus] instanceof Array
                 && tasksByStatus[newStatus] instanceof Array) {
                 let index = tasksByStatus[oldStatus].findIndex(t => t === task);
-                if (index) {
+                if (index > -1) {
                     tasksByStatus[oldStatus].splice(index, 1);
                     tasksByStatus[newStatus].push(task);
                     writeFileSync(path, JSON.stringify(tasksByStatus));
                     return true;
                 }
+            } else {
+                return false;
             }
-            return false;
         }
     };
 };
