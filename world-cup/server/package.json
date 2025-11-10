@@ -1,7 +1,7 @@
 {
 	"name": "world-cup",
 	"dependencies": {
-		"express": "^4.21.1",
+		"express": "^5.1.0",
 		"fs": "^0.0.1-security"
 	},
 	"scripts": {
