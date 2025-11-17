@@ -1,6 +1,6 @@
 const express = require('express');
 const {getTasks, addTask, removeTask} = require('./service')('repository.json');
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 express()
 	.use(express.urlencoded({extended: true}))
 	.use(express.static('../client'))
