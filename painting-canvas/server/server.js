@@ -13,11 +13,19 @@ express()
 		response.sendStatus(204);
 	})
 	.post('/figures/:figureId', (request, response) => {
-		addPointToFigure(request.params.figureId, request.body);
-		response.sendStatus(204);
+		if (addPointToFigure(request.params.figureId, request.body)) {
+			response.sendStatus(204);
+		} else {
+			response.sendStatus(404);
+		}
+		
 	})
 	.delete('/figures/:figureId', (request, response) => {
-		removeFigure(request.params.figureId);
-		response.sendStatus(204);
+		if (removeFigure(request.params.figureId)) {
+			response.sendStatus(204);
+		} else {
+			response.sendStatus(404);
+		}
+		
 	})
 	.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));

@@ -1,4 +1,4 @@
-const {readRepositoryContent, writeRepositoryContent} = require('./repository');
+const {readRepositoryContent, writeRepositoryContent} = require('./repository')('repository.json');
 
 function getFigures() {
 	return Object.entries(readRepositoryContent())
@@ -20,6 +20,9 @@ function addPointToFigure(figureId, point) {
 	if (figures.hasOwnProperty(figureId)) {
 		figures[figureId].points.push(point);
 		writeRepositoryContent(figures);
+		return true;
+	} else {
+		return false;
 	}
 }
 
@@ -28,6 +31,9 @@ function removeFigure(figureId) {
 	if (figures.hasOwnProperty(figureId)) {
 		delete figures[figureId];
 		writeRepositoryContent(figures);
+		return true;
+	} else {
+		return false;
 	}
 }
 
