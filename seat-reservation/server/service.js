@@ -1,4 +1,4 @@
-const {readRepositoryContent, writeRepositoryContent} = require('./repository');
+const {readRepositoryContent, writeRepositoryContent} = require('./repository')('repository.json');
 
 const UNAVAILABLE = 0;
 const AVAILABLE = 1;
