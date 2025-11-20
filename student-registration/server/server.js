@@ -6,7 +6,7 @@ const {
 	addRecord: addStudent,
 	saveRecord: saveStudent,
 	removeRecord: removeStudent}
-	= require('./repository')('repository.json');
+	= require('./service')('repository.json');
 config();
 const port = process.env.PORT || 8080;
 express()

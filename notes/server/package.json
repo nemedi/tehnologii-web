@@ -2,19 +2,17 @@
   "name": "notes",
   "version": "1.0.0",
   "scripts": {
-    "development": "nodemon server.mjs",
-    "release": "node server.mjs"
+    "development": "nodemon server.js",
+    "release": "node server.js"
   },
   "dependencies": {
-    "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "sequelize": "^6.37.7",
-    "sqlite3": "^5.1.7"
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
   },
   "nodemonConfig": {
-    "ignore": ["repository.db"]
+    "ignore": ["repository.json"]
   }
 }
