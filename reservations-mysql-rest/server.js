@@ -1,7 +1,9 @@
+const { config } = require('dotenv');
 const express = require('express');
 const {initialize} = require('./repository');
 const endpoints = require('./endpoints');
 const swagger = require('./swagger');
+config();
 initialize()
 .then(() => {
 	const application = express();

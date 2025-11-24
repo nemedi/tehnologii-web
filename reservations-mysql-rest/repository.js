@@ -32,7 +32,7 @@ const Contact = sequelize.define('contact', {
 			isEmail: true
 		}
 	}
-});
+}, {timestamps: false});
 const Room = sequelize.define('room', {
 	id: {
 		type: Sequelize.UUID,
@@ -51,7 +51,7 @@ const Room = sequelize.define('room', {
 			min: 1
 		}
 	}
-});
+}, {timestamps: false});
 const Meeting = sequelize.define('meeting', {
 	id: {
 		type: Sequelize.UUID,
@@ -72,13 +72,16 @@ const Meeting = sequelize.define('meeting', {
 		type: Sequelize.DATE,
 		allowNull: false
 	}
-});
+}, {timestamps: false});
+
+const Attendees = sequelize.define('attendees', {
+}, {timestamps: false});
 
 Room.hasMany(Meeting, {foreignKey: 'roomId'});
 
 Contact.hasMany(Meeting, {foreignKey: 'organizerId'});
 
-Contact.belongsToMany(Meeting, {through : 'attendees'});
+Contact.belongsToMany(Meeting, {through : Attendees});
 
 async function initialize() {
 	await sequelize.sync();
