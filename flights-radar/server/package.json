@@ -5,8 +5,8 @@
     "server": "node server.mjs"
   },
   "dependencies": {
-    "express": "^4.21.1",
-    "puppeteer": "^23.9.0",
+    "express": "^5.2.1",
+    "puppeteer": "^24.31.0",
     "flightradar24-client": "^1.0.1",
     "airline-codes": "^1.0.3"
   }
