@@ -7,14 +7,14 @@
   },
   "author": "Iulian ILIE-NEMEDI",
   "dependencies": {
-    "express": "^4.21.2",
+    "express": "^5.2.1",
     "cors": "^2.8.5",
-    "sequelize": "^6.37.5",
+    "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7",
-    "dotenv": "^16.4.7"
+    "dotenv": "^17.2.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.11"
   },
   "nodemon": {
     "ignore": ["repository.db"]
