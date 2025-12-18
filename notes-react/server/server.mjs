@@ -1,9 +1,8 @@
-import {config} from 'dotenv';
 import express, {urlencoded, json} from 'express';
 import router from './router.mjs';
 import {initialize} from './repository.mjs';
 config();
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 express()
     .use(express.static('../client/build'))
     .use(urlencoded({extended: true}))
