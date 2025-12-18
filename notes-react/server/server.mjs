@@ -1,7 +1,6 @@
 import express, {urlencoded, json} from 'express';
 import router from './router.mjs';
 import {initialize} from './repository.mjs';
-config();
 const PORT = 8080;
 express()
     .use(express.static('../client/build'))
