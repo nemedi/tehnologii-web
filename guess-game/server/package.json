@@ -1,0 +1,12 @@
+
+{
+  "name": "guess-game-server",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^5.2.1",
+    "ws": "^8.18.3"
+  },
+  "scripts": {
+    "server": "node server.js"
+  }
+}
