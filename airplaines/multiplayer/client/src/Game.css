@@ -1,0 +1,36 @@
+/* Hover verde pentru plasarea avionului */
+.hover-cell {
+  background-color: lightgreen !important;
+}
+
+/* Animatie pentru hit */
+.hit-cell {
+  animation: hitFlash 0.5s ease forwards;
+}
+
+@keyframes hitFlash {
+  0% { background-color: yellow; transform: scale(1); }
+  50% { background-color: red; transform: scale(1.2); }
+  100% { background-color: red; transform: scale(1); }
+}
+
+/* Animatie pentru miss */
+.miss-cell {
+  animation: missFlash 0.5s ease forwards;
+}
+
+@keyframes missFlash {
+  0% { background-color: yellow; }
+  100% { background-color: lightgray; }
+}
+
+/* Animatie pentru doborârea avionului */
+.destroyed-cell {
+  animation: destroyFlash 0.7s ease forwards;
+}
+
+@keyframes destroyFlash {
+  0% { background-color: orange; transform: scale(1); }
+  50% { background-color: black; transform: scale(1.3); }
+  100% { background-color: black; transform: scale(1); }
+}
