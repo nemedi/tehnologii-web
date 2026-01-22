@@ -1,0 +1,100 @@
+.cinema-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.cinema-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.cinema-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.cinema-select,
+.cinema-date {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.cinema-address {
+  background: #f9fafb;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.movie-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.movie-item {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 24px;
+}
+
+.movie-poster {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.movie-poster img {
+  width: 100%;
+  border-radius: 12px;
+  transition: opacity 0.2s ease;
+}
+
+.movie-poster img:hover {
+  opacity: 0.9;
+}
+
+.movie-info {
+  flex: 1;
+}
+
+.movie-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.movie-meta {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.movie-hours {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.movie-hour-btn {
+  padding: 8px 16px;
+  background: #f97316;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.movie-hour-btn:hover {
+  opacity: 0.9;
+}

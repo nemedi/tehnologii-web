@@ -1,0 +1,88 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.cinema-wrapper {
+  max-width: 1000px;
+  margin: 30px auto;
+  font-family: Arial, sans-serif;
+
+  /* fundal sală */
+  background: #e5e5e5;
+  padding: 25px 20px;
+  border-radius: 12px;
+}
+
+.title {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.room {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* GRID — cheia alinierii perfecte */
+.row {
+  display: grid;
+  grid-template-columns: 30px auto 30px;
+  align-items: center;
+}
+
+.row-number {
+  text-align: center;
+  font-size: 13px;
+  color: #333;
+}
+
+/* zona de scaune */
+.seats {
+  display: flex;
+  gap: 4px;
+}
+
+/* scaun */
+.seat {
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  border: 1px solid #777;
+  background: #32cd32;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* visiniu selectat */
+.seat.selected {
+  background: #800020;
+  color: #fff;
+  border-color: #5a0015;
+}
+
+/* culoar */
+.empty {
+  width: 34px;
+  height: 34px;
+}
+
+/* info jos */
+.selected-info {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.seat.occupied {
+  background: #2b2b2b;
+  color: #ffffff;
+  border-color: #1a1a1a;
+  cursor: not-allowed;
+}

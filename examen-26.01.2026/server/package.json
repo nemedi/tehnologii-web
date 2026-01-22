@@ -1,0 +1,14 @@
+{
+  "name": "cinema-reservation-server",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-ws": "^5.0.2",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7",
+    "bcrypt": "^5.1.0"
+  }
+}
