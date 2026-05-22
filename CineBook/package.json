@@ -1,0 +1,26 @@
+{
+  "name": "cinema-reservation",
+  "version": "1.0.0",
+  "description": "Cinema seat reservation web application",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "concurrently \"nodemon server/index.js\" \"npm start --prefix client\"",
+    "install-all": "npm install && npm install --prefix client",
+    "build": "npm run build --prefix client"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-sqlite3": "^0.9.16",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1",
+    "ws": "^8.20.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.14"
+  }
+}

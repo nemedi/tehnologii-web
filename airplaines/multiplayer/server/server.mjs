@@ -1,66 +1,148 @@
 import express from "express";
-import { WebSocketServer } from "ws";
 import http from "http";
+import { WebSocketServer } from "ws";
 
-const application = express();
-const server = http.createServer(application);
+const app = express();
+const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-application.use(express.static("../client/build"));
-
 const PORT = 8080;
+
+app.use(express.static("../client/build"));
 
 let waitingPlayer = null;
 const games = new Map();
 
-wss.on("connection", (ws) => {
-  console.log("Jucător conectat");
+/*
+game = {
+  players: [ws0, ws1],
+  boards: [board0, board1],
+  planes: [planes0, planes1],
+  ready: [false, false],
+  turn: 0
+}
+*/
 
+wss.on("connection", (ws) => {
+
+  /* ===== MATCHMAKING ===== */
   if (!waitingPlayer) {
     waitingPlayer = ws;
     ws.send(JSON.stringify({ type: "waiting" }));
   } else {
     const gameId = Date.now().toString();
-    const player1 = waitingPlayer;
-    const player2 = ws;
+    const p1 = waitingPlayer;
+    const p2 = ws;
     waitingPlayer = null;
 
-    games.set(gameId, { players: [player1, player2] });
+    games.set(gameId, {
+      players: [p1, p2],
+      boards: [null, null],
+      planes: [null, null],
+      ready: [false, false],
+      turn: 0
+    });
 
-    [player1, player2].forEach((player, idx) => {
-      player.send(JSON.stringify({ type: "start", playerIndex: idx, gameId }));
-      player.gameId = gameId;
-      player.playerIndex = idx;
+    [p1, p2].forEach((p, idx) => {
+      p.gameId = gameId;
+      p.playerIndex = idx;
+      p.send(JSON.stringify({ type: "start", playerIndex: idx }));
     });
   }
 
-  ws.on("message", (message) => {
-    const data = JSON.parse(message.toString());
+  /* ===== GAME LOGIC ===== */
+  ws.on("message", (msg) => {
+    const data = JSON.parse(msg.toString());
     const game = games.get(ws.gameId);
     if (!game) return;
 
+    const me = ws.playerIndex;
+    const enemy = 1 - me;
+
     switch (data.type) {
+
+      /* === BOARD READY === */
       case "updateBoard":
-        const opponent = game.players[1 - ws.playerIndex];
-        opponent.send(JSON.stringify({ type: "opponentBoard", board: data.board, planes: data.planes }));
+        game.boards[me] = data.board;
+        game.planes[me] = data.planes;
+        game.ready[me] = true;
+
+        if (game.ready[0] && game.ready[1]) {
+          game.players.forEach((p, i) =>
+            p.send(JSON.stringify({
+              type: "bothReady",
+              yourTurn: i === game.turn
+            }))
+          );
+        }
         break;
+
+      /* === ATTACK === */
       case "attack":
-        const op = game.players[1 - ws.playerIndex];
-        op.send(JSON.stringify({ type: "attacked", row: data.row, col: data.col }));
-        break;
-      case "hitResult":
-        const atk = game.players[1 - ws.playerIndex];
-        atk.send(JSON.stringify({ type: "hitResult", ...data }));
+        if (game.turn !== me) return;
+
+        const cell = game.boards[enemy][data.row][data.col];
+
+        let hit = false;
+        let destroyed = false;
+        let planeId = null;
+
+        if (cell.type === "head") {
+          hit = true;
+          destroyed = true;
+          planeId = cell.planeId;
+
+          game.boards[enemy].forEach(r =>
+            r.forEach(c => {
+              if (c.planeId === planeId) c.hit = true;
+            })
+          );
+
+          game.planes[enemy] =
+            game.planes[enemy].map(p =>
+              p.id === planeId ? { ...p, hits: p.size } : p
+            );
+
+        } else if (cell.type === "body") {
+          hit = true;
+          planeId = cell.planeId;
+          cell.hit = true;
+        } else {
+          cell.miss = true;
+        }
+
+        game.turn = enemy;
+
+        game.players[enemy].send(JSON.stringify({
+          type: "attacked",
+          row: data.row,
+          col: data.col,
+          hit,
+          destroyed,
+          planeId
+        }));
+
+        game.players[me].send(JSON.stringify({
+          type: "attackResult",
+          row: data.row,
+          col: data.col,
+          hit,
+          destroyed,
+          planeId
+        }));
+
+        game.players.forEach((p, i) =>
+          p.send(JSON.stringify({
+            type: "turn",
+            yourTurn: i === game.turn
+          }))
+        );
+
         break;
     }
   });
-
-  ws.on("close", () => {
-    console.log("Jucător deconectat");
-    if (waitingPlayer === ws) waitingPlayer = null;
-  });
 });
 
-server.listen(PORT, () => {
-  console.log(`Serverul rulează pe http://localhost:${PORT}`);
-});
+server.listen(PORT, () =>
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
+);
