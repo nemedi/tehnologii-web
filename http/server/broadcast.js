@@ -4,6 +4,8 @@ require('express-ws')(application);
 const sockets = [];
 const PORT = 8080;
 application.use(express.static('../client'))
+	.get('/', (request, response) =>
+		response.redirect(301, '/broadcast.html'))
 	.ws('/', (socket, request) => {
 		sockets.push(socket);
 		socket.on('message', message =>

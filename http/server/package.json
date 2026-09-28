@@ -2,15 +2,15 @@
   "name": "web-server",
   "version": "1.0.0",
   "scripts": {
-    "hello-static": "node hello-world-static.js",
-    "hello-dynamic": "node hello-world-dynamic.js",
+    "hello-static": "node hello-static.js",
+    "hello-dynamic": "node hello-dynamic.js",
     "headers": "node headers.js",
     "form": "node form.js",
     "redirect": "node redirect.js",
     "broadcast": "node broadcast.js"
   },
   "dependencies": {
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "express-ws": "^5.0.2"
   }
 }

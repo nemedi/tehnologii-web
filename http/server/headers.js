@@ -1,15 +1,6 @@
 const express = require('express');
+const {printCollection} = require('./utils');
 const PORT = 8080;
-
-function printCollection(title, collection) {
-    let output = `<p><h1>${title}</h1>`;
-    output += '<ul>';
-    for (const [key, value] of Object.entries(collection)) {
-        output += `<li>${key}: ${value}</li>`;
-    }
-    output += '</ul></p>';
-    return output;
-}
 
 express()
     .get('/', (request, response) =>
