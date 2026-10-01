@@ -5,7 +5,7 @@ window.onload = function() {
 async function searchAirline(name) {
 	let html = '';
 	if (name.length > 2) {
-		const response = await fetch(`airlines/${name}`);
+		const response = await fetch(`airlines?name=${encodeURIComponent(name)}`);
 		const airlines = await response.json();
 		if (airlines.length > 0) {
 			html = '<ul>'

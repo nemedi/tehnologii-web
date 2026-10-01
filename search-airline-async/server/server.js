@@ -4,8 +4,8 @@ const {searchAirline, searchFlights} = require('./service');
 const PORT = 8080;
 express()
 	.use(express.static('../client'))
-	.get('/airlines/:name', async (request, response) =>
-		response.json(await searchAirline(request.params.name))
+	.get('/airlines', async (request, response) =>
+		response.json(await searchAirline(request.query.name))
 	)
 	.get('/flights/:airline', async (request, response) =>
 		response.json(await searchFlights(request.params.airline))
