@@ -9,7 +9,7 @@ router.get('/:id/seats', async (req, res) => {
 
     const s = await Schedule.findByPk(scheduleId, {
       include: [
-        { model: Movie, attributes: ['title', 'duration', 'genre'] },
+        { model: Movie, attributes: ['title', 'duration', 'genre', 'imageUrl'] },
         {
           model: Hall,
           attributes: ['name', 'rows', 'cols', 'hasMiddleAisle'],
@@ -28,6 +28,7 @@ router.get('/:id/seats', async (req, res) => {
       title:         s.Movie.title,
       duration:      s.Movie.duration,
       genre:         s.Movie.genre,
+      imageUrl:      s.Movie.imageUrl,
       hallName:      s.Hall.name,
       rows:          s.Hall.rows,
       cols:          s.Hall.cols,

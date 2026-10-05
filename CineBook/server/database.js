@@ -88,7 +88,7 @@ function makeScheduleRows(halls, movies, dates) {
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: path.join(__dirname, '..', 'cinema.db'),
+  storage: path.join(__dirname, '.', 'cinema.db'),
   logging: false,
   define: {
     underscored: true,
@@ -116,6 +116,7 @@ const Movie = sequelize.define('Movie', {
   duration:    { type: DataTypes.INTEGER, allowNull: false },
   description: DataTypes.TEXT,
   genre:       DataTypes.STRING,
+  imageUrl:    DataTypes.STRING,
 }, { tableName: 'movies' });
 
 const Schedule = sequelize.define('Schedule', {
@@ -182,6 +183,10 @@ async function initDatabase() {
   try {
     await sequelize.query('ALTER TABLE cinemas ADD COLUMN image_url TEXT');
   } catch (_) { /* column already exists */ }
+  // Add image_url to movies if missing (safe no-op on fresh DBs)
+  try {
+    await sequelize.query('ALTER TABLE movies ADD COLUMN image_url TEXT');
+  } catch (_) { /* column already exists */ }
   await seedData();
 }
 
@@ -230,26 +235,26 @@ async function seedData() {
 
   // Movies
   const movies = await Movie.bulkCreate([
-    { title: 'Interstellar',                      duration: 169, genre: 'Sci-Fi',    description: 'A team of explorers travel through a wormhole in space.' },
-    { title: 'The Dark Knight',                   duration: 152, genre: 'Action',    description: 'Batman faces the Joker in a battle for Gotham City.' },
-    { title: 'Inception',                         duration: 148, genre: 'Thriller',  description: 'A thief who steals corporate secrets through dream-sharing.' },
-    { title: 'Dune: Part Two',                    duration: 166, genre: 'Sci-Fi',    description: 'Paul Atreides unites with the Fremen to wage war.' },
-    { title: 'Oppenheimer',                       duration: 180, genre: 'Drama',     description: 'The story of J. Robert Oppenheimer and the Manhattan Project.' },
-    { title: 'The Matrix',                        duration: 136, genre: 'Sci-Fi',    description: 'A computer hacker learns the true nature of reality.' },
-    { title: 'Parasite',                          duration: 132, genre: 'Thriller',  description: 'A poor family schemes to become employed by a wealthy family.' },
-    { title: 'Everything Everywhere All at Once', duration: 139, genre: 'Comedy',    description: 'A woman discovers she can access parallel universes.' },
-    { title: 'Poor Things',                       duration: 141, genre: 'Drama',     description: 'The amazing adventures of Bella Baxter, brought back to life.' },
-    { title: 'The Substance',                     duration:  99, genre: 'Horror',    description: 'A fading celebrity uses a mysterious black market drug.' },
-    { title: 'The Godfather',                     duration: 175, genre: 'Crime',     description: 'The aging patriarch of an organized crime dynasty transfers control.' },
-    { title: 'Pulp Fiction',                      duration: 154, genre: 'Crime',     description: 'The lives of two hitmen, a boxer, and others intertwine.' },
-    { title: 'The Shawshank Redemption',          duration: 142, genre: 'Drama',     description: 'Two imprisoned men bond over years, finding solace and redemption.' },
-    { title: 'Fight Club',                        duration: 139, genre: 'Drama',     description: 'An insomniac office worker forms an underground fight club.' },
-    { title: 'Blade Runner 2049',                 duration: 164, genre: 'Sci-Fi',    description: 'A blade runner uncovers a secret that could upend society.' },
-    { title: 'Spirited Away',                     duration: 125, genre: 'Animation', description: 'A girl wanders into a world ruled by gods and witches.' },
-    { title: 'Whiplash',                          duration: 107, genre: 'Drama',     description: 'A promising young drummer pursues perfection under a brutal teacher.' },
-    { title: 'Arrival',                           duration: 116, genre: 'Sci-Fi',    description: 'A linguist works to communicate with alien lifeforms.' },
-    { title: 'Get Out',                           duration: 104, genre: 'Horror',    description: "A Black man uncovers a terrifying secret at his girlfriend's parents' estate." },
-    { title: 'La La Land',                        duration: 128, genre: 'Romance',   description: 'A jazz musician and an aspiring actress fall in love in Los Angeles.' },
+    { title: 'Interstellar',                      duration: 169, genre: 'Sci-Fi',    description: 'A team of explorers travel through a wormhole in space.',                          imageUrl: 'https://picsum.photos/seed/interstellar/300/450'     },
+    { title: 'The Dark Knight',                   duration: 152, genre: 'Action',    description: 'Batman faces the Joker in a battle for Gotham City.',                              imageUrl: 'https://picsum.photos/seed/thedarkknight/300/450'    },
+    { title: 'Inception',                         duration: 148, genre: 'Thriller',  description: 'A thief who steals corporate secrets through dream-sharing.',                      imageUrl: 'https://picsum.photos/seed/inception/300/450'        },
+    { title: 'Dune: Part Two',                    duration: 166, genre: 'Sci-Fi',    description: 'Paul Atreides unites with the Fremen to wage war.',                                imageUrl: 'https://picsum.photos/seed/duneparttwo/300/450'      },
+    { title: 'Oppenheimer',                       duration: 180, genre: 'Drama',     description: 'The story of J. Robert Oppenheimer and the Manhattan Project.',                   imageUrl: 'https://picsum.photos/seed/oppenheimer/300/450'      },
+    { title: 'The Matrix',                        duration: 136, genre: 'Sci-Fi',    description: 'A computer hacker learns the true nature of reality.',                             imageUrl: 'https://picsum.photos/seed/thematrix/300/450'        },
+    { title: 'Parasite',                          duration: 132, genre: 'Thriller',  description: 'A poor family schemes to become employed by a wealthy family.',                   imageUrl: 'https://picsum.photos/seed/parasite/300/450'         },
+    { title: 'Everything Everywhere All at Once', duration: 139, genre: 'Comedy',    description: 'A woman discovers she can access parallel universes.',                             imageUrl: 'https://picsum.photos/seed/everythingeverywhere/300/450' },
+    { title: 'Poor Things',                       duration: 141, genre: 'Drama',     description: 'The amazing adventures of Bella Baxter, brought back to life.',                  imageUrl: 'https://picsum.photos/seed/poorthings/300/450'       },
+    { title: 'The Substance',                     duration:  99, genre: 'Horror',    description: 'A fading celebrity uses a mysterious black market drug.',                          imageUrl: 'https://picsum.photos/seed/thesubstance/300/450'     },
+    { title: 'The Godfather',                     duration: 175, genre: 'Crime',     description: 'The aging patriarch of an organized crime dynasty transfers control.',            imageUrl: 'https://picsum.photos/seed/thegodfather/300/450'     },
+    { title: 'Pulp Fiction',                      duration: 154, genre: 'Crime',     description: 'The lives of two hitmen, a boxer, and others intertwine.',                        imageUrl: 'https://picsum.photos/seed/pulpfiction/300/450'      },
+    { title: 'The Shawshank Redemption',          duration: 142, genre: 'Drama',     description: 'Two imprisoned men bond over years, finding solace and redemption.',              imageUrl: 'https://picsum.photos/seed/shawshank/300/450'        },
+    { title: 'Fight Club',                        duration: 139, genre: 'Drama',     description: 'An insomniac office worker forms an underground fight club.',                     imageUrl: 'https://picsum.photos/seed/fightclub/300/450'        },
+    { title: 'Blade Runner 2049',                 duration: 164, genre: 'Sci-Fi',    description: 'A blade runner uncovers a secret that could upend society.',                      imageUrl: 'https://picsum.photos/seed/bladerunner2049/300/450'  },
+    { title: 'Spirited Away',                     duration: 125, genre: 'Animation', description: 'A girl wanders into a world ruled by gods and witches.',                          imageUrl: 'https://picsum.photos/seed/spiritedaway/300/450'     },
+    { title: 'Whiplash',                          duration: 107, genre: 'Drama',     description: 'A promising young drummer pursues perfection under a brutal teacher.',            imageUrl: 'https://picsum.photos/seed/whiplash/300/450'         },
+    { title: 'Arrival',                           duration: 116, genre: 'Sci-Fi',    description: 'A linguist works to communicate with alien lifeforms.',                            imageUrl: 'https://picsum.photos/seed/arrival/300/450'          },
+    { title: 'Get Out',                           duration: 104, genre: 'Horror',    description: "A Black man uncovers a terrifying secret at his girlfriend's parents' estate.",   imageUrl: 'https://picsum.photos/seed/getout/300/450'           },
+    { title: 'La La Land',                        duration: 128, genre: 'Romance',   description: 'A jazz musician and an aspiring actress fall in love in Los Angeles.',            imageUrl: 'https://picsum.photos/seed/lalaland/300/450'         },
   ]);
 
   await Schedule.bulkCreate(makeScheduleRows(halls, movies, getWeekDates()));

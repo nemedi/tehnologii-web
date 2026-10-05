@@ -29,7 +29,7 @@ app.use(
   session({
     store: new SqliteStore({
       db: 'sessions.db',
-      dir: path.join(__dirname, '..'),
+      dir: path.join(__dirname, '.'),
     }),
     secret: 'cinema-secret-key-change-in-production',
     resave: false,

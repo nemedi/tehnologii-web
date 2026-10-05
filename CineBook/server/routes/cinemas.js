@@ -50,7 +50,7 @@ router.get('/:id/schedule', async (req, res) => {
 
     const rows = await Schedule.findAll({
       include: [
-        { model: Movie, attributes: ['id', 'title', 'duration', 'genre'] },
+        { model: Movie, attributes: ['id', 'title', 'duration', 'genre', 'imageUrl'] },
         { model: Hall,  attributes: ['id', 'name'], where: { cinemaId }, required: true },
       ],
       where: { date: { [Op.between]: [fromDate, toDate] } },
@@ -68,6 +68,7 @@ router.get('/:id/schedule', async (req, res) => {
         title:     s.Movie.title,
         duration:  s.Movie.duration,
         genre:     s.Movie.genre,
+        imageUrl:  s.Movie.imageUrl,
         hallName:  s.Hall.name,
       };
       if (!schedule[s.date]) schedule[s.date] = [];

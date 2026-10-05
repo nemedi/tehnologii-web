@@ -137,6 +137,13 @@ function WeekSchedule() {
                         className="schedule-slot"
                         onClick={() => navigate(`/schedule/${slot.id}`)}
                       >
+                        {slot.imageUrl && (
+                          <img
+                            src={slot.imageUrl}
+                            alt={slot.title}
+                            className="slot-poster"
+                          />
+                        )}
                         <div className="slot-time">{slot.startTime}</div>
                         <div className="slot-title">{slot.title}</div>
                         <div className="slot-info">
