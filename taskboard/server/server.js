@@ -15,9 +15,9 @@ express()
         if (request.query.task
             && request.query.oldStatus
             && request.query.newStatus) {
-            if (changeTaskStatus(request.query.task,
-                request.query.oldStatus,
-                request.query.newStatus)) {
+            if (changeTaskStatus(decodeURIComponent(request.query.task),
+                decodeURIComponent(request.query.oldStatus),
+                decodeURIComponent(request.query.newStatus))) {
                 response.sendStatus(204);
             } else {
                 response.sendStatus(403);

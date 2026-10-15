@@ -38,7 +38,7 @@ HTMLElement.prototype.taskBoard = function(tasksByStatus, changeTaskStatus) {
 			const oldParent = card.parentNode;
 			const newParent = event.target.parentNode.querySelector('.cards');
 			let task = card.querySelector('p').innerText;
-			task = task.substring(task.indexOf('.') + 1);
+			task = task.substring(task.indexOf('.') + 1).trim();
 			let oldStatus = oldParent.parentNode.querySelector('p').innerText;
 			let newStatus = newParent.parentNode.querySelector('p').innerText;
 			if (await changeTaskStatus(task, oldStatus, newStatus)) {
