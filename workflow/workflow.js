@@ -1,6 +1,20 @@
 const {readFileSync, writeFileSync, unlinkSync, watch, existsSync} = require('fs');
 const {join} = require('path');
 
+function readFileSyncWithRetry(filePath, maxRetries = 5, delay = 100) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return readFileSync(filePath, 'utf8');
+    } catch (error) {
+      if (error.code === 'EBUSY' && attempt < maxRetries - 1) {
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, delay);
+      } else {
+        throw error;
+      }
+    }
+  }
+}
+
 class Exchange {
     static #count = 0;
     #id;
@@ -80,8 +94,8 @@ class FromStep extends Step {
             switch (schema.toLowerCase()) {
                 case 'file':
                     this.#handler = exchange => {
-                        exchange.body = new String(readFileSync(exchange.body));
                         exchange.headers.path = exchange.body;
+                        exchange.body = new String(readFileSyncWithRetry(exchange.body));
                         this.collect(exchange);
                         return true;
                     };
@@ -102,6 +116,7 @@ class FromStep extends Step {
                 this.collect(new Exchange(this.#source()));
                 return true;
             };
+            this.route.run(new Exchange(this.#source()));
         }
     }
 }
@@ -402,11 +417,7 @@ class Route {
                 }
                 exchanges = newExchanges;
             } catch (error) {
-                if (RouteBuilder.onException) {
-                    RouteBuilder.onException.run(new Exchange(error));
-                } else {
-                    console.error(error);
-                }
+                RouteBuilder.handleException(error);
             }
         }
         return exchanges;
@@ -415,7 +426,7 @@ class Route {
 
 class RouteBuilder {
     static #routes = [];
-    static #onException;
+    static #exceptionRoute;
     configure() {
     }
     static from(source) {
@@ -424,11 +435,15 @@ class RouteBuilder {
         return route;
     }
     static onException() {
-        RouteBuilder.#onException = new Route(this);
-        return RouteBuilder.#onException;
+        RouteBuilder.#exceptionRoute = new Route(this);
+        return RouteBuilder.#exceptionRoute;
     }
-    get onException() {
-        return RouteBuilder.#onException;
+    static handleException(error) {
+        if (RouteBuilder.#exceptionRoute) {
+            RouteBuilder.#exceptionRoute.run(new Exchange(error));
+        } else {
+             console.error(error);
+        }
     }
     static run() {
         RouteBuilder.#routes.forEach(route => route.start());
