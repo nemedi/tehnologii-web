@@ -10,8 +10,7 @@ from(() => {
 })
 .process(exchange => exchange.headers.count = exchange.body.length)
 .split()
-.resequence((first, second) => first.body - second.body,
-    exchanges => exchanges[0].headers.count
-)
+.resequence((first, second) => first.body - second.body)
+    .size(exchanges => exchanges[0].headers.count)
 .to('stream:out');
 run();
