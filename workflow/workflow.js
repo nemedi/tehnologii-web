@@ -122,9 +122,11 @@ class FromStep extends Step {
 }
 
 class UnmarshalStep extends Step {
-    constructor(dataType, RecordType, route) {
+    #dataType;
+    #recordType;
+    constructor(route) {
         super(exchange => {
-            exchange.body = UnmarshalStep.#deserialize(exchange.body, dataType, RecordType);
+            exchange.body = UnmarshalStep.#deserialize(exchange.body, this.#dataType, this.#recordType);
             this.collect(exchange);
             return true;
         },  route);
@@ -138,6 +140,15 @@ class UnmarshalStep extends Step {
             default:
                 return {};
         }
+    }
+    json() {
+        this.#dataType = 'JSON';
+        return this.route;
+    }
+    csv(RecordType) {
+        this.#dataType = 'CSV';
+        this.#recordType = RecordType;
+        return this.route;
     }
 }
 
@@ -163,18 +174,6 @@ class FilterStep extends Step {
             } else {
                 return false;
             }
-        }, route);
-    }
-}
-
-class ContentFilterStep extends Step {
-    constructor(predicate, route) {
-        super(exchange => {
-            if (exchange.body instanceof Array) {
-                exchange.body = exchange.body.filter(predicate);
-            }
-            this.collect(exchange);
-            return true;
         }, route);
     }
 }
@@ -246,9 +245,11 @@ class LogStep extends Step {
 }
 
 class MarshalStep extends Step {
-    constructor(dataType, lineSeprator, route) {
+    #dataType;
+    #lineSeprator;
+    constructor(route) {
         super(exchange => {
-            exchange.body = MarshalStep.#serialize(exchange.body, dataType, lineSeprator);
+            exchange.body = MarshalStep.#serialize(exchange.body, this.#dataType, this.#lineSeprator);
             this.collect(exchange);
             return true;
         }, route);
@@ -262,6 +263,15 @@ class MarshalStep extends Step {
             default:
                 return '';
         }
+    }
+    json() {
+        this.#dataType = 'JSON';
+        return this.route;
+    }
+    csv(lineSeparator = '\n') {
+        this.#dataType = 'CSV';
+        this.#lineSeprator = lineSeparator;
+        return this.route;
     }
 }
 
@@ -354,9 +364,10 @@ class Route {
     done() {
         return this.#choiceStep ? this.#choiceStep.done() : this;
     }
-    unmarshal(dataType, RecordType) {
-        this.#steps.push(new UnmarshalStep(dataType, RecordType, this));
-        return this;
+    unmarshal() {
+        let unmarshalStep = new UnmarshalStep(this);
+        this.#steps.push(unmarshalStep);
+        return unmarshalStep;
     }
     split() {
         this.#steps.push(new SplitStep(this));
@@ -366,10 +377,6 @@ class Route {
         this.#steps.push(new FilterStep(predicate, this));
         return this;
     }
-    contentFilter(predicate) {
-        this.#steps.push(new ContentFilterStep(predicate, this));
-        return this;
-    }    
     choice() {
         let choiceStep = new ChoiceStep(this);
         this.#steps.push(choiceStep);
@@ -395,9 +402,10 @@ class Route {
         this.#steps.push(new LogStep(logger, this));
         return this;
     }
-    marshal(dataType, lineSeparator = '\n') {
-        this.#steps.push(new MarshalStep(dataType, lineSeparator, this));
-        return this;
+    marshal() {
+        let marshalStep = new MarshalStep(this);
+        this.#steps.push(marshalStep);
+        return marshalStep;
     }
     to(endpoint) {
         this.#steps.push(new ToStep(endpoint, this));

@@ -6,15 +6,15 @@ onException()
 from('file:data/in')
 .choice()
     .when(exchange => exchange.headers.path.toLowerCase().endsWith('.csv'))
-        .unmarshal('CSV', City)
+        .unmarshal().csv(City)
     .when(exchange => exchange.headers.path.toLowerCase().endsWith('.json'))
-        .unmarshal('JSON')
+        .unmarshal().json()
     .otherwise()
         .process(exchange => exchange.body = [])
 .done()
-.contentFilter(city => city.district)
 .process(exchange => exchange.headers.count = exchange.body.length)
 .split()
+.filter(exchange => exchange.body.district)
 .aggregate(exchange => exchange.body.district,
     (oldExchange, newExchange) => {
         let district = oldExchange
@@ -48,6 +48,6 @@ from('file:data/in')
     (exchanges, count) => count === exchanges[0].headers.count
 )
 .sort((first, second) => first.name.localeCompare(second.name))
-.marshal('CSV')
+.marshal().csv()
 .to('file:data/out/districts.csv');
 run();
