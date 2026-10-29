@@ -25,13 +25,6 @@ class City {
     toCSV() {
         return `${this.#name},${this.#district},${this.#inhabitants}`;
     }
-    toJSON() {
-        return {
-            name: this.name,
-            district: this.district,
-            inhabitants: this.inhabitants
-        }
-    }    
 }
 class District {
     #name;
@@ -56,12 +49,6 @@ class District {
     }
     toCSV() {
         return `${this.#name},${this.#inhabitants}`;
-    }
-    toJSON() {
-        return {
-            name: this.name,
-            inhabitants: this.inhabitants
-        }
     }
 }
 module.exports = {City, District};

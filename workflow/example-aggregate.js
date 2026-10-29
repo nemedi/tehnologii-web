@@ -23,19 +23,16 @@ from('file:data/in')
         district.addCity(newExchange.body);
         newExchange.body = district;
         return oldExchange ? oldExchange : newExchange;
-    },
-    (exchanges, count) => {
+    }).complete((exchanges, count) => {
         if (count === exchanges[0].headers.count) {
             exchanges.forEach(exchange => exchange.headers.count = exchanges.length);
             return true;
         } else {
             return false;
         }
-    }
-)
-.resequence((first, second) => first.body.name.localeCompare(second.body.name),
-    exchanges => exchanges[0].headers.count
-)
+    })
+.resequence((first, second) => first.body.name.localeCompare(second.body.name))
+    .size(exchanges => exchanges[0].headers.count)
 .log(exchange => exchange.body.toString())
 .aggregate(() => true,
     (oldExchange, newExchange) => {
@@ -44,10 +41,8 @@ from('file:data/in')
         districts.push(newExchange.body);
         newExchange.body = districts;
         return oldExchange ? oldExchange : newExchange;
-    },
-    (exchanges, count) => count === exchanges[0].headers.count
-)
-.sort((first, second) => first.name.localeCompare(second.name))
+    })
+    .complete((exchanges, count) => count === exchanges[0].headers.count)
 .marshal().csv()
 .to('file:data/out/districts.csv');
 run();

@@ -181,12 +181,13 @@ class FilterStep extends Step {
 class AggregateStep extends Step {
     #map = new Map();
     #count = 0;
-    constructor(criterion, aggregator, complete, route) {
+    #complete;
+    constructor(criterion, aggregator, route) {
         super(exchange => {
             const key = criterion(exchange);
             this.#map.set(key, aggregator(this.#map.get(key), exchange));
             this.#count++;
-            if (complete(Array.from(this.#map.values()), this.#count)) {
+            if (this.#complete(Array.from(this.#map.values()), this.#count)) {
                 this.collect(Array.from(this.#map.values()));
                 this.#map = new Map();
                 this.#count = 0;
@@ -196,13 +197,20 @@ class AggregateStep extends Step {
             }
         }, route);
     }
+    complete(predicate) {
+        this.#complete = predicate;
+        return this.route;
+    }
 }
 
 class ResequenceStep extends Step {
-    constructor(comparator, size, route) {
+    #size;
+    constructor(comparator, route) {
         super(exchange => {
             this.collect(exchange);
-            if (this.exchanges.length === size(this.exchanges)) {
+            let size = typeof this.#size === 'function'
+                ? this.#size(this.exchanges) : this.#size;
+            if (this.exchanges.length === size) {
                 this.exchanges = this.exchanges.sort(comparator);
                 return true;
             } else {
@@ -210,17 +218,9 @@ class ResequenceStep extends Step {
             }
         }, route);
     }
-}
-
-class SortStep extends Step {
-    constructor(comparator, route) {
-        super(exchange => {
-            if (exchange.body instanceof Array) {
-                exchange.body = exchange.body.sort(comparator);
-            }
-            this.collect(exchange);
-            return true;
-        }, route);
+    size(expression) {
+        this.#size = expression;
+        return this.route;
     }
 }
 
@@ -382,17 +382,15 @@ class Route {
         this.#steps.push(choiceStep);
         return choiceStep;
     }
-    aggregate(criterion, aggregator, complete) {
-        this.#steps.push(new AggregateStep(criterion, aggregator, complete, this));
-        return this;
+    aggregate(criterion, aggregator) {
+        let aggregateStep = new AggregateStep(criterion, aggregator, this);
+        this.#steps.push(aggregateStep);
+        return aggregateStep;
     }
-    resequence(comparator, size) {
-        this.#steps.push(new ResequenceStep(comparator, size, this));
-        return this;
-    }
-    sort(comparator) {
-        this.#steps.push(new SortStep(comparator, this));
-        return this;
+    resequence(comparator) {
+        let resequenceStep = new ResequenceStep(comparator, this);
+        this.#steps.push(resequenceStep);
+        return resequenceStep;
     }
     process(consumer) {
         this.#steps.push(new ProcessStep(consumer, this));
