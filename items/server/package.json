@@ -5,7 +5,7 @@
     "server": "node server.js"
   },
   "dependencies": {
-    "express": "^5.1.0",
+    "express": "^5.3.0",
     "fs": "^0.0.1-security"
   }
 }

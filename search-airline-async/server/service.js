@@ -6,8 +6,10 @@ async function searchAirline(name) {
 	try {
 		const response = await fetch(SEARCH_AIRLINE_URL + name)
 			.catch(error => {throw error;});
-		const body = await response.json()
+		let body = await response.text()
 			.catch(error => {throw error;});
+		console.log(body);	
+		body = JSON.parse(body);
 		return body.results.map(result => ({
 			id: result.id,
 			name: result.name

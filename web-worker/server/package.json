@@ -1,7 +1,7 @@
 {
 	"name": "web-worker",
 	"dependencies": {
-		"express": "^5.1.0"
+		"express": "^5.3.0"
 	},
 	"scripts": {
 		"server": "node server.js"
