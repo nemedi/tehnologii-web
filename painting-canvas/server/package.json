@@ -4,11 +4,11 @@
     "server": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "fs": "~0.0.1-security"
+    "express": "^5.3.0",
+    "fs": "^0.0.1-security"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.14"
   },
   "nodemonConfig": {
     "ignore": ["repository.json"]
