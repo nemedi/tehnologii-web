@@ -7,15 +7,6 @@ async function resolveDistrict(latitude, longitude) {
 			&& body.countryName === 'România'
 			? body.principalSubdivision
 			: undefined;
-
-		// const endpoint = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
-		// const response = await fetch(endpoint, {headers: {'User-Agent': 'search-romanian-names'}});
-		// const body = await response.json();
-		// return body
-		// 	&& body.address
-		// 	&& (body.address.country === 'România' || body.address.country === 'Romania')
-		// 	? body.address.county
-		// 	: undefined;
 	} catch (error) {
 		return "";
 	}
