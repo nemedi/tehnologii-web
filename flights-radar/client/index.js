@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 	const getFlights = async (latitude, longitude) => {
 		const response = await fetch(
-			`/flights?bounds=${latitude + 1},${longitude - 1},${latitude - 1},${longitude + 1}`);
+			`/flights?latitude=${latitude}&longitude=${longitude}`);
 		if (response.status === 200) {
 			return await response.json();
 		} else {

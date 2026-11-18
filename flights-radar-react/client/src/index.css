@@ -1,0 +1,13 @@
+body {
+	font-family: sans-serif;
+	margin: 1rem;
+}
+th, td {
+	padding: 5px;
+}
+th {
+	text-align: left;
+}
+.num {
+	text-align: right;
+}

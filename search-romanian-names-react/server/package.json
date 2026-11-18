@@ -1,0 +1,9 @@
+{
+	"name": "search-name-server",
+	"dependencies": {
+		"express": "^5.3.0"
+	},
+	"scripts": {
+		"server": "node server.js"
+	}
+}

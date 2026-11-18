@@ -1,0 +1,10 @@
+{
+  "name": "flights-radar-react",
+  "version": "1.0.0",
+  "scripts": {
+    "server": "node server.mjs"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
