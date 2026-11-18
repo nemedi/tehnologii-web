@@ -1,12 +1,24 @@
 async function resolveDistrict(latitude, longitude) {
-	const endpoint = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
-	const response = await fetch(endpoint, {headers: {'User-Agent': 'search-romanian-names'}});
-	const body = await response.json();
-	return body
-		&& body.address
-		&& (body.address.country === 'România' || body.address.country === 'Romania')
-		? body.address.county
-		: undefined;
+	try {
+		const endpoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=ro`;
+		const response = await fetch(endpoint, {headers: {'User-Agent': 'search-romanian-names'}});
+		const body = await response.json();
+		return body
+			&& body.countryName === 'România'
+			? body.principalSubdivision
+			: undefined;
+
+		// const endpoint = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+		// const response = await fetch(endpoint, {headers: {'User-Agent': 'search-romanian-names'}});
+		// const body = await response.json();
+		// return body
+		// 	&& body.address
+		// 	&& (body.address.country === 'România' || body.address.country === 'Romania')
+		// 	? body.address.county
+		// 	: undefined;
+	} catch (error) {
+		return "";
+	}
 }
 async function searchName(name) {
 	try {
